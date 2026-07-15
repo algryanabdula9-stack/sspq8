@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حسابي | SSP.Q8</title>
+  <meta name="description" content="تابع طلبات عرض الأسعار اللي أرسلتها وأرسل طلباً جديداً لشركات البرمجة المشتركة.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+  <div class="demo-banner">
+    <strong>نسخة تجريبية:</strong> طلباتك مخزَّنة على متصفحك فقط. لتجربة تدفق "شركة تستلم الطلب"، افتح <a href="portal.html?role=company">دخول الشركات</a> بنفس المتصفح.
+  </div>
+
+  <header class="portal-header">
+    <div class="container portal-header__inner">
+      <a href="index.html" class="brand" aria-label="SSP.Q8 - الصفحة الرئيسية">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="brand__mark-svg">
+            <path d="M6 5H18V9H9V11H18V19H6V15H15V13H6V5Z" fill="#FAFAF8"></path>
+          </svg>
+          <span class="brand__dot"></span>
+        </span>
+        <span class="brand__name">SSP<span class="brand__dot-text">.</span>Q8</span>
+      </a>
+
+      <div class="portal-header__user">
+        <span>
+          <span class="portal-header__name" id="userName">—</span><br>
+          <span class="portal-header__role">حساب عميل</span>
+        </span>
+        <button type="button" class="btn btn--outline btn--sm" id="logoutBtn">تسجيل الخروج</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container dashboard">
+
+    <div class="dashboard-head">
+      <div>
+        <h1 class="dashboard-head__title">طلباتي</h1>
+        <p class="dashboard-head__subtitle">كل طلبات عروض الأسعار اللي أرسلتها، وحالتها الحالية.</p>
+      </div>
+      <button type="button" class="btn btn--gold" id="newRequestBtn">طلب عرض سعر جديد</button>
+    </div>
+
+    <div class="request-list" id="requestList">
+      <!-- تُبنى بطاقات الطلبات هنا عبر js/client-portal.js -->
+    </div>
+
+  </main>
+
+  <!-- نافذة طلب عرض سعر جديد -->
+  <div class="modal-overlay" id="requestModalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="requestModalTitle">
+      <div class="modal__head">
+        <h2 class="modal__title" id="requestModalTitle">طلب عرض سعر جديد</h2>
+        <button type="button" class="modal__close" id="closeModalBtn" aria-label="إغلاق">×</button>
+      </div>
+      <p class="modal__desc">عبّي التفاصيل بالأسفل، وراح يوصل طلبك للشركات المشتركة معنا.</p>
+
+      <form id="requestForm" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="projectNameInput">اسم المشروع <span class="required">*</span></label>
+          <input class="form-input" type="text" id="projectNameInput" required placeholder="مثال: نظام حجوزات لصالون">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="projectDescInput">وصف الفكرة <span class="required">*</span></label>
+          <textarea class="form-textarea" id="projectDescInput" required placeholder="اشرح فكرتك باختصار: شنو المشكلة اللي تبي تحلها، ومين بيستخدم النظام"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="tierSelect">مستوى الخدمة <span class="required">*</span></label>
+          <select class="form-select" id="tierSelect"></select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="complexitySelect">درجة التعقيد <span class="required">*</span></label>
+          <select class="form-select" id="complexitySelect"></select>
+        </div>
+
+        <div class="modal__price-preview">
+          <span>السعر التقريبي</span>
+          <strong id="modalPricePreview" class="mono">0.000 د.ك</strong>
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--outline" id="cancelModalBtn">إلغاء</button>
+          <button type="submit" class="btn btn--gold">إرسال الطلب</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/marketplace.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/client-portal.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+/* ==========================================================================
+   SSP.Q8 — MARKETPLACE (نموذج أولي)
+   ==========================================================================
+   يخزن كل طلبات عروض الأسعار بمتصفح المستخدم (localStorage) لأغراض العرض.
+   بما إن التخزين محلي، الطلب اللي ينشئه عميل على جهازه ما يظهر تلقائياً
+   عند شركة تفتح الموقع من جهاز ثاني — بالنسخة الحقيقية يكون فيه سيرفر
+   وقاعدة بيانات مشتركة توصل الطلب لكل الشركات فوراً.
+   ========================================================================== */
+
+(function () {
+  'use strict';
+
+  const REQUESTS_KEY = 'ssp_requests';
+
+  function getRequests() {
+    try {
+      return JSON.parse(localStorage.getItem(REQUESTS_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveRequests(list) {
+    localStorage.setItem(REQUESTS_KEY, JSON.stringify(list));
+  }
+
+  function createRequest(data) {
+    const list = getRequests();
+    const request = {
+      id: 'req_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+      ownerEmail: data.ownerEmail,
+      ownerName: data.ownerName,
+      projectName: data.projectName,
+      description: data.description,
+      tierName: data.tierName,
+      complexityName: data.complexityName,
+      totalPrice: data.totalPrice,
+      status: 'مفتوح',
+      claimedByEmail: null,
+      claimedByName: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    list.unshift(request);
+    saveRequests(list);
+    return request;
+  }
+
+  function getByOwner(email) {
+    return getRequests().filter((r) => r.ownerEmail === email);
+  }
+
+  function getOpen() {
+    return getRequests().filter((r) => r.status === 'مفتوح');
+  }
+
+  function getClaimedBy(email) {
+    return getRequests().filter((r) => r.claimedByEmail === email);
+  }
+
+  function claim(id, companyEmail, companyName) {
+    const list = getRequests();
+    const request = list.find((r) => r.id === id);
+    if (!request || request.status !== 'مفتوح') return { success: false };
+
+    request.status = 'قيد العمل';
+    request.claimedByEmail = companyEmail;
+    request.claimedByName = companyName;
+    request.updatedAt = new Date().toISOString();
+    saveRequests(list);
+    return { success: true, request };
+  }
+
+  function complete(id) {
+    const list = getRequests();
+    const request = list.find((r) => r.id === id);
+    if (!request) return { success: false };
+
+    request.status = 'مكتمل';
+    request.updatedAt = new Date().toISOString();
+    saveRequests(list);
+    return { success: true, request };
+  }
+
+  window.SSPMarketplace = {
+    getRequests,
+    createRequest,
+    getByOwner,
+    getOpen,
+    getClaimedBy,
+    claim,
+    complete
+  };
+})();
