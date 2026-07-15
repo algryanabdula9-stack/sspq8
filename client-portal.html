@@ -56,10 +56,10 @@
 
     <div class="dashboard-head">
       <div>
-        <h1 class="dashboard-head__title">طلبات النموذج الأولي</h1>
-        <p class="dashboard-head__subtitle">اختر باقة بسعر واضح، ادفع، وتابع تسليم فريق SSP.Q8.</p>
+        <h1 class="dashboard-head__title">طلباتي ودراساتي</h1>
+        <p class="dashboard-head__subtitle">ادفع مقابل التحليل أو النموذج الأولي، ثم نزّل ملفاتك الموثقة واستخدمها مع أي جهة تنفيذية.</p>
       </div>
-      <button type="button" class="btn btn--gold" id="newOrderBtn">طلب نموذج أولي جديد</button>
+      <button type="button" class="btn btn--gold" id="newOrderBtn">طلب تحليل أو نموذج أولي</button>
     </div>
 
     <div class="request-list" id="orderList"></div>
@@ -77,14 +77,14 @@
 
   </main>
 
-  <!-- نافذة طلب نموذج أولي جديد -->
+  <!-- نافذة طلب تحليل أو نموذج أولي -->
   <div class="modal-overlay" id="newOrderModalOverlay">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="newOrderModalTitle">
       <div class="modal__head">
-        <h2 class="modal__title" id="newOrderModalTitle">طلب نموذج أولي جديد</h2>
+        <h2 class="modal__title" id="newOrderModalTitle">طلب تحليل أو نموذج أولي</h2>
         <button type="button" class="modal__close" id="closeNewOrderModalBtn" aria-label="إغلاق">×</button>
       </div>
-      <p class="modal__desc">اختر باقتك وعبّي التفاصيل — الدفع يصير فوراً، وبعدها فريق SSP.Q8 يبدأ العمل.</p>
+      <p class="modal__desc">عبّئ المشكلة والهدف واختر مستوى الخدمة. التسليم دراسة أو نموذج أولي فقط، وليس نظاماً نهائياً.</p>
 
       <form id="newOrderForm" novalidate>
 
@@ -143,7 +143,7 @@
         <h2 class="modal__title" id="forwardModalTitle">إرسال لعرض سعر</h2>
         <button type="button" class="modal__close" id="closeForwardModalBtn" aria-label="إغلاق">×</button>
       </div>
-      <p class="modal__desc">راح تُرسل نفس حزمة الملفات اللي نزّلتها لشركة تختارها، أو لكل الشركات المشتركة.</p>
+      <p class="modal__desc">ستُرسل حزمة الدراسة والنموذج والملفات فقط لطلب عرض تقريبي. التعاقد والتنفيذ النهائي خارج مسؤولية SSP.Q8.</p>
 
       <form id="forwardForm" novalidate>
 
@@ -153,14 +153,23 @@
             <span>كل الشركات المشتركة</span>
           </label>
           <label class="target-option">
-            <input type="radio" name="targetType" value="specific">
-            <span>شركة معيّنة</span>
+            <input type="radio" name="targetType" value="type">
+            <span>حسب تخصص الشركة</span>
+          </label>
+          <label class="target-option">
+            <input type="radio" name="targetType" value="selected">
+            <span>شركة أو عدة شركات محددة</span>
           </label>
         </div>
 
+        <div class="form-group form-hidden" id="companyTypeSelectGroup">
+          <label class="form-label" for="companyTypeSelect">اختر تخصص الشركة</label>
+          <select class="form-select" id="companyTypeSelect"></select>
+        </div>
         <div class="form-group form-hidden" id="companySelectGroup">
-          <label class="form-label" for="companySelect">اختر الشركة <span class="required">*</span></label>
-          <select class="form-select" id="companySelect"></select>
+          <label class="form-label" for="companySelect">اختر شركة أو أكثر</label>
+          <select class="form-select" id="companySelect" multiple size="5"></select>
+          <small style="color:var(--color-text-muted)">يمكن اختيار أكثر من شركة باستخدام Ctrl أو Command.</small>
         </div>
 
         <div class="modal__actions">

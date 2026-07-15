@@ -181,6 +181,7 @@
         <div class="request-card__meta">
           <span>${order.tierName}</span>
           <span>${order.complexityName}</span>
+          <span class="mono">${order.referenceNo || order.id}</span>
           <span class="request-card__price mono">${formatCurrency(order.totalPrice)} د.ك (مدفوع)</span>
         </div>
         <p class="request-card__desc"><strong>المشكلة:</strong> ${order.problem}</p>
@@ -362,7 +363,7 @@
       <article class="admin-order-card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
         <div>
           <h3 class="request-card__title">${company.companyName || company.name}</h3>
-          <div class="admin-order-card__client">${company.email}</div>
+          <div class="admin-order-card__client">${company.email}${company.phone ? ' — ' + company.phone : ''}${company.companyType ? ' — ' + company.companyType : ''}</div>
         </div>
         <div style="display:flex; align-items:center; gap:12px;">
           <span class="subscription-badge ${company.subscriptionActive ? 'subscription-badge--active' : 'subscription-badge--inactive'}">
