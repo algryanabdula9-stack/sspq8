@@ -1,0 +1,9 @@
+(async function(){
+  await SSP.ensureSeed();
+  const existing=SSP.getSession();if(existing?.role==='client'){location.href='client.html';return}
+  const detailsStep=document.getElementById('detailsStep'),otpStep=document.getElementById('otpStep');let pending=null;
+  function showError(id,msg){const e=document.getElementById(id);e.textContent=msg;e.classList.remove('hidden')}
+  document.getElementById('detailsForm').addEventListener('submit',e=>{e.preventDefault();const email=SSP.normalizeEmail(document.getElementById('email').value),phone=SSP.normalizePhone(document.getElementById('phone').value);if(!email||!phone){showError('detailsError','أدخل البريد ورقم الهاتف.');return}const code=String(Math.floor(100000+Math.random()*900000));pending={email,phone,code};sessionStorage.setItem('sspq8_pending_otp',JSON.stringify(pending));document.getElementById('otpDisplay').textContent=code;detailsStep.classList.add('hidden');otpStep.classList.remove('hidden')});
+  document.getElementById('otpForm').addEventListener('submit',async e=>{e.preventDefault();if(!pending){try{pending=JSON.parse(sessionStorage.getItem('sspq8_pending_otp'))}catch{}}if(!pending||document.getElementById('otp').value.trim()!==pending.code){showError('otpError','رمز التحقق غير صحيح.');return}const id='client_'+btoa(unescape(encodeURIComponent(pending.email+'|'+pending.phone))).replace(/[^a-z0-9]/gi,'').slice(0,24);let client=await SSPDB.get('clients',id);if(!client){client={id,email:pending.email,phone:pending.phone,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};await SSPDB.put('clients',client)}SSP.setSession({role:'client',clientId:id,email:pending.email,phone:pending.phone});sessionStorage.removeItem('sspq8_pending_otp');location.href='client.html'+location.search});
+  document.getElementById('backBtn').onclick=()=>{otpStep.classList.add('hidden');detailsStep.classList.remove('hidden')};
+})();
