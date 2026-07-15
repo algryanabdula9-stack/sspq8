@@ -1,0 +1,137 @@
+/* ==========================================================================
+   SSP.Q8 — ORDERS (نموذج أولي)
+   ==========================================================================
+   يمثّل هذا الملف دورة حياة "طلب النموذج الأولي" بين العميل وإدارة SSP.Q8:
+   العميل يرسل فكرته → الأدمن يشتغل عليها → يرفع ملفات التسليم → العميل يدفع
+   (دفع تجريبي، بدون بوابة حقيقية) → العميل ينزّل الملفات.
+
+   تنبيه: الملفات تُخزَّن كنص Base64 داخل localStorage. هذا يشتغل زين لملفات
+   صغيرة لأغراض العرض، لكن localStorage عنده سقف تخزين محدود (عادة 5-10
+   ميجابايت لكل المتصفح). النسخة الحقيقية تحتاج تخزين سحابي فعلي (S3 أو
+   مشابه) لدعم ملفات أكبر وعدد عملاء أكبر.
+   ========================================================================== */
+
+(function () {
+  'use strict';
+
+  const ORDERS_KEY = 'ssp_orders';
+  const MAX_TOTAL_FILES_BYTES = 3 * 1024 * 1024; // حد تقريبي آمن لتخزين تجريبي بالمتصفح
+
+  function getOrders() {
+    try {
+      return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveOrders(list) {
+    try {
+      localStorage.setItem(ORDERS_KEY, JSON.stringify(list));
+      return { success: true };
+    } catch (e) {
+      return { success: false, error: 'تعذّر الحفظ — الأغلب إن حجم الملفات تجاوز سعة التخزين التجريبي بالمتصفح.' };
+    }
+  }
+
+  function createOrder(data) {
+    const list = getOrders();
+    const order = {
+      id: 'ord_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+      ownerEmail: data.ownerEmail,
+      ownerName: data.ownerName,
+      projectName: data.projectName,
+      description: data.description,
+      tierName: data.tierName,
+      complexityName: data.complexityName,
+      totalPrice: data.totalPrice,
+      status: 'قيد المراجعة',
+      files: [],
+      paid: false,
+      paidAt: null,
+      downloadedAt: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    list.unshift(order);
+    const result = saveOrders(list);
+    return result.success ? { success: true, order } : result;
+  }
+
+  function getByOwner(email) {
+    return getOrders().filter((o) => o.ownerEmail === email);
+  }
+
+  function getAll() {
+    return getOrders();
+  }
+
+  function getById(id) {
+    return getOrders().find((o) => o.id === id) || null;
+  }
+
+  function startWork(id) {
+    const list = getOrders();
+    const order = list.find((o) => o.id === id);
+    if (!order) return { success: false };
+    order.status = 'قيد التنفيذ';
+    order.updatedAt = new Date().toISOString();
+    return { ...saveOrders(list), order };
+  }
+
+  /**
+   * يتحقق من الحجم الإجمالي للملفات قبل الحفظ، لتفادي تعطّل التخزين المحلي.
+   */
+  function totalBytes(files) {
+    return files.reduce((sum, file) => sum + (file.size || 0), 0);
+  }
+
+  function uploadDeliverable(id, files) {
+    if (totalBytes(files) > MAX_TOTAL_FILES_BYTES) {
+      return { success: false, error: 'حجم الملفات كبير على التخزين التجريبي بالمتصفح — جرّب ملفات أصغر (المجموع حالياً أكثر من 3 ميجابايت تقريباً).' };
+    }
+
+    const list = getOrders();
+    const order = list.find((o) => o.id === id);
+    if (!order) return { success: false };
+
+    order.files = files;
+    order.status = 'جاهز للدفع';
+    order.updatedAt = new Date().toISOString();
+    const result = saveOrders(list);
+    return result.success ? { success: true, order } : result;
+  }
+
+  function markPaid(id) {
+    const list = getOrders();
+    const order = list.find((o) => o.id === id);
+    if (!order) return { success: false };
+    order.paid = true;
+    order.paidAt = new Date().toISOString();
+    order.status = 'مكتمل الدفع';
+    order.updatedAt = new Date().toISOString();
+    const result = saveOrders(list);
+    return result.success ? { success: true, order } : result;
+  }
+
+  function markDownloaded(id) {
+    const list = getOrders();
+    const order = list.find((o) => o.id === id);
+    if (!order || order.downloadedAt) return { success: false };
+    order.downloadedAt = new Date().toISOString();
+    saveOrders(list);
+    return { success: true, order };
+  }
+
+  window.SSPOrders = {
+    getByOwner,
+    getAll,
+    getById,
+    createOrder,
+    startWork,
+    uploadDeliverable,
+    markPaid,
+    markDownloaded,
+    MAX_TOTAL_FILES_BYTES
+  };
+})();

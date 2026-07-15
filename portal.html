@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الدخول | SSP.Q8</title>
+  <meta name="description" content="سجّل دخولك كعميل لتقديم طلب عرض سعر، أو كشركة برمجة لاستلام طلبات العملاء.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="portal.css">
+</head>
+<body>
+
+  <div class="demo-banner">
+    <strong>نسخة تجريبية:</strong> هذا نموذج أولي لتوضيح الفكرة — الحسابات والطلبات تُخزَّن على متصفحك فقط ولا تُشارك فعلياً بين الأجهزة.
+  </div>
+
+  <header class="portal-header">
+    <div class="container portal-header__inner">
+      <a href="index.html" class="brand" aria-label="SSP.Q8 - الصفحة الرئيسية">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="brand__mark-svg">
+            <path d="M6 5H18V9H9V11H18V19H6V15H15V13H6V5Z" fill="#FAFAF8"></path>
+          </svg>
+          <span class="brand__dot"></span>
+        </span>
+        <span class="brand__name">SSP<span class="brand__dot-text">.</span>Q8</span>
+      </a>
+      <a href="index.html" class="btn btn--outline btn--sm">الرئيسية</a>
+    </div>
+  </header>
+
+  <main class="portal-shell">
+    <div class="auth-card">
+
+      <div class="role-tabs" role="tablist" aria-label="نوع الحساب">
+        <button type="button" class="role-tab is-active" id="roleTabClient" data-role="client" role="tab" aria-selected="true">عميل</button>
+        <button type="button" class="role-tab" id="roleTabCompany" data-role="company" role="tab" aria-selected="false">شركة برمجة</button>
+      </div>
+
+      <h1 class="auth-card__title" id="authTitle">دخول العميل</h1>
+      <p class="auth-card__subtitle" id="authSubtitle">سجّل دخولك عشان تقدر ترسل طلب عرض سعر لشركات مشتركة.</p>
+
+      <div class="mode-tabs">
+        <button type="button" class="mode-tab is-active" data-mode="login">تسجيل الدخول</button>
+        <button type="button" class="mode-tab" data-mode="register">إنشاء حساب جديد</button>
+      </div>
+
+      <div class="form-error" id="authError" role="alert"></div>
+
+      <form id="authForm" novalidate>
+
+        <div class="form-group form-hidden" id="nameGroup">
+          <label class="form-label" for="nameInput">الاسم <span class="required">*</span></label>
+          <input class="form-input" type="text" id="nameInput" autocomplete="name">
+        </div>
+
+        <div class="form-group form-hidden" id="companyNameGroup">
+          <label class="form-label" for="companyNameInput">اسم الشركة <span class="required">*</span></label>
+          <input class="form-input" type="text" id="companyNameInput" autocomplete="organization">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="emailInput">البريد الإلكتروني <span class="required">*</span></label>
+          <input class="form-input" type="email" id="emailInput" autocomplete="email" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="passwordInput">كلمة المرور <span class="required">*</span></label>
+          <input class="form-input" type="password" id="passwordInput" autocomplete="current-password" required>
+        </div>
+
+        <button type="submit" class="btn btn--gold btn--lg" id="authSubmitBtn">دخول</button>
+      </form>
+
+    </div>
+  </main>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="auth.js"></script>
+  <script src="portal.js"></script>
+</body>
+</html>
