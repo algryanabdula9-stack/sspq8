@@ -1,14 +1,12 @@
 /* ==========================================================================
    SSP.Q8 — ORDERS (نموذج أولي)
    ==========================================================================
-   يمثّل هذا الملف دورة حياة "طلب النموذج الأولي" بين العميل وإدارة SSP.Q8:
-   العميل يرسل فكرته → الأدمن يشتغل عليها → يرفع ملفات التسليم → العميل يدفع
-   (دفع تجريبي، بدون بوابة حقيقية) → العميل ينزّل الملفات.
+   دورة حياة "طلب النموذج الأولي": العميل يختار باقة بسعر محدد مسبقاً ويدفع
+   فوراً (دفع تجريبي)، بعدها إدارة SSP.Q8 تشتغل عليه وترفع ملفات التسليم،
+   والعميل ينزّلها من صفحته.
 
-   تنبيه: الملفات تُخزَّن كنص Base64 داخل localStorage. هذا يشتغل زين لملفات
-   صغيرة لأغراض العرض، لكن localStorage عنده سقف تخزين محدود (عادة 5-10
-   ميجابايت لكل المتصفح). النسخة الحقيقية تحتاج تخزين سحابي فعلي (S3 أو
-   مشابه) لدعم ملفات أكبر وعدد عملاء أكبر.
+   تنبيه: الملفات تُخزَّن كنص Base64 داخل localStorage، وله سقف تخزين محدود
+   (عادة 5-10 ميجابايت لكل المتصفح). النسخة الحقيقية تحتاج تخزين سحابي فعلي.
    ========================================================================== */
 
 (function () {
@@ -34,21 +32,27 @@
     }
   }
 
+  /**
+   * ينشئ الطلب مدفوعاً فوراً (الدفع يصير عند اختيار الباقة، قبل ما تبدأ الإدارة العمل).
+   */
   function createOrder(data) {
     const list = getOrders();
     const order = {
       id: 'ord_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
       ownerEmail: data.ownerEmail,
       ownerName: data.ownerName,
-      projectName: data.projectName,
-      description: data.description,
+      ownerPhone: data.ownerPhone || null,
+      problem: data.problem,
+      natureOfWork: data.natureOfWork,
+      goal: data.goal,
+      expectedSolution: data.expectedSolution,
       tierName: data.tierName,
       complexityName: data.complexityName,
       totalPrice: data.totalPrice,
-      status: 'قيد المراجعة',
+      status: 'قيد التنفيذ',
       files: [],
-      paid: false,
-      paidAt: null,
+      paid: true,
+      paidAt: new Date().toISOString(),
       downloadedAt: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -70,22 +74,13 @@
     return getOrders().find((o) => o.id === id) || null;
   }
 
-  function startWork(id) {
-    const list = getOrders();
-    const order = list.find((o) => o.id === id);
-    if (!order) return { success: false };
-    order.status = 'قيد التنفيذ';
-    order.updatedAt = new Date().toISOString();
-    return { ...saveOrders(list), order };
-  }
-
-  /**
-   * يتحقق من الحجم الإجمالي للملفات قبل الحفظ، لتفادي تعطّل التخزين المحلي.
-   */
   function totalBytes(files) {
     return files.reduce((sum, file) => sum + (file.size || 0), 0);
   }
 
+  /**
+   * الإدارة ترفع ملفات التسليم — يحوّل حالة الطلب مباشرة لـ"جاهز للتنزيل".
+   */
   function uploadDeliverable(id, files) {
     if (totalBytes(files) > MAX_TOTAL_FILES_BYTES) {
       return { success: false, error: 'حجم الملفات كبير على التخزين التجريبي بالمتصفح — جرّب ملفات أصغر (المجموع حالياً أكثر من 3 ميجابايت تقريباً).' };
@@ -96,19 +91,7 @@
     if (!order) return { success: false };
 
     order.files = files;
-    order.status = 'جاهز للدفع';
-    order.updatedAt = new Date().toISOString();
-    const result = saveOrders(list);
-    return result.success ? { success: true, order } : result;
-  }
-
-  function markPaid(id) {
-    const list = getOrders();
-    const order = list.find((o) => o.id === id);
-    if (!order) return { success: false };
-    order.paid = true;
-    order.paidAt = new Date().toISOString();
-    order.status = 'مكتمل الدفع';
+    order.status = 'جاهز للتنزيل';
     order.updatedAt = new Date().toISOString();
     const result = saveOrders(list);
     return result.success ? { success: true, order } : result;
@@ -128,9 +111,7 @@
     getAll,
     getById,
     createOrder,
-    startWork,
     uploadDeliverable,
-    markPaid,
     markDownloaded,
     MAX_TOTAL_FILES_BYTES
   };

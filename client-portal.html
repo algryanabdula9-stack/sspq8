@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>حسابي | SSP.Q8</title>
-  <meta name="description" content="تابع طلبات نموذجك الأولي، ادفع ونزّل ملفاتك، وأرسلها لشركات البرمجة المشتركة للحصول على عرض سعر للتطوير الكامل.">
+  <meta name="description" content="تابع طلب نموذجك الأولي، نزّل ملفاتك، قارن عروض الشركات، وشوف منتجاتك المشتراة.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,9 +16,9 @@
 <body>
 
   <div class="demo-banner">
-    <strong>نسخة تجريبية:</strong> طلباتك وملفاتك مخزَّنة على متصفحك فقط. لتجربة التدفق كامل، افتح
+    <strong>نسخة تجريبية:</strong> بياناتك مخزَّنة على متصفحك فقط. لتجربة التدفق كامل، افتح
     <a href="admin.html">لوحة الإدارة</a> بنفس المتصفح لترفع ملفات التسليم، ثم
-    <a href="portal.html?role=company">دخول الشركات</a> لتشوف الطلب بعد ما ترسله.
+    <a href="portal.html?role=company">دخول الشركات</a> عشان تشوف عروض الأسعار.
   </div>
 
   <header class="portal-header">
@@ -45,16 +45,34 @@
 
   <main class="container dashboard">
 
+    <!-- شراء معلّق (لو جاي من زر "اشترِ الآن" بمنتج جاهز) -->
+    <div class="subscription-box form-hidden" id="pendingPurchaseBox">
+      <div class="subscription-box__text">
+        إتمام شراء: <strong id="pendingPurchaseName">—</strong>
+        <br><span id="pendingPurchasePrice" class="mono"></span> د.ك
+      </div>
+      <button type="button" class="btn btn--gold btn--sm" id="pendingPurchasePayBtn">ادفع الآن (تجريبي)</button>
+    </div>
+
     <div class="dashboard-head">
       <div>
-        <h1 class="dashboard-head__title">طلباتي</h1>
-        <p class="dashboard-head__subtitle">تابع مراحل طلبك: المراجعة، التنفيذ، الدفع، ثم تنزيل الملفات.</p>
+        <h1 class="dashboard-head__title">طلبات النموذج الأولي</h1>
+        <p class="dashboard-head__subtitle">اختر باقة بسعر واضح، ادفع، وتابع تسليم فريق SSP.Q8.</p>
       </div>
       <button type="button" class="btn btn--gold" id="newOrderBtn">طلب نموذج أولي جديد</button>
     </div>
 
-    <div class="request-list" id="orderList">
-      <!-- تُبنى بطاقات الطلبات هنا عبر js/client-portal.js -->
+    <div class="request-list" id="orderList"></div>
+
+    <div class="dashboard-section" style="margin-top:48px;">
+      <h2 class="dashboard-section__title"><span class="square-bullet" aria-hidden="true"></span>طلبات عروض الأسعار</h2>
+      <p class="dashboard-head__subtitle" style="margin-bottom:16px;">الطلبات اللي أرسلتها لشركات البرمجة، والعروض اللي وصلتك.</p>
+      <div class="request-list" id="quoteRequestList"></div>
+    </div>
+
+    <div class="dashboard-section" style="margin-top:48px;">
+      <h2 class="dashboard-section__title"><span class="square-bullet" aria-hidden="true"></span>منتجاتي المشتراة</h2>
+      <div class="request-list" id="purchaseList"></div>
     </div>
 
   </main>
@@ -66,7 +84,7 @@
         <h2 class="modal__title" id="newOrderModalTitle">طلب نموذج أولي جديد</h2>
         <button type="button" class="modal__close" id="closeNewOrderModalBtn" aria-label="إغلاق">×</button>
       </div>
-      <p class="modal__desc">عبّي التفاصيل بالأسفل، وراح يوصل طلبك لفريق SSP.Q8 عشان يشتغل عليه.</p>
+      <p class="modal__desc">اختر باقتك وعبّي التفاصيل — الدفع يصير فوراً، وبعدها فريق SSP.Q8 يبدأ العمل.</p>
 
       <form id="newOrderForm" novalidate>
 
@@ -76,8 +94,23 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="projectDescInput">وصف الفكرة <span class="required">*</span></label>
-          <textarea class="form-textarea" id="projectDescInput" required placeholder="اشرح فكرتك باختصار: شنو المشكلة اللي تبي تحلها، ومين بيستخدم النظام"></textarea>
+          <label class="form-label" for="problemInput">وصف المشكلة <span class="required">*</span></label>
+          <textarea class="form-textarea" id="problemInput" required placeholder="شنو المشكلة اللي تواجهها الحين؟"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="natureOfWorkInput">طبيعة العمل <span class="required">*</span></label>
+          <input class="form-input" type="text" id="natureOfWorkInput" required placeholder="مثال: صالون نسائي، محل بقالة، ورشة سيارات">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="goalInput">الهدف <span class="required">*</span></label>
+          <textarea class="form-textarea" id="goalInput" required placeholder="شنو تبي تحقق من هذا النظام؟"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="expectedSolutionInput">الحل الذي تتوقعه <span class="required">*</span></label>
+          <textarea class="form-textarea" id="expectedSolutionInput" required placeholder="لو عندك تصوّر للحل، اشرحه هنا (اختياري لكن يساعدنا)"></textarea>
         </div>
 
         <div class="form-group">
@@ -91,13 +124,13 @@
         </div>
 
         <div class="modal__price-preview">
-          <span>السعر التقريبي</span>
+          <span>السعر — يُدفع الآن</span>
           <strong id="modalPricePreview" class="mono">0.000 د.ك</strong>
         </div>
 
         <div class="modal__actions">
           <button type="button" class="btn btn--outline" id="cancelNewOrderBtn">إلغاء</button>
-          <button type="submit" class="btn btn--gold">إرسال الطلب</button>
+          <button type="submit" class="btn btn--gold">ادفع الآن وأرسل الطلب</button>
         </div>
       </form>
     </div>
@@ -143,6 +176,8 @@
   <script src="auth.js"></script>
   <script src="marketplace.js"></script>
   <script src="orders.js"></script>
+  <script src="products.js"></script>
+  <script src="purchases.js"></script>
   <script src="content.js"></script>
   <script src="client-portal.js"></script>
 </body>

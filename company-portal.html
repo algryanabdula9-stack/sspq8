@@ -53,12 +53,9 @@
     <div class="subscription-box">
       <div class="subscription-box__text">
         حالة الاشتراك: <strong id="subscriptionText">—</strong>
-        <br>الاشتراك الشهري هو مصدر الدخل الوحيد من الشركات — بدون أي عمولة على الطلبات.
+        <br>يتحكم بتفعيل الاشتراك فريق SSP.Q8 من لوحة الإدارة — الاشتراك الشهري هو مصدر الدخل الوحيد، بدون أي عمولة على الطلبات.
       </div>
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span class="subscription-badge" id="subscriptionBadge"></span>
-        <button type="button" class="btn btn--navy btn--sm" id="subscriptionToggleBtn"></button>
-      </div>
+      <span class="subscription-badge" id="subscriptionBadge"></span>
     </div>
 
     <section class="dashboard-section">
@@ -67,11 +64,46 @@
     </section>
 
     <section class="dashboard-section">
-      <h2 class="dashboard-section__title"><span class="square-bullet" aria-hidden="true"></span>طلباتي الحالية</h2>
+      <h2 class="dashboard-section__title"><span class="square-bullet" aria-hidden="true"></span>عروضي المرسلة</h2>
+      <div class="request-list" id="myQuotesList"></div>
+    </section>
+
+    <section class="dashboard-section">
+      <h2 class="dashboard-section__title"><span class="square-bullet" aria-hidden="true"></span>طلبات جاري تنفيذها</h2>
       <div class="request-list" id="myRequestList"></div>
     </section>
 
   </main>
+
+  <!-- نافذة تقديم عرض سعر -->
+  <div class="modal-overlay" id="quoteModalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
+      <div class="modal__head">
+        <h2 class="modal__title" id="quoteModalTitle">تقديم عرض سعر</h2>
+        <button type="button" class="modal__close" id="closeQuoteModalBtn" aria-label="إغلاق">×</button>
+      </div>
+      <p class="modal__desc">عبّي تفاصيل عرضك — راح يشوفه العميل ويقدر يوافق عليه مباشرة.</p>
+
+      <form id="quoteForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="quoteAmountInput">المبلغ (د.ك) <span class="required">*</span></label>
+          <input class="form-input mono" type="number" id="quoteAmountInput" min="1" step="0.001" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="quoteDeliveryInput">مدة التسليم المتوقعة <span class="required">*</span></label>
+          <input class="form-input" type="text" id="quoteDeliveryInput" required placeholder="مثال: أسبوعين">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="quoteNoteInput">ملاحظة (اختياري)</label>
+          <textarea class="form-textarea" id="quoteNoteInput" placeholder="أي تفاصيل إضافية عن عرضك"></textarea>
+        </div>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--outline" id="cancelQuoteModalBtn">إلغاء</button>
+          <button type="submit" class="btn btn--gold">إرسال العرض</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 

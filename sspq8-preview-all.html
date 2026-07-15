@@ -1,0 +1,4837 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSP.Q8 — معاينة كاملة (نسخة تجريبية بملف واحد)</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="معاينة كاملة لموقع SSP.Q8: الرئيسية، الدخول، لوحة العميل، لوحة الشركة، ولوحة الإدارة، بملف واحد.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+/* ==========================================================================
+   SSP.Q8 — STYLESHEET
+   Sections: 1. Root Variables  2. Reset  3. Typography  4. Layout
+   5. Components  6. Forms/Calculator  7. Utilities  8. Responsive
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. ROOT VARIABLES
+   -------------------------------------------------------------------------- */
+:root {
+  /* Colors — brand */
+  --color-navy: #1F3864;
+  --color-navy-dark: #152947;
+  --color-navy-light: #2E4A7D;
+  --color-teal: #0F6C6C;
+  --color-teal-light: #14908F;
+  --color-gold: #C9A227;
+  --color-gold-light: #DEB94E;
+  --color-bg: #FAFAF8;
+  --color-white: #FFFFFF;
+
+  /* Colors — text & lines */
+  --color-text: #223047;
+  --color-text-muted: #5B6B85;
+  --color-text-on-dark: #E8EAF2;
+  --color-text-on-dark-muted: #A9B4CB;
+  --color-border: #E4E1D6;
+  --color-border-dark: rgba(255, 255, 255, 0.14);
+
+  /* Typography */
+  --font-arabic: 'IBM Plex Sans Arabic', 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* Radius — kept small and precise to echo the geometric brand mark */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px rgba(21, 41, 71, 0.06);
+  --shadow-md: 0 6px 20px rgba(21, 41, 71, 0.08);
+  --shadow-lg: 0 16px 40px rgba(21, 41, 71, 0.14);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 240ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout */
+  --container-width: 1180px;
+  --header-height: 76px;
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + var(--space-4));
+}
+
+body, h1, h2, h3, h4, p, ul, ol, figure {
+  margin: 0;
+  padding: 0;
+}
+
+ul { list-style: none; }
+
+img, svg { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input { font: inherit; }
+
+/* --------------------------------------------------------------------------
+   3. TYPOGRAPHY
+   -------------------------------------------------------------------------- */
+body {
+  font-family: var(--font-arabic);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.7;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-navy);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-teal);
+  margin-bottom: var(--space-3);
+}
+
+.eyebrow--light { color: var(--color-gold-light); }
+
+/* --------------------------------------------------------------------------
+   4. LAYOUT
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}
+
+.section {
+  padding-block: var(--space-9);
+}
+
+.section--dark {
+  background-color: var(--color-navy);
+  background-image:
+    linear-gradient(var(--color-border-dark) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border-dark) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center;
+}
+
+.section-head {
+  max-width: 640px;
+  margin-bottom: var(--space-7);
+}
+
+.section-title {
+  font-size: clamp(28px, 3.2vw, 36px);
+  margin-bottom: var(--space-3);
+}
+
+.section-title--light { color: var(--color-white); }
+
+.section-subtitle {
+  font-size: 17px;
+  color: var(--color-text-muted);
+}
+
+.section-subtitle--light { color: var(--color-text-on-dark-muted); }
+
+/* --------------------------------------------------------------------------
+   5. COMPONENTS
+   -------------------------------------------------------------------------- */
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  right: var(--space-4);
+  top: -60px;
+  background: var(--color-gold);
+  color: var(--color-navy-dark);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  z-index: 200;
+  transition: top var(--transition-fast);
+}
+.skip-link:focus { top: var(--space-3); }
+
+/* Signature square bullet — echoes the logo's gold signature dot */
+.square-bullet {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background-color: var(--color-gold);
+  flex-shrink: 0;
+}
+
+.corner-mark {
+  position: absolute;
+  top: 0;
+  inset-inline-end: 0;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-gold);
+}
+
+/* Brand / logo */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.brand__mark {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand--footer .brand__mark { background-color: var(--color-navy-light); }
+
+.brand__mark-svg { width: 22px; height: 22px; }
+
+.brand__dot {
+  position: absolute;
+  bottom: -4px;
+  inset-inline-end: -4px;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-gold);
+}
+
+.brand__name {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-navy);
+  letter-spacing: 0.01em;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.brand--footer .brand__name,
+.site-header--scrolled .brand__name { color: var(--color-navy); }
+
+.brand__dot-text { color: var(--color-gold); }
+
+/* Header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-height);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  transition: box-shadow var(--transition-base);
+}
+
+.site-header.is-scrolled { box-shadow: var(--shadow-sm); }
+
+.site-header__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.main-nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.main-nav__list a {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text);
+  position: relative;
+  padding-block: var(--space-1);
+  transition: color var(--transition-fast);
+}
+
+.main-nav__list a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-gold);
+  transition: width var(--transition-base);
+}
+
+.main-nav__list a:hover { color: var(--color-navy); }
+.main-nav__list a:hover::after { width: 100%; }
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+}
+
+.nav-toggle__bar {
+  width: 22px;
+  height: 2px;
+  background-color: var(--color-navy);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 13px 26px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+
+.btn--gold {
+  background-color: var(--color-gold);
+  color: var(--color-navy-dark);
+}
+.btn--gold:hover { background-color: var(--color-gold-light); box-shadow: var(--shadow-md); }
+
+.btn--navy {
+  background-color: var(--color-navy);
+  color: var(--color-white);
+}
+.btn--navy:hover { background-color: var(--color-navy-light); box-shadow: var(--shadow-md); }
+
+.btn--outline {
+  background-color: transparent;
+  border-color: var(--color-navy);
+  color: var(--color-navy);
+}
+.btn--outline:hover { background-color: var(--color-navy); color: var(--color-white); }
+
+.btn--sm { padding: 9px 18px; font-size: 14px; }
+.btn--lg { padding: 16px 32px; font-size: 16px; width: 100%; }
+
+/* Hero */
+.hero { position: relative; overflow: hidden; padding-block: var(--space-9) var(--space-8); }
+
+.hero__inner { position: relative; max-width: 780px; }
+
+.hero__grid-bg {
+  position: absolute;
+  inset: -10% -10%;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(31, 56, 100, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 56, 100, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 70% 70% at 30% 20%, black 20%, transparent 75%);
+}
+
+.hero__title {
+  font-size: clamp(32px, 4.6vw, 52px);
+  margin-bottom: var(--space-5);
+}
+
+.hero__subtitle {
+  font-size: 18px;
+  color: var(--color-text-muted);
+  max-width: 620px;
+  margin-bottom: var(--space-6);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+}
+
+.hero__points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+.hero__points li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-navy);
+}
+
+/* Product cards */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+
+.product-card {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.product-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+
+.product-card__icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(15, 108, 108, 0.08);
+  color: var(--color-teal);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-5);
+}
+.product-card__icon svg { width: 26px; height: 26px; }
+
+.product-card__title { font-size: 20px; margin-bottom: var(--space-2); }
+
+.product-card__desc {
+  color: var(--color-text-muted);
+  font-size: 15px;
+  margin-bottom: var(--space-5);
+}
+
+.product-card__features { margin-bottom: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3); }
+
+.product-card__features li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 14.5px;
+}
+
+.product-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-5);
+  border-top: 1px dashed var(--color-border);
+}
+
+.price { display: flex; align-items: baseline; gap: var(--space-1); }
+.price__value { font-family: var(--font-mono); font-size: 26px; font-weight: 600; color: var(--color-navy); }
+.price__currency { font-size: 14px; color: var(--color-text-muted); }
+
+/* Portfolio cards */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.portfolio-card {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.portfolio-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+.portfolio-card__tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-teal);
+  border: 1px solid var(--color-teal);
+  border-radius: var(--radius-sm);
+  padding: 3px 10px;
+  margin-bottom: var(--space-4);
+}
+
+.portfolio-card__title { font-size: 19px; margin-bottom: var(--space-2); }
+
+.portfolio-card__desc { font-size: 14.5px; color: var(--color-text-muted); }
+
+/* Footer */
+.site-footer { background-color: var(--color-navy-dark); color: var(--color-text-on-dark); }
+
+.site-footer__inner {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+  gap: var(--space-6);
+  padding-block: var(--space-8);
+}
+
+.site-footer__desc {
+  color: var(--color-text-on-dark-muted);
+  font-size: 14.5px;
+  margin-top: var(--space-4);
+  max-width: 280px;
+}
+
+.site-footer__heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-white);
+  margin-bottom: var(--space-4);
+}
+
+.site-footer__col ul { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.site-footer__col a {
+  color: var(--color-text-on-dark-muted);
+  font-size: 14.5px;
+  transition: color var(--transition-fast);
+}
+.site-footer__col a:hover { color: var(--color-gold-light); }
+
+.site-footer__social a { display: flex; align-items: center; gap: var(--space-2); }
+
+.site-footer__bottom { border-top: 1px solid var(--color-border-dark); }
+
+.site-footer__bottom-inner {
+  padding-block: var(--space-4);
+  font-size: 13px;
+  color: var(--color-text-on-dark-muted);
+}
+
+/* Toasts */
+.toast-container {
+  position: fixed;
+  bottom: var(--space-5);
+  left: var(--space-5);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.toast {
+  background-color: var(--color-navy-dark);
+  color: var(--color-white);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  border-inline-start: 3px solid var(--color-gold);
+  box-shadow: var(--shadow-lg);
+  font-size: 14px;
+  max-width: 320px;
+  animation: toast-in var(--transition-base);
+}
+
+.toast.is-leaving { animation: toast-out var(--transition-base) forwards; }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes toast-out {
+  to { opacity: 0; transform: translateY(10px); }
+}
+
+/* --------------------------------------------------------------------------
+   6. FORMS / CALCULATOR
+   -------------------------------------------------------------------------- */
+.calculator {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-lg);
+  padding: var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+.calc-block { border: none; padding: 0; }
+
+.calc-block__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-white);
+  margin-bottom: var(--space-5);
+  padding: 0;
+}
+
+.step-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background-color: var(--color-gold);
+  color: var(--color-navy-dark);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Tier options */
+.tier-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.tier-card {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  background-color: var(--color-navy);
+  border: 1.5px solid var(--color-border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.tier-card:hover { border-color: rgba(201, 162, 39, 0.5); }
+
+.tier-card input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.tier-card:has(input:checked),
+.tier-card.is-selected {
+  background-color: var(--color-navy-light);
+  border-color: var(--color-gold);
+}
+
+.tier-card:has(input:focus-visible) { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+
+.tier-card--featured { margin-top: var(--space-4); }
+
+.tier-card__badge {
+  position: absolute;
+  top: calc(-1 * var(--space-4));
+  right: var(--space-5);
+  background-color: var(--color-gold);
+  color: var(--color-navy-dark);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.tier-card__body { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.tier-card__title { font-size: 16px; font-weight: 600; color: var(--color-white); }
+
+.tier-card__desc { font-size: 13.5px; color: var(--color-text-on-dark-muted); line-height: 1.6; min-height: 62px; }
+
+.tier-card__price { font-size: 14px; color: var(--color-gold-light); font-weight: 500; }
+
+/* Complexity options */
+.complexity-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.complexity-btn {
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  background-color: transparent;
+  border: 1.5px solid var(--color-border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.complexity-btn:hover { border-color: rgba(15, 108, 108, 0.6); }
+
+.complexity-btn input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.complexity-btn:has(input:checked),
+.complexity-btn.is-selected {
+  background-color: rgba(15, 108, 108, 0.18);
+  border-color: var(--color-teal-light);
+}
+
+.complexity-btn:has(input:focus-visible) { outline: 2px solid var(--color-teal-light); outline-offset: 2px; }
+
+.complexity-btn__name { font-size: 15px; font-weight: 600; color: var(--color-white); }
+.complexity-btn__mult { font-size: 13px; color: var(--color-gold-light); }
+.complexity-btn__hint { font-size: 12.5px; color: var(--color-text-on-dark-muted); }
+
+/* Result — styled like an active spreadsheet cell */
+.calc-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+
+.calc-result__cell {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-gold);
+  border-radius: var(--radius-md);
+  padding: var(--space-5) var(--space-6);
+}
+
+.calc-result__ref {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-3);
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.calc-result__formula {
+  display: block;
+  font-size: 13px;
+  color: var(--color-teal);
+  margin-bottom: var(--space-3);
+}
+
+.calc-result__main { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.calc-result__label { font-size: 13.5px; color: var(--color-text-muted); }
+
+.calc-result__value { font-size: 34px; font-weight: 600; color: var(--color-navy); }
+
+.calc-result__currency { font-size: 15px; font-weight: 500; color: var(--color-text-muted); margin-inline-start: var(--space-2); }
+
+.calc-result__handle {
+  position: absolute;
+  bottom: -5px;
+  left: -5px;
+  width: 9px;
+  height: 9px;
+  background-color: var(--color-gold);
+}
+
+.calc-result__note { font-size: 13px; color: var(--color-text-on-dark-muted); max-width: 340px; }
+
+/* --------------------------------------------------------------------------
+   7. UTILITIES
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .btn, .product-card, .portfolio-card, .toast { transition: none; animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   8. RESPONSIVE
+   -------------------------------------------------------------------------- */
+@media (max-width: 960px) {
+  .product-grid { grid-template-columns: 1fr; }
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .tier-options { grid-template-columns: 1fr; }
+  .tier-card--featured { margin-top: 0; }
+  .complexity-options { grid-template-columns: 1fr; }
+  .site-footer__inner { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 720px) {
+  :root { --header-height: 64px; }
+
+  .main-nav {
+    position: fixed;
+    inset: 64px 0 0 0;
+    background-color: var(--color-bg);
+    padding: var(--space-6) var(--space-5);
+    transform: translateY(-12px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--transition-base), transform var(--transition-base), visibility var(--transition-base);
+  }
+
+  .main-nav.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .main-nav__list { flex-direction: column; align-items: flex-start; gap: var(--space-5); }
+  .main-nav__list a { font-size: 18px; }
+
+  .nav-toggle { display: flex; }
+  .site-header__cta { display: none; }
+
+  .hero { padding-block: var(--space-7) var(--space-6); }
+  .hero__actions { flex-direction: column; align-items: stretch; }
+  .hero__points { flex-direction: column; gap: var(--space-3); }
+
+  .section { padding-block: var(--space-7); }
+
+  .calculator { padding: var(--space-5); }
+
+  .site-footer__inner { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 420px) {
+  .container { padding-inline: var(--space-4); }
+  .calc-result__value { font-size: 28px; }
+}
+
+
+/* ==========================================================================
+   SSP.Q8 — PORTAL STYLESHEET (تسجيل الدخول ولوحات العملاء والشركات)
+   يعتمد على المتغيرات المعرّفة بـ css/style.css، لذا يجب تحميل ذاك الملف أولاً.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Demo banner — تنويه أنها نسخة تجريبية
+   -------------------------------------------------------------------------- */
+.demo-banner {
+  background-color: #FBF3DC;
+  border-bottom: 1px solid var(--color-gold);
+  color: var(--color-navy-dark);
+  font-size: 13.5px;
+  text-align: center;
+  padding: var(--space-3) var(--space-4);
+  line-height: 1.6;
+}
+
+.demo-banner strong { color: var(--color-navy); }
+
+/* --------------------------------------------------------------------------
+   Simple page header for portal / dashboards
+   -------------------------------------------------------------------------- */
+.portal-header {
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.portal-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.portal-header__user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.portal-header__name { font-size: 14.5px; font-weight: 600; color: var(--color-navy); }
+.portal-header__role { font-size: 12.5px; color: var(--color-text-muted); }
+
+/* --------------------------------------------------------------------------
+   Login / register card
+   -------------------------------------------------------------------------- */
+.portal-shell {
+  min-height: calc(100vh - 130px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-7) var(--space-4);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-7);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-card__title {
+  font-size: 22px;
+  margin-bottom: var(--space-2);
+}
+
+.auth-card__subtitle {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-6);
+}
+
+.role-tabs,
+.mode-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.role-tabs { background-color: rgba(31, 56, 100, 0.06); padding: 4px; border-radius: var(--radius-md); }
+.mode-tabs { border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-5); }
+
+.role-tab,
+.mode-tab {
+  padding: var(--space-3);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.role-tab.is-active { background-color: var(--color-navy); color: var(--color-white); }
+
+.mode-tab { border-bottom: 2px solid transparent; padding-block: var(--space-3); }
+.mode-tab.is-active { color: var(--color-navy); border-color: var(--color-gold); }
+
+/* --------------------------------------------------------------------------
+   Forms
+   -------------------------------------------------------------------------- */
+.form-group { margin-bottom: var(--space-5); }
+.form-group:last-of-type { margin-bottom: var(--space-6); }
+
+.form-label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-navy);
+  margin-bottom: var(--space-2);
+}
+
+.form-label .required { color: var(--color-gold); margin-inline-start: 2px; }
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 12px var(--space-4);
+  font-family: var(--font-arabic);
+  font-size: 14.5px;
+  color: var(--color-text);
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--color-teal);
+}
+
+.form-textarea { resize: vertical; min-height: 96px; }
+
+.form-error {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  background-color: #FBEAEA;
+  border-inline-start: 3px solid #C0392B;
+  color: #8B2A20;
+  font-size: 13.5px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-5);
+}
+
+.form-error.is-visible { display: flex; }
+
+.form-hidden { display: none; }
+
+/* --------------------------------------------------------------------------
+   Dashboard shell
+   -------------------------------------------------------------------------- */
+.dashboard {
+  padding-block: var(--space-7);
+}
+
+.dashboard-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+}
+
+.dashboard-head__title { font-size: 24px; margin-bottom: var(--space-1); }
+.dashboard-head__subtitle { font-size: 14px; color: var(--color-text-muted); }
+
+.dashboard-section { margin-bottom: var(--space-8); }
+
+.dashboard-section__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-navy);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* --------------------------------------------------------------------------
+   Subscription badge / toggle
+   -------------------------------------------------------------------------- */
+.subscription-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.subscription-box__text { font-size: 14px; color: var(--color-text-muted); }
+.subscription-box__text strong { color: var(--color-navy); }
+
+.subscription-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.subscription-badge--active { background-color: rgba(15, 108, 108, 0.12); color: var(--color-teal); }
+.subscription-badge--inactive { background-color: rgba(192, 57, 43, 0.1); color: #C0392B; }
+
+/* --------------------------------------------------------------------------
+   Request list / cards
+   -------------------------------------------------------------------------- */
+.request-list { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.request-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.request-card__main { flex: 1 1 260px; }
+
+.request-card__title { font-size: 15.5px; font-weight: 600; color: var(--color-navy); margin-bottom: var(--space-1); }
+
+.request-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.request-card__desc { font-size: 13.5px; color: var(--color-text-muted); }
+
+.request-card__price { font-family: var(--font-mono); font-weight: 600; color: var(--color-navy); }
+
+.request-card__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.status-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.status-badge--open { background-color: rgba(201, 162, 39, 0.14); color: #8A6D14; }
+.status-badge--progress { background-color: rgba(15, 108, 108, 0.14); color: var(--color-teal); }
+.status-badge--done { background-color: rgba(46, 125, 50, 0.12); color: #2E7D32; }
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-7) var(--space-5);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   Modal (طلب عرض سعر جديد)
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(21, 41, 71, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  z-index: 400;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+
+.modal-overlay.is-open { opacity: 1; visibility: visible; }
+
+.modal {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-7);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(12px);
+  transition: transform var(--transition-base);
+}
+
+.modal-overlay.is-open .modal { transform: translateY(0); }
+
+.modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.modal__title { font-size: 19px; }
+
+.modal__close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.modal__close:hover { color: var(--color-navy); }
+
+.modal__desc { font-size: 13.5px; color: var(--color-text-muted); margin-bottom: var(--space-6); }
+
+.modal__price-preview {
+  background-color: var(--color-bg);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.modal__price-preview strong { font-family: var(--font-mono); font-size: 18px; color: var(--color-navy); }
+
+.modal__actions { display: flex; gap: var(--space-3); }
+.modal__actions .btn { flex: 1; }
+
+/* --------------------------------------------------------------------------
+   File upload (admin) / file chips (download list)
+   -------------------------------------------------------------------------- */
+.file-drop {
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+.file-drop:hover,
+.file-drop.is-dragover { border-color: var(--color-teal); background-color: rgba(15, 108, 108, 0.04); }
+.file-drop input[type="file"] { display: none; }
+.file-drop__text { font-size: 13.5px; color: var(--color-text-muted); }
+.file-drop__hint { font-size: 12px; color: var(--color-text-muted); margin-top: 4px; }
+
+.file-pending-list { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-4); }
+
+.file-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font-size: 13px;
+}
+
+.file-chip__name { color: var(--color-navy); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-chip__size { font-family: var(--font-mono); font-size: 11.5px; color: var(--color-text-muted); flex-shrink: 0; }
+.file-chip__remove { color: #C0392B; font-size: 16px; flex-shrink: 0; }
+
+.download-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background-color: rgba(15, 108, 108, 0.08);
+  color: var(--color-teal);
+  border: 1px solid rgba(15, 108, 108, 0.3);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-4);
+  font-size: 13px;
+  font-weight: 600;
+  margin-inline-end: var(--space-2);
+  margin-bottom: var(--space-2);
+  transition: background-color var(--transition-fast);
+}
+.download-chip:hover { background-color: rgba(15, 108, 108, 0.16); }
+
+/* --------------------------------------------------------------------------
+   Order timeline / progress
+   -------------------------------------------------------------------------- */
+.order-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--space-3);
+}
+.order-progress__step {
+  flex: 1;
+  height: 4px;
+  background-color: var(--color-border);
+  border-radius: 999px;
+}
+.order-progress__step.is-done { background-color: var(--color-gold); }
+
+/* --------------------------------------------------------------------------
+   Admin table-ish list
+   -------------------------------------------------------------------------- */
+.admin-order-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
+}
+
+.admin-order-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.admin-order-card__client { font-size: 12.5px; color: var(--color-text-muted); }
+
+.admin-order-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-end;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px dashed var(--color-border);
+}
+
+/* --------------------------------------------------------------------------
+   Target company picker (client forwarding a paid order to companies)
+   -------------------------------------------------------------------------- */
+.target-options { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-5); }
+
+.target-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+.target-option:has(input:checked) { border-color: var(--color-teal); background-color: rgba(15, 108, 108, 0.05); }
+.target-option input { accent-color: var(--color-teal); }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .request-card { flex-direction: column; }
+  .request-card__side { align-items: flex-start; width: 100%; }
+  .subscription-box { flex-direction: column; align-items: flex-start; }
+  .admin-order-card__actions { flex-direction: column; align-items: stretch; }
+}
+
+
+.view[hidden] { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="view" id="view-home">
+
+
+  <!-- زر تخطي للوصول السريع -->
+  <a class="skip-link" href="#main">تخطي إلى المحتوى</a>
+
+  <!-- الترويسة -->
+  <header class="site-header" id="top">
+    <div class="container site-header__inner">
+      <a href="#top" class="brand" aria-label="SSP.Q8 - الصفحة الرئيسية">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="brand__mark-svg">
+            <path d="M6 5H18V9H9V11H18V19H6V15H15V13H6V5Z" fill="#FAFAF8"></path>
+          </svg>
+          <span class="brand__dot"></span>
+        </span>
+        <span class="brand__name">SSP<span class="brand__dot-text">.</span>Q8</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="التنقل الرئيسي">
+        <ul class="main-nav__list">
+          <li><a href="#products">المنتجات الجاهزة</a></li>
+          <li><a href="#custom">نموذج أولي مخصص</a></li>
+          <li><a href="#portfolio">أعمال سابقة</a></li>
+          <li><a href="#contact">تواصل</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-header__actions">
+        <a href="#/portal" class="btn btn--outline btn--sm">دخول</a>
+        <a href="#custom" class="btn btn--gold btn--sm site-header__cta">اطلب نموذجك الأولي</a>
+        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="main-nav" aria-label="فتح قائمة التنقل">
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__grid-bg" aria-hidden="true"></div>
+
+        <p class="eyebrow reveal">SSP.Q8 — حلول رقمية للمشاريع الصغيرة بالكويت</p>
+
+        <h1 class="hero__title reveal">
+          أدوات جاهزة تشتغل من أول يوم،<br>
+          أو نموذج أولي مصمم لفكرتك بالذات
+        </h1>
+
+        <p class="hero__subtitle reveal">
+          نوفر لأصحاب المشاريع الصغيرة طريقين واضحين: منتجات إكسل جاهزة تحل مشكلة فورية بدون أي اشتراك شهري،
+          أو نموذج أولي تفاعلي مبني على فكرتك تحديداً — تعرف السعر التقريبي من أول خطوة، قبل ما تلتزم بأي شيء.
+        </p>
+
+        <div class="hero__actions reveal">
+          <a href="#products" class="btn btn--outline">تصفح المنتجات الجاهزة</a>
+          <a href="#custom" class="btn btn--gold">أبي نموذج مخصص لمشروعي</a>
+        </div>
+
+        <ul class="hero__points reveal">
+          <li><span class="square-bullet" aria-hidden="true"></span>بدون اشتراك شهري</li>
+          <li><span class="square-bullet" aria-hidden="true"></span>السعر واضح من أول خطوة</li>
+          <li><span class="square-bullet" aria-hidden="true"></span>تسليم سريع بدون انتظار</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- المنتجات الجاهزة -->
+    <section class="section" id="products">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">جاهزة الآن</p>
+          <h2 class="section-title">منتجات جاهزة</h2>
+          <p class="section-subtitle">تشترى مرة وحدة، تستخدمها فوراً على جهازك، بدون أي التزام شهري</p>
+        </div>
+
+        <!-- تُبنى بطاقات المنتجات تلقائياً من js/content.js -->
+        <div class="product-grid" id="productsGrid"></div>
+      </div>
+    </section>
+
+    <!-- نموذج أولي مخصص -->
+    <section class="section section--dark" id="custom">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow eyebrow--light">مبني على فكرتك</p>
+          <h2 class="section-title section-title--light">نموذج أولي مخصص</h2>
+          <p class="section-subtitle section-subtitle--light">عندك فكرة نظام؟ جاوب على أسئلة بسيطة، اختر مستوى الخدمة، وشوف السعر التقريبي فوراً.</p>
+        </div>
+
+        <form class="calculator reveal" id="calculatorForm" novalidate>
+
+          <!-- خطوة 1: مستوى الخدمة -->
+          <fieldset class="calc-block">
+            <legend class="calc-block__title"><span class="step-index">١</span> اختر مستوى الخدمة</legend>
+
+            <!-- تُبنى بطاقات المستويات تلقائياً من js/content.js -->
+            <div class="tier-options" id="tierOptions"></div>
+          </fieldset>
+
+          <!-- خطوة 2: درجة التعقيد -->
+          <fieldset class="calc-block">
+            <legend class="calc-block__title"><span class="step-index">٢</span> اختر درجة التعقيد</legend>
+
+            <!-- تُبنى أزرار درجة التعقيد تلقائياً من js/content.js -->
+            <div class="complexity-options" id="complexityOptions"></div>
+          </fieldset>
+
+          <!-- النتيجة -->
+          <div class="calc-result">
+            <div class="calc-result__cell">
+              <span class="calc-result__ref mono" aria-hidden="true">fx</span>
+              <span class="calc-result__formula mono" id="calcFormula">= 45.000 × 1</span>
+              <div class="calc-result__main">
+                <span class="calc-result__label">السعر التقريبي لـ<span id="calcTierName">نموذج تفاعلي</span> — <span id="calcComplexityName">بسيطة</span></span>
+                <span class="calc-result__value">
+                  <span class="mono" id="calcTotal">45.000</span>
+                  <span class="calc-result__currency">د.ك</span>
+                </span>
+              </div>
+              <span class="calc-result__handle" aria-hidden="true"></span>
+            </div>
+
+            <a href="#" class="btn btn--gold btn--lg" id="startNowBtn">ابدأ الآن</a>
+            <p class="calc-result__note">السعر تقريبي ويُحدَّد نهائياً بعد مراجعة تفاصيل فكرتك.</p>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+    <!-- أعمال سابقة -->
+    <section class="section" id="portfolio">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">أعمال سابقة</p>
+          <h2 class="section-title">نماذج بنيناها فعلياً</h2>
+          <p class="section-subtitle">لأصحاب مشاريع بالكويت، بأفكار مختلفة وحلول مخصصة لكل واحد منهم</p>
+        </div>
+
+        <!-- تُبنى بطاقات الأعمال السابقة تلقائياً من js/content.js — أضف عملاً جديداً هناك -->
+        <div class="portfolio-grid" id="portfolioGrid"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- الفوتر -->
+  <footer class="site-footer" id="contact">
+    <div class="container site-footer__inner">
+
+      <div class="site-footer__brand">
+        <a href="#top" class="brand brand--footer" aria-label="SSP.Q8 - الصفحة الرئيسية">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" class="brand__mark-svg">
+              <path d="M6 5H18V9H9V11H18V19H6V15H15V13H6V5Z" fill="#FAFAF8"></path>
+            </svg>
+            <span class="brand__dot"></span>
+          </span>
+          <span class="brand__name">SSP<span class="brand__dot-text">.</span>Q8</span>
+        </a>
+        <p class="site-footer__desc">أدوات جاهزة ونماذج أولية مصممة لأصحاب المشاريع الصغيرة بالكويت.</p>
+      </div>
+
+      <nav class="site-footer__col" aria-label="روابط المنتجات">
+        <h4 class="site-footer__heading">المنتجات</h4>
+        <ul>
+          <li><a href="#products">دفتر اليومية</a></li>
+          <li><a href="#products">دفتر المخزون</a></li>
+          <li><a href="#custom">نموذج مخصص</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="روابط عامة">
+        <h4 class="site-footer__heading">الشركة</h4>
+        <ul>
+          <li><a href="#portfolio">أعمال سابقة</a></li>
+          <li><a href="#custom">اطلب نموذجك</a></li>
+          <li><a href="#/portal?role=client">دخول العملاء</a></li>
+          <li><a href="#/portal?role=company">دخول شركات البرمجة</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__col">
+        <h4 class="site-footer__heading">تواصل معنا</h4>
+        <ul class="site-footer__social">
+          <li>
+            <a href="https://wa.me/96500000000" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.06-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Zm0 18a7.9 7.9 0 0 1-4.03-1.1l-.29-.17-3 .79.8-2.92-.19-.3A7.93 7.93 0 1 1 12 20Zm4.38-5.94c-.24-.12-1.43-.7-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.18-.71-.63-1.19-1.42-1.33-1.66-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.46-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.13 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"></path></svg>
+              واتساب
+            </a>
+          </li>
+          <li>
+            <a href="https://instagram.com/sspq8" target="_blank" rel="noopener" aria-label="تابعنا على إنستقرام">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1"></circle></svg>
+              إنستقرام
+            </a>
+          </li>
+          <li>
+            <a href="mailto:info@sspq8.com" aria-label="راسلنا عبر الإيميل">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
+              info@sspq8.com
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="site-footer__bottom">
+      <div class="container site-footer__bottom-inner">
+        <p>© <span id="year">2026</span> SSP.Q8. جميع الحقوق محفوظة.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- حاوية الإشعارات -->
+
+</div>
+
+<div class="view" id="view-portal" hidden>
+
+
+  <div class="demo-banner">
+    <strong>نسخة تجريبية:</strong> دخول العميل عبر كود تحقق (OTP) بدون بوابة رسائل حقيقية — الكود يظهر مباشرة على الشاشة بدل ما يُرسل فعلياً.
+  </div>
+
+  <header class="portal-header">
+    <div class="container portal-header__inner">
+      <a href="#/" class="brand" aria-label="SSP.Q8 - الصفحة الرئيسية">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="brand__mark-svg">
+            <path d="M6 5H18V9H9V11H18V19H6V15H15V13H6V5Z" fill="#FAFAF8"></path>
+          </svg>
+          <span class="brand__dot"></span>
+        </span>
+        <span class="brand__name">SSP<span class="brand__dot-text">.</span>Q8</span>
+      </a>
+      <a href="#/" class="btn btn--outline btn--sm">الرئيسية</a>
+    </div>
+  </header>
+
+  <main class="portal-shell">
+    <div class="auth-card">
+
+      <div class="role-tabs" role="tablist" aria-label="نوع الحساب">
+        <button type="button" class="role-tab is-active" id="roleTabClient" data-role="client" role="tab" aria-selected="true">عميل</button>
+        <button type="button" class="role-tab" id="roleTabCompany" data-role="company" role="tab" aria-selected="false">شركة برمجة</button>
+      </div>
+
+      <!-- ============== دخول العميل (OTP) ============== -->
+      <div id="clientAuthPanel">
+        <h1 class="auth-card__title">دخول العميل</h1>
+        <p class="auth-card__subtitle">عبّي بياناتك وبنرسل لك كود تحقق قصير.</p>
+
+        <div class="form-error" id="clientAuthError" role="alert"></div>
+
+        <!-- خطوة 1: البيانات -->
+        <form id="clientDetailsForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="clientNameInput">الاسم <span class="required">*</span></label>
+            <input class="form-input" type="text" id="clientNameInput" autocomplete="name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="clientEmailInput">البريد الإلكتروني <span class="required">*</span></label>
+            <input class="form-input" type="email" id="clientEmailInput" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="clientPhoneInput">رقم الهاتف <span class="required">*</span></label>
+            <input class="form-input" type="tel" id="clientPhoneInput" autocomplete="tel" placeholder="+965 5xxxxxxx" required>
+          </div>
+          <button type="submit" class="btn btn--gold btn--lg">إرسال كود التحقق</button>
+        </form>
+
+        <!-- خطوة 2: كود التحقق -->
+        <form id="clientOtpForm" class="form-hidden" novalidate>
+          <div class="modal__price-preview" style="margin-bottom:20px;">
+            <span>كودك التجريبي (بدون رسالة حقيقية)</span>
+            <strong id="otpCodeDisplay" class="mono">------</strong>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="clientOtpInput">أدخل كود التحقق <span class="required">*</span></label>
+            <input class="form-input mono" type="text" id="clientOtpInput" inputmode="numeric" maxlength="6" required>
+          </div>
+          <button type="submit" class="btn btn--gold btn--lg">تأكيد ودخول</button>
+          <button type="button" class="btn btn--outline btn--lg" id="backToDetailsBtn" style="margin-top:10px;">تعديل البيانات</button>
+        </form>
+      </div>
+
+      <!-- ============== دخول الشركة (بريد + كلمة مرور) ============== -->
+      <div id="companyAuthPanel" class="form-hidden">
+        <h1 class="auth-card__title" id="companyAuthTitle">دخول شركة البرمجة</h1>
+        <p class="auth-card__subtitle" id="companyAuthSubtitle">سجّل دخولك عشان تشوف طلبات العملاء وترسل عروض أسعار.</p>
+
+        <div class="mode-tabs">
+          <button type="button" class="mode-tab is-active" data-mode="login">تسجيل الدخول</button>
+          <button type="button" class="mode-tab" data-mode="register">إنشاء حساب جديد</button>
+        </div>
+
+        <div class="form-error" id="companyAuthError" role="alert"></div>
+
+        <form id="companyAuthForm" novalidate>
+          <div class="form-group form-hidden" id="companyNameGroup">
+            <label class="form-label" for="companyPersonNameInput">اسم المسؤول <span class="required">*</span></label>
+            <input class="form-input" type="text" id="companyPersonNameInput" autocomplete="name">
+          </div>
+          <div class="form-group form-hidden" id="companyCompanyNameGroup">
+            <label class="form-label" for="companyNameInput">اسم الشركة <span class="required">*</span></label>
+            <input class="form-input" type="text" id="companyNameInput" autocomplete="organization">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="companyEmailInput">البريد الإلكتروني <span class="required">*</span></label>
+            <input class="form-input" type="email" id="companyEmailInput" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="companyPasswordInput">كلمة المرور <span class="required">*</span></label>
+            <input class="form-input" type="password" id="companyPasswordInput" autocomplete="current-password" required>
+          </div>
+          <button type="submit" class="btn btn--gold btn--lg" id="companyAuthSubmitBtn">دخول</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<div class="view" id="view-client" hidden>
+
+
+  <div class="demo-banner">
+    <strong>نسخة تجريبية:</strong> بياناتك مخزَّنة على متصفحك فقط. لتجربة التدفق كامل، افتح
+    <a href="#/admin">لوحة الإدارة</a> بنفس المتصفح لترفع ملفات التسليم، ثم
+    <a href="#/portal?role=company">دخول الشركات</a> عشان تشوف عروض الأسعار.
+  </div>
+
+  <header class="portal-header">
+    <div class="container portal-header__inner">
+      <a href="#/" class="brand" aria-label="SSP.Q8 - الصفحة الرئيسية">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="brand__mark-svg">
+            <path d="M6 5H18V9H9V11H18V19H6V15H15V13H6V5Z" fill="#FAFAF8"></path>
+          </svg>
+          <span class="brand__dot"></span>
+        </span>
+        <span class="brand__name">SSP<span class="brand__dot-text">.</span>Q8</span>
+      </a>
+
+      <div class="portal-header__user">
+        <span>
+          <span class="portal-header__name" id="clientUserName">—</span><br>
+          <span class="portal-header__role">حساب عميل</span>
+        </span>
+        <button type="button" class="btn btn--outline btn--sm" id="clientLogoutBtn">تسجيل الخروج</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container dashboard">
+
+    <!-- شراء معلّق (لو جاي من زر "اشترِ الآن" بمنتج جاهز) -->
+    <div class="subscription-box form-hidden" id="pendingPurchaseBox">
+      <div class="subscription-box__text">
+        إتمام شراء: <strong id="pendingPurchaseName">—</strong>
+        <br><span id="pendingPurchasePrice" class="mono"></span> د.ك
+      </div>
+      <button type="button" class="btn btn--gold btn--sm" id="pendingPurchasePayBtn">ادفع الآن (تجريبي)</button>
+    </div>
+
+    <div class="dashboard-head">
+      <div>
+        <h1 class="dashboard-head__title">طلبات النموذج الأولي</h1>
+        <p class="dashboard-head__subtitle">اختر باقة بسعر واضح، ادفع، وتابع تسليم فريق SSP.Q8.</p>
+      </div>
+      <button type="button" class="btn btn--gold" id="newOrderBtn">طلب نموذج أولي جديد</button>
+    </div>
+
+    <div class="request-list" id="orderList"></div>
+
+    <div class="dashboard-section" style="margin-top:48px;">
+      <h2 class="dashboard-section__title"><span class="square-bullet" aria-hidden="true"></span>طلبات عروض الأسعار</h2>
+      <p class="dashboard-head__subtitle" style="margin-bottom:16px;">الطلبات اللي أرسلتها لشركات البرمجة، والعروض اللي وصلتك.</p>
+      <div class="request-list" id="quoteRequestList"></div>
+    </div>
+
+    <div class="dashboard-section" style="margin-top:48px;">
+      <h2 class="dashboard-section__title"><span class="square-bullet" aria-hidden="true"></span>منتجاتي المشتراة</h2>
+      <div class="request-list" id="purchaseList"></div>
+    </div>
+
+  </main>
+
+  <!-- نافذة طلب نموذج أولي جديد -->
+  <div class="modal-overlay" id="newOrderModalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="newOrderModalTitle">
+      <div class="modal__head">
+        <h2 class="modal__title" id="newOrderModalTitle">طلب نموذج أولي جديد</h2>
+        <button type="button" class="modal__close" id="closeNewOrderModalBtn" aria-label="إغلاق">×</button>
+      </div>
+      <p class="modal__desc">اختر باقتك وعبّي التفاصيل — الدفع يصير فوراً، وبعدها فريق SSP.Q8 يبدأ العمل.</p>
+
+      <form id="newOrderForm" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="projectNameInput">اسم المشروع <span class="required">*</span></label>
+          <input class="form-input" type="text" id="projectNameInput" required placeholder="مثال: نظام حجوزات لصالون">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="problemInput">وصف المشكلة <span class="required">*</span></label>
+          <textarea class="form-textarea" id="problemInput" required placeholder="شنو المشكلة اللي تواجهها الحين؟"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="natureOfWorkInput">طبيعة العمل <span class="required">*</span></label>
+          <input class="form-input" type="text" id="natureOfWorkInput" required placeholder="مثال: صالون نسائي، محل بقالة، ورشة سيارات">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="goalInput">الهدف <span class="required">*</span></label>
+          <textarea class="form-textarea" id="goalInput" required placeholder="شنو تبي تحقق من هذا النظام؟"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="expectedSolutionInput">الحل الذي تتوقعه <span class="required">*</span></label>
+          <textarea class="form-textarea" id="expectedSolutionInput" required placeholder="لو عندك تصوّر للحل، اشرحه هنا (اختياري لكن يساعدنا)"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="tierSelect">مستوى الخدمة <span class="required">*</span></label>
+          <select class="form-select" id="tierSelect"></select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="complexitySelect">درجة التعقيد <span class="required">*</span></label>
+          <select class="form-select" id="complexitySelect"></select>
+        </div>
+
+        <div class="modal__price-preview">
+          <span>السعر — يُدفع الآن</span>
+          <strong id="modalPricePreview" class="mono">0.000 د.ك</strong>
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--outline" id="cancelNewOrderBtn">إلغاء</button>
+          <button type="submit" class="btn btn--gold">ادفع الآن وأرسل الطلب</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- نافذة إرسال الطلب لعرض سعر (بعد الدفع والتنزيل) -->
+  <div class="modal-overlay" id="forwardModalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="forwardModalTitle">
+      <div class="modal__head">
+        <h2 class="modal__title" id="forwardModalTitle">إرسال لعرض سعر</h2>
+        <button type="button" class="modal__close" id="closeForwardModalBtn" aria-label="إغلاق">×</button>
+      </div>
+      <p class="modal__desc">راح تُرسل نفس حزمة الملفات اللي نزّلتها لشركة تختارها، أو لكل الشركات المشتركة.</p>
+
+      <form id="forwardForm" novalidate>
+
+        <div class="target-options">
+          <label class="target-option">
+            <input type="radio" name="targetType" value="broadcast" checked>
+            <span>كل الشركات المشتركة</span>
+          </label>
+          <label class="target-option">
+            <input type="radio" name="targetType" value="specific">
+            <span>شركة معيّنة</span>
+          </label>
+        </div>
+
+        <div class="form-group form-hidden" id="companySelectGroup">
+          <label class="form-label" for="companySelect">اختر الشركة <span class="required">*</span></label>
+          <select class="form-select" id="companySelect"></select>
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--outline" id="cancelForwardBtn">إلغاء</button>
+          <button type="submit" class="btn btn--gold">إرسال</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<div class="view" id="view-company" hidden>
+
+
+  <div class="demo-banner">
+    <strong>نسخة تجريبية:</strong> تشوف هنا بس الطلبات اللي عميل حمّلها ودفع لها ثم أرسلها لعرض سعر (عبر <a href="#/admin">لوحة الإدارة</a> ثم <a href="#/portal?role=client">حساب عميل</a>) — من نفس هذا المتصفح.
+  </div>
+
+  <header class="portal-header">
+    <div class="container portal-header__inner">
+      <a href="#/" class="brand" aria-label="SSP.Q8 - الصفحة الرئيسية">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="brand__mark-svg">
+            <path d="M6 5H18V9H9V11H18V19H6V15H15V13H6V5Z" fill="#FAFAF8"></path>
+          </svg>
+          <span class="brand__dot"></span>
+        </span>
+        <span class="brand__name">SSP<span class="brand__dot-text">.</span>Q8</span>
+      </a>
+
+      <div class="portal-header__user">
+        <span>
+          <span class="portal-header__name" id="companyUserName">—</span><br>
+          <span class="portal-header__role">حساب شركة برمجة</span>
+        </span>
+        <button type="button" class="btn btn--outline btn--sm" id="companyLogoutBtn">تسجيل الخروج</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container dashboard">
+
+    <div class="dashboard-head">
+      <div>
+        <h1 class="dashboard-head__title">لوحة الشركة</h1>
+        <p class="dashboard-head__subtitle">طلبات عروض الأسعار المفتوحة من عملاء SSP.Q8، وطلباتك الحالية.</p>
+      </div>
+    </div>
+
+    <div class="subscription-box">
+      <div class="subscription-box__text">
+        حالة الاشتراك: <strong id="subscriptionText">—</strong>
+        <br>يتحكم بتفعيل الاشتراك فريق SSP.Q8 من لوحة الإدارة — الاشتراك الشهري هو مصدر الدخل الوحيد، بدون أي عمولة على الطلبات.
+      </div>
+      <span class="subscription-badge" id="subscriptionBadge"></span>
+    </div>
+
+    <section class="dashboard-section">
+      <h2 class="dashboard-section__title"><span class="square-bullet" aria-hidden="true"></span>طلبات مفتوحة</h2>
+      <div class="request-list" id="openRequestList"></div>
+    </section>
+
+    <section class="dashboard-section">
+      <h2 class="dashboard-section__title"><span class="square-bullet" aria-hidden="true"></span>عروضي المرسلة</h2>
+      <div class="request-list" id="myQuotesList"></div>
+    </section>
+
+    <section class="dashboard-section">
+      <h2 class="dashboard-section__title"><span class="square-bullet" aria-hidden="true"></span>طلبات جاري تنفيذها</h2>
+      <div class="request-list" id="myRequestList"></div>
+    </section>
+
+  </main>
+
+  <!-- نافذة تقديم عرض سعر -->
+  <div class="modal-overlay" id="quoteModalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
+      <div class="modal__head">
+        <h2 class="modal__title" id="quoteModalTitle">تقديم عرض سعر</h2>
+        <button type="button" class="modal__close" id="closeQuoteModalBtn" aria-label="إغلاق">×</button>
+      </div>
+      <p class="modal__desc">عبّي تفاصيل عرضك — راح يشوفه العميل ويقدر يوافق عليه مباشرة.</p>
+
+      <form id="quoteForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="quoteAmountInput">المبلغ (د.ك) <span class="required">*</span></label>
+          <input class="form-input mono" type="number" id="quoteAmountInput" min="1" step="0.001" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="quoteDeliveryInput">مدة التسليم المتوقعة <span class="required">*</span></label>
+          <input class="form-input" type="text" id="quoteDeliveryInput" required placeholder="مثال: أسبوعين">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="quoteNoteInput">ملاحظة (اختياري)</label>
+          <textarea class="form-textarea" id="quoteNoteInput" placeholder="أي تفاصيل إضافية عن عرضك"></textarea>
+        </div>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--outline" id="cancelQuoteModalBtn">إلغاء</button>
+          <button type="submit" class="btn btn--gold">إرسال العرض</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<!-- لوحة الإدارة — افتحها بتغيير عنوان المتصفح يدوياً ليضيف #/admin بالنهاية -->
+<div class="view" id="view-admin" hidden>
+
+
+  <div class="demo-banner">
+    <strong>نسخة تجريبية:</strong> بيانات دخول الأدمن ثابتة داخل js/auth.js وغير مشفّرة — غيّرها قبل أي استخدام حقيقي.
+    الملفات المرفوعة تُخزَّن بمتصفحك فقط، بحد أقصى تقريبي 3 ميجابايت لكل طلب أو منتج.
+  </div>
+
+  <header class="portal-header">
+    <div class="container portal-header__inner">
+      <a href="#/" class="brand" aria-label="SSP.Q8 - الصفحة الرئيسية">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="brand__mark-svg">
+            <path d="M6 5H18V9H9V11H18V19H6V15H15V13H6V5Z" fill="#FAFAF8"></path>
+          </svg>
+          <span class="brand__dot"></span>
+        </span>
+        <span class="brand__name">SSP<span class="brand__dot-text">.</span>Q8</span>
+      </a>
+
+      <div class="portal-header__user" id="adminHeaderUser" hidden>
+        <span>
+          <span class="portal-header__name">إدارة الطلبات</span><br>
+          <span class="portal-header__role">حساب أدمن</span>
+        </span>
+        <button type="button" class="btn btn--outline btn--sm" id="adminLogoutBtn">تسجيل الخروج</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- شاشة الدخول -->
+  <main class="portal-shell" id="adminLoginView">
+    <div class="auth-card">
+      <h1 class="auth-card__title">دخول الإدارة</h1>
+      <p class="auth-card__subtitle">هذي الصفحة خاصة بفريق SSP.Q8 فقط.</p>
+
+      <div class="form-error" id="adminAuthError" role="alert"></div>
+
+      <form id="adminLoginForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="adminEmailInput">البريد الإلكتروني <span class="required">*</span></label>
+          <input class="form-input" type="email" id="adminEmailInput" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="adminPasswordInput">كلمة المرور <span class="required">*</span></label>
+          <input class="form-input" type="password" id="adminPasswordInput" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn--gold btn--lg">دخول</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- لوحة الإدارة -->
+  <main class="container dashboard" id="adminDashboardView" hidden>
+
+    <section class="dashboard-section">
+      <div class="dashboard-head">
+        <div>
+          <h1 class="dashboard-head__title">طلبات النموذج الأولي</h1>
+          <p class="dashboard-head__subtitle">الطلبات مدفوعة مسبقاً — ارفع ملفات التسليم لما تخلص الشغل.</p>
+        </div>
+      </div>
+      <div id="adminOrderList"></div>
+    </section>
+
+    <section class="dashboard-section" style="margin-top:56px;">
+      <div class="dashboard-head">
+        <div>
+          <h2 class="dashboard-head__title" style="font-size:20px;">المنتجات الجاهزة</h2>
+          <p class="dashboard-head__subtitle">أضف، عدّل، أو احذف منتجات، وارفع ملف كل منتج.</p>
+        </div>
+        <button type="button" class="btn btn--gold btn--sm" id="addProductBtn">إضافة منتج جديد</button>
+      </div>
+      <div id="adminProductList"></div>
+    </section>
+
+    <section class="dashboard-section" style="margin-top:56px;">
+      <div class="dashboard-head">
+        <div>
+          <h2 class="dashboard-head__title" style="font-size:20px;">اشتراكات الشركات</h2>
+          <p class="dashboard-head__subtitle">فعّل أو ألغِ اشتراك أي شركة برمجة مسجّلة.</p>
+        </div>
+      </div>
+      <div id="adminCompanyList"></div>
+    </section>
+
+  </main>
+
+  <!-- نافذة إضافة/تعديل منتج -->
+  <div class="modal-overlay" id="productModalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+      <div class="modal__head">
+        <h2 class="modal__title" id="productModalTitle">إضافة منتج جديد</h2>
+        <button type="button" class="modal__close" id="closeProductModalBtn" aria-label="إغلاق">×</button>
+      </div>
+
+      <form id="productForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="productNameInput">اسم المنتج <span class="required">*</span></label>
+          <input class="form-input" type="text" id="productNameInput" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="productPriceInput">السعر (د.ك) <span class="required">*</span></label>
+          <input class="form-input mono" type="number" id="productPriceInput" min="1" step="0.001" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="productDescInput">الوصف <span class="required">*</span></label>
+          <textarea class="form-textarea" id="productDescInput" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="productFeaturesInput">الميزات (كل ميزة بسطر)</label>
+          <textarea class="form-textarea" id="productFeaturesInput" placeholder="ميزة أولى&#10;ميزة ثانية&#10;ميزة ثالثة"></textarea>
+        </div>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--outline" id="cancelProductModalBtn">إلغاء</button>
+          <button type="submit" class="btn btn--gold">حفظ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* ==========================================================================
+   SSP.Q8 — ملف المحتوى القابل للتعديل
+   ==========================================================================
+
+   هذا هو الملف الوحيد اللي تحتاج تفتحه عشان:
+   - تغيّر سعر أو اسم أو وصف منتج جاهز
+   - تغيّر سعر أو اسم أو وصف مستوى بالنموذج الأولي
+   - تضيف أو تحذف عمل سابق من قسم "أعمال سابقة"
+
+   القاعدة: غيّر فقط النص اللي بين علامتي التنصيص ' ' أو الأرقام.
+   لا تغيّر الكلمات قبل النقطتين (:) لأنها أسماء تقنية يقرأها الكود.
+   بعد أي تعديل، احفظ الملف وأعد تحميل الصفحة بالمتصفح لترى النتيجة.
+   ========================================================================== */
+
+/* ==========================================================================
+   SSP.Q8 — ملف المحتوى القابل للتعديل
+   ==========================================================================
+
+   هذا هو المكان اللي تعدّل فيه:
+   - سعر أو اسم أو وصف مستوى بالنموذج الأولي (tiers)
+   - درجات التعقيد (complexityLevels)
+   - الأعمال السابقة (portfolio)
+
+   ملاحظة: المنتجات الجاهزة ما عادت هنا — صارت تُدار من لوحة الإدارة
+   (admin.html) مباشرة: إضافة/تعديل/حذف منتج، ورفع ملفه، كله من الواجهة.
+
+   القاعدة: غيّر فقط النص اللي بين علامتي التنصيص ' ' أو الأرقام.
+   لا تغيّر الكلمات قبل النقطتين (:) لأنها أسماء تقنية يقرأها الكود.
+   بعد أي تعديل، احفظ الملف وأعد تحميل الصفحة بالمتصفح لترى النتيجة.
+   ========================================================================== */
+
+const SITE_CONTENT = {
+
+  /* ------------------------------------------------------------------------
+     مستويات النموذج الأولي — قسم "نموذج أولي مخصص"
+     السعر النهائي بالحاسبة = price × معامل التعقيد (بالأسفل).
+     featured: true تعني هذا المستوى يظهر مميزاً بوسم "الأكثر طلباً".
+     ------------------------------------------------------------------------ */
+  tiers: [
+    {
+      name: 'وثائق وشرح',
+      price: 18,
+      description: 'توثيق كامل لفكرتك: الشاشات، سير العمل، وقاعدة البيانات المقترحة — قبل ما تصرف على أي تطوير.',
+      featured: false
+    },
+    {
+      name: 'نموذج تفاعلي',
+      price: 45,
+      description: 'نموذج يشتغل فعلياً بالمتصفح، تقدر تجربه وتشوفه قبل ما تبني النسخة النهائية.',
+      featured: true,
+      badge: 'الأكثر طلباً'
+    },
+    {
+      name: 'نموذج + قاعدة بيانات',
+      price: 80,
+      description: 'نموذج تفاعلي مربوط بتخزين بيانات حقيقي، جاهز لأول اختبار مع فريقك.',
+      featured: false
+    }
+  ],
+
+  /* ------------------------------------------------------------------------
+     درجات التعقيد — تضرب بسعر المستوى المختار فوق
+     ------------------------------------------------------------------------ */
+  complexityLevels: [
+    { name: 'بسيطة', multiplier: 1, hint: 'شاشة أو شاشتين، سير عمل مباشر' },
+    { name: 'متوسطة', multiplier: 1.6, hint: 'عدة شاشات مترابطة، صلاحيات مستخدمين' },
+    { name: 'معقدة', multiplier: 2.4, hint: 'نظام متكامل بعدة أدوار وتقارير' }
+  ],
+
+  /* ------------------------------------------------------------------------
+     أعمال سابقة — قسم "أعمال سابقة"
+     لإضافة عمل جديد: انسخ الكتلة أدناه بين { و } والصقها قبل ]، وعدّل قيمها.
+     مثال جاهز للنسخ:
+     {
+       name: 'اسم المشروع',
+       tag: 'تصنيف قصير',
+       description: 'جملة أو جملتين تشرحون شنو سويتوا للعميل.'
+     },
+     ------------------------------------------------------------------------ */
+  portfolio: [
+    {
+      name: 'HiQ Garage',
+      tag: 'إدارة ورش',
+      description: 'نظام إدارة ورشة سيارات — عملاء، مخزون قطع غيار، وصلاحيات موظفين في نظام واحد.'
+    },
+    {
+      name: 'سجل',
+      tag: 'نموذج أولي',
+      description: 'نظام سجلات قابل للتخصيص — نموذج أولي بحقول مرنة تتأقلم مع أي نوع سجلات يحتاجه مشروعك.'
+    },
+    {
+      name: 'ميزان',
+      tag: 'تجزئة',
+      description: 'مبيعات ومخزون يومي لمحل بقالة صغير — يتابع الحركة والرصيد يوماً بيوم.'
+    }
+  ]
+
+};
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — PRODUCTS (نموذج أولي)
+   ==========================================================================
+   كتالوج المنتجات الجاهزة، يديره الأدمن من لوحة الإدارة مباشرة (إضافة/تعديل/
+   حذف + رفع ملف كل منتج) بدل تعديل الكود يدوياً. تُخزَّن هنا بمتصفحك فقط.
+   ========================================================================== */
+
+(function () {
+  'use strict';
+
+  const PRODUCTS_KEY = 'ssp_products';
+
+  const DEFAULT_PRODUCTS = [
+    {
+      id: 'prod_ledger',
+      name: 'دفتر اليومية للمشاريع الصغيرة',
+      price: 10,
+      description: 'يجاوبك على 3 أسئلة: مين يدين لك، وين راحت فلوسك، وكم رصيدك الحقيقي الحين.',
+      features: ['يحسب مديونية العملاء تلقائياً', 'فاتورة جاهزة للطباعة', 'لوحة تحكم برسم بياني شهري'],
+      icon: 'ledger',
+      file: null
+    },
+    {
+      id: 'prod_inventory',
+      name: 'دفتر المخزون للمشاريع الصغيرة',
+      price: 10,
+      description: 'يحسب رصيد كل صنف تلقائياً من حركات الوارد والصادر، وينبهك أحمر لما أي صنف يقرب يخلص.',
+      features: ['رصيد الأصناف تلقائي 100%', 'تنبيه لوني للمخزون المنخفض', 'بدون أكواد معقدة'],
+      icon: 'inventory',
+      file: null
+    }
+  ];
+
+  function getProducts() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(PRODUCTS_KEY));
+      if (stored && stored.length) return stored;
+    } catch (e) {
+      /* تجاهل وارجع للقيم الافتراضية */
+    }
+    saveProducts(DEFAULT_PRODUCTS);
+    return DEFAULT_PRODUCTS;
+  }
+
+  function saveProducts(list) {
+    try {
+      localStorage.setItem(PRODUCTS_KEY, JSON.stringify(list));
+      return { success: true };
+    } catch (e) {
+      return { success: false, error: 'تعذّر الحفظ — الأغلب إن ملف المنتج كبير على التخزين التجريبي.' };
+    }
+  }
+
+  function getById(id) {
+    return getProducts().find((p) => p.id === id) || null;
+  }
+
+  function addProduct(data) {
+    const list = getProducts();
+    const product = {
+      id: 'prod_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+      name: data.name,
+      price: data.price,
+      description: data.description,
+      features: data.features || [],
+      icon: data.icon || 'default',
+      file: null
+    };
+    list.push(product);
+    const result = saveProducts(list);
+    return result.success ? { success: true, product } : result;
+  }
+
+  function updateProduct(id, data) {
+    const list = getProducts();
+    const product = list.find((p) => p.id === id);
+    if (!product) return { success: false };
+    Object.assign(product, data);
+    const result = saveProducts(list);
+    return result.success ? { success: true, product } : result;
+  }
+
+  function deleteProduct(id) {
+    const list = getProducts().filter((p) => p.id !== id);
+    saveProducts(list);
+    return { success: true };
+  }
+
+  function setProductFile(id, file) {
+    return updateProduct(id, { file });
+  }
+
+  window.SSPProducts = {
+    getProducts,
+    getById,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    setProductFile
+  };
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — AUTH (نموذج أولي)
+   ==========================================================================
+   تنبيه مهم: هذا تسجيل دخول تجريبي فقط لأغراض العرض.
+   كلمات المرور تُخزَّن هنا كنص عادي داخل متصفحك (localStorage) بدون تشفير،
+   والبيانات لا تُشارك بين أجهزة مختلفة. النسخة الحقيقية تحتاج سيرفر
+   وقاعدة بيانات حقيقية وتشفير كلمات مرور — لا تُستخدم هذه النسخة بحسابات
+   أو بيانات حقيقية لعملاء أو شركات.
+   ========================================================================== */
+
+(function () {
+  'use strict';
+
+  const USERS_KEY = 'ssp_users';
+  const SESSION_KEY = 'ssp_session';
+
+  // حساب الأدمن (أنت) — مو مسجّل مع باقي المستخدمين، بيانات دخول ثابتة بالكود.
+  // ⚠️ نسخة تجريبية: أي شخص يفتح كود الصفحة (View Source) يقدر يشوف هذي القيم.
+  // قبل أي استخدام حقيقي، غيّر البريد وكلمة المرور، والأفضل تنتقل لتسجيل دخول
+  // حقيقي عبر سيرفر بدل ما تكون القيم مكتوبة داخل الجافاسكربت.
+  const ADMIN_CREDENTIALS = {
+    email: 'admin@sspq8.com',
+    password: 'sspq8-admin-2026'
+  };
+
+  function getUsers() {
+    try {
+      return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveUsers(users) {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }
+
+  function getCompanies() {
+    return getUsers().filter((u) => u.role === 'company');
+  }
+
+  function getSession() {
+    try {
+      return JSON.parse(localStorage.getItem(SESSION_KEY));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function setSession(user) {
+    localStorage.setItem(SESSION_KEY, JSON.stringify({
+      email: user.email,
+      name: user.name,
+      phone: user.phone || null,
+      role: user.role,
+      companyName: user.companyName || null,
+      subscriptionActive: !!user.subscriptionActive
+    }));
+  }
+
+  function clearSession() {
+    localStorage.removeItem(SESSION_KEY);
+  }
+
+  function getUserByEmail(email) {
+    return getUsers().find((u) => u.email === email) || null;
+  }
+
+  function registerUser({ name, email, password, role, companyName }) {
+    const users = getUsers();
+    const emailNorm = String(email).trim().toLowerCase();
+
+    if (!name || !emailNorm || !password) {
+      return { success: false, error: 'عبّي كل الحقول المطلوبة.' };
+    }
+    if (users.some((u) => u.email === emailNorm)) {
+      return { success: false, error: 'هذا البريد مسجل من قبل، جرّب تسجيل الدخول.' };
+    }
+
+    const user = {
+      name: name.trim(),
+      email: emailNorm,
+      password,
+      role,
+      companyName: companyName ? companyName.trim() : null,
+      subscriptionActive: false,
+      createdAt: new Date().toISOString()
+    };
+
+    users.push(user);
+    saveUsers(users);
+    setSession(user);
+    return { success: true, user };
+  }
+
+  function loginUser({ email, password, role }) {
+    const emailNorm = String(email).trim().toLowerCase();
+    const user = getUsers().find((u) => u.email === emailNorm && u.role === role);
+
+    if (!user) {
+      return { success: false, error: 'ما فيه حساب بهذا البريد لهذا النوع من الحسابات.' };
+    }
+    if (user.password !== password) {
+      return { success: false, error: 'كلمة المرور غير صحيحة.' };
+    }
+
+    setSession(user);
+    return { success: true, user };
+  }
+
+  function updateSubscription(email, active) {
+    const users = getUsers();
+    const user = users.find((u) => u.email === email);
+    if (!user) return { success: false };
+
+    user.subscriptionActive = active;
+    saveUsers(users);
+
+    const session = getSession();
+    if (session && session.email === email) setSession(user);
+
+    return { success: true, user };
+  }
+
+  /* ------------------------------------------------------------------------
+     دخول العميل عبر كود تحقق (OTP) بدل كلمة مرور
+     ⚠️ نسخة تجريبية: ما فيه بوابة SMS حقيقية، فالكود يُرجَّع مباشرة من
+     الدالة نفسها عشان تعرضه الواجهة على الشاشة. النسخة الحقيقية ترسل
+     الكود عبر مزوّد SMS فعلي ولا تكشفه للمتصفح إطلاقاً.
+     ------------------------------------------------------------------------ */
+  const OTP_KEY = 'ssp_otp_pending';
+
+  function getOtpPending() {
+    try {
+      return JSON.parse(localStorage.getItem(OTP_KEY)) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveOtpPending(pending) {
+    localStorage.setItem(OTP_KEY, JSON.stringify(pending));
+  }
+
+  function requestClientOtp({ name, email, phone }) {
+    const emailNorm = String(email).trim().toLowerCase();
+    if (!emailNorm || !phone) {
+      return { success: false, error: 'عبّي الإيميل ورقم الهاتف.' };
+    }
+
+    const code = String(Math.floor(100000 + Math.random() * 900000));
+    const pending = getOtpPending();
+    pending[emailNorm] = {
+      code,
+      name: name ? name.trim() : '',
+      phone: phone.trim(),
+      createdAt: Date.now()
+    };
+    saveOtpPending(pending);
+
+    return { success: true, code };
+  }
+
+  function verifyClientOtp({ email, code }) {
+    const emailNorm = String(email).trim().toLowerCase();
+    const pending = getOtpPending();
+    const entry = pending[emailNorm];
+
+    if (!entry) {
+      return { success: false, error: 'أرسل كود التحقق أول.' };
+    }
+    if (String(code).trim() !== entry.code) {
+      return { success: false, error: 'الكود غير صحيح.' };
+    }
+
+    const users = getUsers();
+    let user = users.find((u) => u.email === emailNorm && u.role === 'client');
+
+    if (!user) {
+      user = {
+        name: entry.name || emailNorm,
+        email: emailNorm,
+        phone: entry.phone,
+        role: 'client',
+        createdAt: new Date().toISOString()
+      };
+      users.push(user);
+    } else {
+      user.phone = entry.phone || user.phone;
+      if (entry.name) user.name = entry.name;
+    }
+    saveUsers(users);
+
+    delete pending[emailNorm];
+    saveOtpPending(pending);
+
+    setSession(user);
+    return { success: true, user };
+  }
+
+  function loginAdmin({ email, password }) {
+    const emailNorm = String(email).trim().toLowerCase();
+    if (emailNorm !== ADMIN_CREDENTIALS.email || password !== ADMIN_CREDENTIALS.password) {
+      return { success: false, error: 'بيانات الدخول غير صحيحة.' };
+    }
+    const adminUser = { email: ADMIN_CREDENTIALS.email, name: 'إدارة SSP.Q8', role: 'admin' };
+    setSession(adminUser);
+    return { success: true, user: adminUser };
+  }
+
+  /**
+   * يتأكد إن فيه جلسة مسجلة بالدور المطلوب، وإلا يرجّع المستخدم لصفحة الدخول.
+   */
+  function requireRole(role, redirectTo) {
+    const session = getSession();
+    if (!session || session.role !== role) {
+      window.location.href = redirectTo || 'portal.html';
+      return null;
+    }
+    return session;
+  }
+
+  window.SSPAuth = {
+    getUsers,
+    getCompanies,
+    getSession,
+    setSession,
+    clearSession,
+    getUserByEmail,
+    registerUser,
+    loginUser,
+    requestClientOtp,
+    verifyClientOtp,
+    loginAdmin,
+    updateSubscription,
+    requireRole
+  };
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — PURCHASES (نموذج أولي)
+   ==========================================================================
+   عمليات شراء المنتجات الجاهزة (دفعة تجريبية فورية، بدون بوابة دفع حقيقية).
+   ========================================================================== */
+
+(function () {
+  'use strict';
+
+  const PURCHASES_KEY = 'ssp_purchases';
+
+  function getPurchases() {
+    try {
+      return JSON.parse(localStorage.getItem(PURCHASES_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function savePurchases(list) {
+    localStorage.setItem(PURCHASES_KEY, JSON.stringify(list));
+  }
+
+  function createPurchase({ buyerEmail, buyerName, buyerPhone, productId, productName, price }) {
+    const list = getPurchases();
+    const purchase = {
+      id: 'pur_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+      buyerEmail,
+      buyerName,
+      buyerPhone,
+      productId,
+      productName,
+      price,
+      paid: true,
+      purchasedAt: new Date().toISOString()
+    };
+    list.unshift(purchase);
+    savePurchases(list);
+    return purchase;
+  }
+
+  function getByBuyer(email) {
+    return getPurchases().filter((p) => p.buyerEmail === email);
+  }
+
+  window.SSPPurchases = {
+    getPurchases,
+    createPurchase,
+    getByBuyer
+  };
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — MARKETPLACE (نموذج أولي)
+   ==========================================================================
+   يخزن كل طلبات عروض الأسعار بمتصفح المستخدم (localStorage) لأغراض العرض.
+   بما إن التخزين محلي، الطلب اللي ينشئه عميل على جهازه ما يظهر تلقائياً
+   عند شركة تفتح الموقع من جهاز ثاني — بالنسخة الحقيقية يكون فيه سيرفر
+   وقاعدة بيانات مشتركة توصل الطلب لكل الشركات فوراً.
+   ========================================================================== */
+
+(function () {
+  'use strict';
+
+  const REQUESTS_KEY = 'ssp_requests';
+
+  function getRequests() {
+    try {
+      return JSON.parse(localStorage.getItem(REQUESTS_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveRequests(list) {
+    localStorage.setItem(REQUESTS_KEY, JSON.stringify(list));
+  }
+
+  function createRequest(data) {
+    const list = getRequests();
+    const request = {
+      id: 'req_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+      ownerEmail: data.ownerEmail,
+      ownerName: data.ownerName,
+      sourceOrderId: data.sourceOrderId || null,
+      projectName: data.projectName,
+      description: data.description,
+      tierName: data.tierName,
+      complexityName: data.complexityName,
+      totalPrice: data.totalPrice,
+      attachedFiles: data.attachedFiles || [],
+      targetType: data.targetType || 'broadcast', // 'broadcast' | 'specific'
+      targetCompanyEmail: data.targetType === 'specific' ? data.targetCompanyEmail : null,
+      targetCompanyName: data.targetType === 'specific' ? data.targetCompanyName : null,
+      status: 'مفتوح', // مفتوح -> قيد العمل (بعد قبول عرض) -> مكتمل
+      quotes: [],
+      dismissedBy: [],
+      claimedByEmail: null,
+      claimedByName: null,
+      acceptedQuoteId: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    list.unshift(request);
+    saveRequests(list);
+    return request;
+  }
+
+  function getByOwner(email) {
+    return getRequests().filter((r) => r.ownerEmail === email);
+  }
+
+  function getBySourceOrder(orderId) {
+    return getRequests().filter((r) => r.sourceOrderId === orderId);
+  }
+
+  function getOpen() {
+    return getRequests().filter((r) => r.status === 'مفتوح');
+  }
+
+  /**
+   * الطلبات المفتوحة اللي تخص شركة معيّنة: إما مبثوثة لكل الشركات،
+   * أو موجّهة تحديداً لبريد هذي الشركة — باستثناء اللي رفضتها هذي الشركة.
+   */
+  function getOpenForCompany(companyEmail) {
+    return getRequests().filter((r) =>
+      r.status === 'مفتوح' &&
+      (r.targetType === 'broadcast' || r.targetCompanyEmail === companyEmail) &&
+      !(r.dismissedBy || []).includes(companyEmail)
+    );
+  }
+
+  function dismissForCompany(id, companyEmail) {
+    const list = getRequests();
+    const request = list.find((r) => r.id === id);
+    if (!request) return { success: false };
+
+    request.dismissedBy = request.dismissedBy || [];
+    if (!request.dismissedBy.includes(companyEmail)) {
+      request.dismissedBy.push(companyEmail);
+      saveRequests(list);
+    }
+    return { success: true };
+  }
+
+  function submitQuote(id, quote) {
+    const list = getRequests();
+    const request = list.find((r) => r.id === id);
+    if (!request || request.status !== 'مفتوح') return { success: false, error: 'الطلب ما عاد مفتوحاً.' };
+
+    if (request.quotes.some((q) => q.companyEmail === quote.companyEmail)) {
+      return { success: false, error: 'أرسلت عرض سعر لهذا الطلب من قبل.' };
+    }
+
+    request.quotes.push({
+      id: 'quo_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+      companyEmail: quote.companyEmail,
+      companyName: quote.companyName,
+      amount: quote.amount,
+      deliveryTime: quote.deliveryTime,
+      note: quote.note || '',
+      createdAt: new Date().toISOString()
+    });
+    request.updatedAt = new Date().toISOString();
+    saveRequests(list);
+    return { success: true, request };
+  }
+
+  /**
+   * كل عروض الأسعار اللي أرسلتها شركة معيّنة، مع حالة كل طلب (مفتوح/مقبول لشركة ثانية/تم قبول عرضها).
+   */
+  function getQuotesByCompany(companyEmail) {
+    return getRequests()
+      .filter((r) => r.quotes.some((q) => q.companyEmail === companyEmail))
+      .map((r) => ({
+        request: r,
+        quote: r.quotes.find((q) => q.companyEmail === companyEmail),
+        won: r.acceptedQuoteId && r.quotes.find((q) => q.companyEmail === companyEmail).id === r.acceptedQuoteId
+      }));
+  }
+
+  function getClaimedBy(email) {
+    return getRequests().filter((r) => r.claimedByEmail === email);
+  }
+
+  /**
+   * العميل يقبل عرض شركة معيّنة — الطلب يُقفل تلقائياً عن باقي الشركات.
+   */
+  function acceptQuote(requestId, quoteId) {
+    const list = getRequests();
+    const request = list.find((r) => r.id === requestId);
+    if (!request) return { success: false };
+
+    const quote = request.quotes.find((q) => q.id === quoteId);
+    if (!quote) return { success: false };
+
+    request.status = 'قيد العمل';
+    request.claimedByEmail = quote.companyEmail;
+    request.claimedByName = quote.companyName;
+    request.acceptedQuoteId = quote.id;
+    request.updatedAt = new Date().toISOString();
+    saveRequests(list);
+    return { success: true, request };
+  }
+
+  function complete(id) {
+    const list = getRequests();
+    const request = list.find((r) => r.id === id);
+    if (!request) return { success: false };
+
+    request.status = 'مكتمل';
+    request.updatedAt = new Date().toISOString();
+    saveRequests(list);
+    return { success: true, request };
+  }
+
+  window.SSPMarketplace = {
+    getRequests,
+    createRequest,
+    getByOwner,
+    getBySourceOrder,
+    getOpen,
+    getOpenForCompany,
+    getClaimedBy,
+    dismissForCompany,
+    submitQuote,
+    getQuotesByCompany,
+    acceptQuote,
+    complete
+  };
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — ORDERS (نموذج أولي)
+   ==========================================================================
+   دورة حياة "طلب النموذج الأولي": العميل يختار باقة بسعر محدد مسبقاً ويدفع
+   فوراً (دفع تجريبي)، بعدها إدارة SSP.Q8 تشتغل عليه وترفع ملفات التسليم،
+   والعميل ينزّلها من صفحته.
+
+   تنبيه: الملفات تُخزَّن كنص Base64 داخل localStorage، وله سقف تخزين محدود
+   (عادة 5-10 ميجابايت لكل المتصفح). النسخة الحقيقية تحتاج تخزين سحابي فعلي.
+   ========================================================================== */
+
+(function () {
+  'use strict';
+
+  const ORDERS_KEY = 'ssp_orders';
+  const MAX_TOTAL_FILES_BYTES = 3 * 1024 * 1024; // حد تقريبي آمن لتخزين تجريبي بالمتصفح
+
+  function getOrders() {
+    try {
+      return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveOrders(list) {
+    try {
+      localStorage.setItem(ORDERS_KEY, JSON.stringify(list));
+      return { success: true };
+    } catch (e) {
+      return { success: false, error: 'تعذّر الحفظ — الأغلب إن حجم الملفات تجاوز سعة التخزين التجريبي بالمتصفح.' };
+    }
+  }
+
+  /**
+   * ينشئ الطلب مدفوعاً فوراً (الدفع يصير عند اختيار الباقة، قبل ما تبدأ الإدارة العمل).
+   */
+  function createOrder(data) {
+    const list = getOrders();
+    const order = {
+      id: 'ord_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+      ownerEmail: data.ownerEmail,
+      ownerName: data.ownerName,
+      ownerPhone: data.ownerPhone || null,
+      problem: data.problem,
+      natureOfWork: data.natureOfWork,
+      goal: data.goal,
+      expectedSolution: data.expectedSolution,
+      tierName: data.tierName,
+      complexityName: data.complexityName,
+      totalPrice: data.totalPrice,
+      status: 'قيد التنفيذ',
+      files: [],
+      paid: true,
+      paidAt: new Date().toISOString(),
+      downloadedAt: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    list.unshift(order);
+    const result = saveOrders(list);
+    return result.success ? { success: true, order } : result;
+  }
+
+  function getByOwner(email) {
+    return getOrders().filter((o) => o.ownerEmail === email);
+  }
+
+  function getAll() {
+    return getOrders();
+  }
+
+  function getById(id) {
+    return getOrders().find((o) => o.id === id) || null;
+  }
+
+  function totalBytes(files) {
+    return files.reduce((sum, file) => sum + (file.size || 0), 0);
+  }
+
+  /**
+   * الإدارة ترفع ملفات التسليم — يحوّل حالة الطلب مباشرة لـ"جاهز للتنزيل".
+   */
+  function uploadDeliverable(id, files) {
+    if (totalBytes(files) > MAX_TOTAL_FILES_BYTES) {
+      return { success: false, error: 'حجم الملفات كبير على التخزين التجريبي بالمتصفح — جرّب ملفات أصغر (المجموع حالياً أكثر من 3 ميجابايت تقريباً).' };
+    }
+
+    const list = getOrders();
+    const order = list.find((o) => o.id === id);
+    if (!order) return { success: false };
+
+    order.files = files;
+    order.status = 'جاهز للتنزيل';
+    order.updatedAt = new Date().toISOString();
+    const result = saveOrders(list);
+    return result.success ? { success: true, order } : result;
+  }
+
+  function markDownloaded(id) {
+    const list = getOrders();
+    const order = list.find((o) => o.id === id);
+    if (!order || order.downloadedAt) return { success: false };
+    order.downloadedAt = new Date().toISOString();
+    saveOrders(list);
+    return { success: true, order };
+  }
+
+  window.SSPOrders = {
+    getByOwner,
+    getAll,
+    getById,
+    createOrder,
+    uploadDeliverable,
+    markDownloaded,
+    MAX_TOTAL_FILES_BYTES
+  };
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — SITE SCRIPT
+   Sections: 1. Configuration  2. State  3. DOM References  4. Utilities
+   5. Rendering  6. Event Handlers  7. Initialization
+   ========================================================================== */
+
+(() => {
+  'use strict';
+
+  /* ------------------------------------------------------------------------
+     1. APPLICATION CONFIGURATION
+     ------------------------------------------------------------------------ */
+  const CONFIG = {
+    toastDuration: 3200,
+    scrollShadowThreshold: 8
+  };
+
+  /* ------------------------------------------------------------------------
+     2. STATE
+     ------------------------------------------------------------------------ */
+  const calculatorState = {
+    tierBase: 45,
+    tierName: 'نموذج تفاعلي',
+    complexityMult: 1,
+    complexityName: 'بسيطة'
+  };
+
+  // مكتبة أيقونات بسيطة تُستخدم بالمنتجات الجاهزة. لإضافة أيقونة جديدة، أضف
+  // مفتاحاً جديداً هنا واستخدم اسمه بحقل icon داخل js/content.js.
+  const ICONS = {
+    ledger: `<svg viewBox="0 0 40 40" fill="none">
+      <rect x="7" y="6" width="26" height="28" rx="1" stroke="currentColor" stroke-width="2"></rect>
+      <path d="M13 14H27M13 20H27M13 26H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>`,
+    inventory: `<svg viewBox="0 0 40 40" fill="none">
+      <path d="M20 6L33 12.5V27.5L20 34L7 27.5V12.5L20 6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path>
+      <path d="M7 12.5L20 19M20 19L33 12.5M20 19V34" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path>
+    </svg>`,
+    default: `<svg viewBox="0 0 40 40" fill="none">
+      <rect x="9" y="6" width="22" height="28" rx="1" stroke="currentColor" stroke-width="2"></rect>
+      <path d="M14 15H26M14 21H26M14 27H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>`
+  };
+
+  /* ------------------------------------------------------------------------
+     3. DOM REFERENCES
+     ------------------------------------------------------------------------ */
+  const header = document.querySelector('.site-header');
+  const navToggle = document.getElementById('navToggle');
+  const mainNav = document.getElementById('main-nav');
+  const toastContainer = document.getElementById('toastContainer');
+
+  const calculatorForm = document.getElementById('calculatorForm');
+  const productsGrid = document.getElementById('productsGrid');
+  const tierOptionsContainer = document.getElementById('tierOptions');
+  const complexityOptionsContainer = document.getElementById('complexityOptions');
+  const portfolioGrid = document.getElementById('portfolioGrid');
+
+  const calcFormulaEl = document.getElementById('calcFormula');
+  const calcTierNameEl = document.getElementById('calcTierName');
+  const calcComplexityNameEl = document.getElementById('calcComplexityName');
+  const calcTotalEl = document.getElementById('calcTotal');
+  const startNowBtn = document.getElementById('startNowBtn');
+
+  const yearEl = document.getElementById('year');
+
+  // هذي المتغيرات تُملأ بعد بناء المحتوى ديناميكياً (انظر renderAllContent).
+  let tierInputs = [];
+  let complexityInputs = [];
+  let buyButtons = [];
+
+  /* ------------------------------------------------------------------------
+     4. UTILITY FUNCTIONS
+     ------------------------------------------------------------------------ */
+
+  /**
+   * تنسيق رقم بثلاث خانات عشرية بأسلوب دفتر حسابات (يشبه خلية إكسل).
+   */
+  function formatCurrency(amount) {
+    return amount.toFixed(3);
+  }
+
+  /**
+   * عرض إشعار toast قصير للمستخدم.
+   */
+  function showToast(message) {
+    if (!toastContainer) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
+
+    window.setTimeout(() => {
+      toast.classList.add('is-leaving');
+      toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    }, CONFIG.toastDuration);
+  }
+
+  /* ------------------------------------------------------------------------
+     5. RENDERING
+     ------------------------------------------------------------------------ */
+
+  /**
+   * بناء بطاقات المنتجات الجاهزة من كتالوج الأدمن (js/products.js).
+   */
+  function renderProducts() {
+    if (!productsGrid || !window.SSPProducts) return;
+
+    const products = window.SSPProducts.getProducts();
+
+    productsGrid.innerHTML = products.map((product) => {
+      const featuresHtml = product.features
+        .map((feature) => `<li><span class="square-bullet" aria-hidden="true"></span>${feature}</li>`)
+        .join('');
+      const iconSvg = ICONS[product.icon] || ICONS.default;
+
+      return `
+        <article class="product-card reveal">
+          <span class="corner-mark" aria-hidden="true"></span>
+          <div class="product-card__icon" aria-hidden="true">${iconSvg}</div>
+          <h3 class="product-card__title">${product.name}</h3>
+          <p class="product-card__desc">${product.description}</p>
+          <ul class="product-card__features">${featuresHtml}</ul>
+          <div class="product-card__footer">
+            <span class="price"><span class="price__value">${product.price}</span> <span class="price__currency">د.ك</span></span>
+            <a class="btn btn--navy btn--sm buy-btn" data-product-id="${product.id}" data-product="${product.name}" data-price="${product.price}" href="#">اشترِ الآن</a>
+          </div>
+        </article>`;
+    }).join('');
+  }
+
+  /**
+   * بناء بطاقات مستويات النموذج الأولي من js/content.js.
+   */
+  function renderTiers() {
+    if (!tierOptionsContainer || !window.SITE_CONTENT) return;
+
+    tierOptionsContainer.innerHTML = SITE_CONTENT.tiers.map((tier) => {
+      const featuredClass = tier.featured ? ' tier-card--featured' : '';
+      const checkedAttr = tier.featured ? ' checked' : '';
+      const badgeHtml = tier.featured ? `<span class="tier-card__badge">${tier.badge || 'الأكثر طلباً'}</span>` : '';
+
+      return `
+        <label class="tier-card${featuredClass}">
+          <input type="radio" name="tier" value="${tier.price}" data-tier-name="${tier.name}"${checkedAttr}>
+          ${badgeHtml}
+          <span class="tier-card__body">
+            <span class="tier-card__title">${tier.name}</span>
+            <span class="tier-card__desc">${tier.description}</span>
+            <span class="tier-card__price">من <span class="mono">${tier.price}</span> د.ك</span>
+          </span>
+        </label>`;
+    }).join('');
+  }
+
+  /**
+   * بناء أزرار درجة التعقيد من js/content.js.
+   */
+  function renderComplexityLevels() {
+    if (!complexityOptionsContainer || !window.SITE_CONTENT) return;
+
+    complexityOptionsContainer.innerHTML = SITE_CONTENT.complexityLevels.map((level, index) => `
+      <label class="complexity-btn">
+        <input type="radio" name="complexity" value="${level.multiplier}"${index === 0 ? ' checked' : ''}>
+        <span class="complexity-btn__name">${level.name}</span>
+        <span class="complexity-btn__mult mono">×${level.multiplier}</span>
+        <span class="complexity-btn__hint">${level.hint}</span>
+      </label>`).join('');
+  }
+
+  /**
+   * بناء بطاقات الأعمال السابقة من js/content.js.
+   */
+  function renderPortfolio() {
+    if (!portfolioGrid || !window.SITE_CONTENT) return;
+
+    portfolioGrid.innerHTML = SITE_CONTENT.portfolio.map((item) => `
+      <article class="portfolio-card reveal">
+        <span class="corner-mark" aria-hidden="true"></span>
+        <span class="portfolio-card__tag">${item.tag}</span>
+        <h3 class="portfolio-card__title">${item.name}</h3>
+        <p class="portfolio-card__desc">${item.description}</p>
+      </article>`).join('');
+  }
+
+  /**
+   * بناء كل الأقسام المعتمدة على المحتوى، ثم تحديث مراجع عناصر الحاسبة
+   * وأزرار الشراء لأنها أصبحت موجودة بالصفحة الآن.
+   */
+  function renderAllContent() {
+    renderProducts();
+
+    if (!window.SITE_CONTENT) {
+      console.error('SITE_CONTENT غير موجود — تأكد من تحميل js/content.js قبل js/script.js');
+      return;
+    }
+
+    renderTiers();
+    renderComplexityLevels();
+    renderPortfolio();
+
+    tierInputs = calculatorForm ? [...calculatorForm.querySelectorAll('input[name="tier"]')] : [];
+    complexityInputs = calculatorForm ? [...calculatorForm.querySelectorAll('input[name="complexity"]')] : [];
+    buyButtons = [...document.querySelectorAll('.buy-btn')];
+
+    const checkedTier = tierInputs.find((input) => input.checked);
+    const checkedComplexity = complexityInputs.find((input) => input.checked);
+    if (checkedTier) {
+      calculatorState.tierBase = Number(checkedTier.value);
+      calculatorState.tierName = checkedTier.dataset.tierName || '';
+    }
+    if (checkedComplexity) {
+      calculatorState.complexityMult = Number(checkedComplexity.value);
+      const label = checkedComplexity.closest('.complexity-btn').querySelector('.complexity-btn__name');
+      calculatorState.complexityName = label ? label.textContent : '';
+    }
+  }
+
+  /**
+   * إعادة حساب السعر وتحديث خلية النتيجة بالكامل.
+   */
+  function renderCalculator() {
+    const total = calculatorState.tierBase * calculatorState.complexityMult;
+
+    if (calcFormulaEl) {
+      calcFormulaEl.textContent = `= ${formatCurrency(calculatorState.tierBase)} × ${calculatorState.complexityMult}`;
+    }
+    if (calcTierNameEl) calcTierNameEl.textContent = calculatorState.tierName;
+    if (calcComplexityNameEl) calcComplexityNameEl.textContent = calculatorState.complexityName;
+    if (calcTotalEl) calcTotalEl.textContent = formatCurrency(total);
+  }
+
+  /* ------------------------------------------------------------------------
+     6. EVENT HANDLERS
+     ------------------------------------------------------------------------ */
+
+  function handleHeaderScroll() {
+    if (!header) return;
+    header.classList.toggle('is-scrolled', window.scrollY > CONFIG.scrollShadowThreshold);
+  }
+
+  function handleNavToggle() {
+    const isOpen = mainNav.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+    navToggle.setAttribute('aria-label', isOpen ? 'إغلاق قائمة التنقل' : 'فتح قائمة التنقل');
+  }
+
+  function closeMobileNav() {
+    if (!mainNav || !mainNav.classList.contains('is-open')) return;
+    mainNav.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'فتح قائمة التنقل');
+  }
+
+  /**
+   * تمييز البطاقة المختارة بصرياً (احتياط للمتصفحات التي لا تدعم :has()).
+   */
+  function markSelected(inputsGroup, selectedInput) {
+    inputsGroup.forEach((input) => {
+      input.closest('label').classList.toggle('is-selected', input === selectedInput);
+    });
+  }
+
+  function handleTierChange(event) {
+    const input = event.target;
+    calculatorState.tierBase = Number(input.value);
+    calculatorState.tierName = input.dataset.tierName || '';
+    markSelected(tierInputs, input);
+    renderCalculator();
+  }
+
+  function handleComplexityChange(event) {
+    const input = event.target;
+    calculatorState.complexityMult = Number(input.value);
+    const label = input.closest('.complexity-btn').querySelector('.complexity-btn__name');
+    calculatorState.complexityName = label ? label.textContent : '';
+    markSelected(complexityInputs, input);
+    renderCalculator();
+  }
+
+  function handleStartNowClick(event) {
+    event.preventDefault();
+    try {
+      localStorage.setItem('ssp_pending_order', JSON.stringify({
+        tierName: calculatorState.tierName,
+        tierBase: calculatorState.tierBase,
+        complexityName: calculatorState.complexityName,
+        complexityMult: calculatorState.complexityMult
+      }));
+    } catch (e) {
+      /* لا شي — بس المتابعة بدون تعبئة مسبقة إذا فشل الحفظ */
+    }
+    window.location.hash = '#/portal?role=client';
+  }
+
+  function handleBuyClick(event) {
+    event.preventDefault();
+    const button = event.currentTarget;
+
+    try {
+      localStorage.setItem('ssp_pending_purchase', JSON.stringify({
+        productId: button.dataset.productId,
+        productName: button.dataset.product,
+        price: Number(button.dataset.price)
+      }));
+    } catch (e) {
+      /* لا شي */
+    }
+    window.location.hash = '#/portal?role=client';
+  }
+
+  /**
+   * كشف عناصر ظهور تدريجي عند التمرير (يُحترم تفضيل تقليل الحركة عبر CSS).
+   */
+  function setupRevealObserver() {
+    const revealEls = document.querySelectorAll('.reveal');
+    if (!revealEls.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      revealEls.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    revealEls.forEach((el) => observer.observe(el));
+  }
+
+  /* ------------------------------------------------------------------------
+     7. INITIALIZATION
+     ------------------------------------------------------------------------ */
+  function init() {
+    if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+    // يبني هذا كل بطاقات المنتجات/المستويات/الأعمال السابقة من js/content.js
+    // ويملأ tierInputs / complexityInputs / buyButtons بالعناصر الجديدة.
+    renderAllContent();
+
+    window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+    handleHeaderScroll();
+
+    if (navToggle && mainNav) {
+      navToggle.addEventListener('click', handleNavToggle);
+      mainNav.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMobileNav));
+    }
+
+    tierInputs.forEach((input) => input.addEventListener('change', handleTierChange));
+    complexityInputs.forEach((input) => input.addEventListener('change', handleComplexityChange));
+
+    const checkedTier = tierInputs.find((input) => input.checked);
+    const checkedComplexity = complexityInputs.find((input) => input.checked);
+    if (checkedTier) markSelected(tierInputs, checkedTier);
+    if (checkedComplexity) markSelected(complexityInputs, checkedComplexity);
+
+    renderCalculator();
+
+    if (startNowBtn) startNowBtn.addEventListener('click', handleStartNowClick);
+    buyButtons.forEach((button) => button.addEventListener('click', handleBuyClick));
+
+    setupRevealObserver();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — ADMIN SCRIPT
+   ========================================================================== */
+
+(() => {
+  'use strict';
+
+  const adminHeaderUser = document.getElementById('adminHeaderUser');
+  const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+  const adminLoginView = document.getElementById('adminLoginView');
+  const adminDashboardView = document.getElementById('adminDashboardView');
+  const adminLoginForm = document.getElementById('adminLoginForm');
+  const adminAuthError = document.getElementById('adminAuthError');
+  const adminEmailInput = document.getElementById('adminEmailInput');
+  const adminPasswordInput = document.getElementById('adminPasswordInput');
+
+  const adminOrderList = document.getElementById('adminOrderList');
+  const adminProductList = document.getElementById('adminProductList');
+  const adminCompanyList = document.getElementById('adminCompanyList');
+  const addProductBtn = document.getElementById('addProductBtn');
+
+  const productModalOverlay = document.getElementById('productModalOverlay');
+  const productModalTitle = document.getElementById('productModalTitle');
+  const closeProductModalBtn = document.getElementById('closeProductModalBtn');
+  const cancelProductModalBtn = document.getElementById('cancelProductModalBtn');
+  const productForm = document.getElementById('productForm');
+  const productNameInput = document.getElementById('productNameInput');
+  const productPriceInput = document.getElementById('productPriceInput');
+  const productDescInput = document.getElementById('productDescInput');
+  const productFeaturesInput = document.getElementById('productFeaturesInput');
+
+  const toastContainer = document.getElementById('toastContainer');
+
+  // ملفات لسا ما انرفعت نهائياً، لكل طلب أو منتج (قبل الضغط على زر الرفع)
+  const pendingOrderFiles = {};
+  const pendingProductFiles = {};
+  let editingProductId = null; // null = إضافة منتج جديد
+
+  const ORDER_STATUS_CLASS = {
+    'قيد التنفيذ': 'status-badge--progress',
+    'جاهز للتنزيل': 'status-badge--done'
+  };
+
+  function showToast(message) {
+    if (!toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
+    window.setTimeout(() => {
+      toast.classList.add('is-leaving');
+      toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    }, 3000);
+  }
+
+  function formatCurrency(amount) {
+    return Number(amount).toFixed(3);
+  }
+
+  function formatFileSize(bytes) {
+    if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' كيلوبايت';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' ميجابايت';
+  }
+
+  function fileToDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve({ name: file.name, size: file.size, dataUrl: reader.result });
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function renderFileChips(pendingList, removeAction, ownerId) {
+    if (!pendingList.length) return '';
+    const chips = pendingList.map((file, index) => `
+      <div class="file-chip">
+        <span class="file-chip__name">${file.name}</span>
+        <span class="file-chip__size mono">${formatFileSize(file.size)}</span>
+        <button type="button" class="file-chip__remove" data-action="${removeAction}" data-id="${ownerId}" data-index="${index}" aria-label="إزالة الملف">×</button>
+      </div>`).join('');
+    return `<div class="file-pending-list">${chips}</div>`;
+  }
+
+  /* ------------------------------------------------------------------------
+     AUTH GATE
+     ------------------------------------------------------------------------ */
+  function showLoginView() {
+    adminLoginView.hidden = false;
+    adminDashboardView.hidden = true;
+    adminHeaderUser.hidden = true;
+  }
+
+  function showDashboardView() {
+    adminLoginView.hidden = true;
+    adminDashboardView.hidden = false;
+    adminHeaderUser.hidden = false;
+    renderOrders();
+    renderProducts();
+    renderCompanies();
+  }
+
+  function checkSession() {
+    const session = window.SSPAuth.getSession();
+    if (session && session.role === 'admin') {
+      showDashboardView();
+    } else {
+      showLoginView();
+    }
+  }
+
+  function handleAdminLogin(event) {
+    event.preventDefault();
+    adminAuthError.classList.remove('is-visible');
+
+    const result = window.SSPAuth.loginAdmin({
+      email: adminEmailInput.value,
+      password: adminPasswordInput.value
+    });
+
+    if (!result.success) {
+      adminAuthError.textContent = result.error;
+      adminAuthError.classList.add('is-visible');
+      return;
+    }
+
+    adminLoginForm.reset();
+    showToast('تم تسجيل الدخول.');
+    showDashboardView();
+  }
+
+  /* ------------------------------------------------------------------------
+     ORDERS (طلبات النموذج الأولي)
+     ------------------------------------------------------------------------ */
+  function renderOrderActions(order) {
+    if (order.status === 'قيد التنفيذ') {
+      const pending = pendingOrderFiles[order.id] || [];
+      return `
+        <div style="width:100%;">
+          <label class="file-drop">
+            <input type="file" multiple data-action="select-order-files" data-id="${order.id}">
+            <span class="file-drop__text">اضغط لاختيار ملفات النموذج والوثائق</span>
+            <span class="file-drop__hint">حد أقصى تقريبي 3 ميجابايت لكل الملفات مجتمعة</span>
+          </label>
+          ${renderFileChips(pending, 'remove-order-file', order.id)}
+          <div style="margin-top: 12px;">
+            <button type="button" class="btn btn--gold btn--sm" data-action="upload-order-files" data-id="${order.id}" ${pending.length ? '' : 'disabled'}>
+              رفع الملفات وتحديد "جاهز للتنزيل"
+            </button>
+          </div>
+        </div>`;
+    }
+
+    if (order.status === 'جاهز للتنزيل') {
+      const filesHtml = order.files.map((file) => file.name).join('، ');
+      const downloadedText = order.downloadedAt ? 'نزّل العميل الملفات ✅' : 'العميل لسا ما نزّل الملفات';
+      return `<span style="font-size:13px; color: var(--color-text-muted);">الملفات المرفوعة: ${filesHtml}<br>${downloadedText}</span>`;
+    }
+
+    return '';
+  }
+
+  function renderOrders() {
+    const orders = window.SSPOrders.getAll();
+
+    if (!orders.length) {
+      adminOrderList.innerHTML = `<div class="empty-state">ما فيه طلبات نماذج أولية لسا.</div>`;
+      return;
+    }
+
+    adminOrderList.innerHTML = orders.map((order) => `
+      <article class="admin-order-card">
+        <div class="admin-order-card__head">
+          <div>
+            <h3 class="request-card__title">${order.projectName}</h3>
+            <div class="admin-order-card__client">العميل: ${order.ownerName} — ${order.ownerEmail}${order.ownerPhone ? ' — ' + order.ownerPhone : ''}</div>
+          </div>
+          <span class="status-badge ${ORDER_STATUS_CLASS[order.status] || ''}">${order.status}</span>
+        </div>
+        <div class="request-card__meta">
+          <span>${order.tierName}</span>
+          <span>${order.complexityName}</span>
+          <span class="request-card__price mono">${formatCurrency(order.totalPrice)} د.ك (مدفوع)</span>
+        </div>
+        <p class="request-card__desc"><strong>المشكلة:</strong> ${order.problem}</p>
+        <p class="request-card__desc"><strong>طبيعة العمل:</strong> ${order.natureOfWork}</p>
+        <p class="request-card__desc"><strong>الهدف:</strong> ${order.goal}</p>
+        <p class="request-card__desc"><strong>الحل المتوقع:</strong> ${order.expectedSolution}</p>
+        <div class="admin-order-card__actions">${renderOrderActions(order)}</div>
+      </article>`).join('');
+  }
+
+  async function handleOrderFileSelect(input) {
+    if (!input.files.length) return;
+    const orderId = input.dataset.id;
+    try {
+      const readFiles = await Promise.all([...input.files].map(fileToDataUrl));
+      pendingOrderFiles[orderId] = [...(pendingOrderFiles[orderId] || []), ...readFiles];
+      renderOrders();
+    } catch (e) {
+      showToast('تعذّر قراءة أحد الملفات.');
+    }
+  }
+
+  function handleUploadOrderFiles(orderId) {
+    const files = pendingOrderFiles[orderId] || [];
+    if (!files.length) return;
+
+    const result = window.SSPOrders.uploadDeliverable(orderId, files);
+    if (!result.success) {
+      showToast(result.error || 'تعذّر رفع الملفات.');
+      return;
+    }
+    delete pendingOrderFiles[orderId];
+    showToast('تم رفع الملفات — الطلب جاهز الآن للعميل.');
+    renderOrders();
+  }
+
+  /* ------------------------------------------------------------------------
+     PRODUCTS (المنتجات الجاهزة)
+     ------------------------------------------------------------------------ */
+  function renderProducts() {
+    const products = window.SSPProducts.getProducts();
+
+    if (!products.length) {
+      adminProductList.innerHTML = `<div class="empty-state">ما فيه منتجات لسا.</div>`;
+      return;
+    }
+
+    adminProductList.innerHTML = products.map((product) => {
+      const pending = pendingProductFiles[product.id] || [];
+      const fileStatus = product.file
+        ? `<span style="font-size:12.5px; color: var(--color-teal);">الملف الحالي: ${product.file.name}</span>`
+        : `<span style="font-size:12.5px; color: var(--color-text-muted);">ما فيه ملف مرفوع لهذا المنتج بعد.</span>`;
+
+      return `
+        <article class="admin-order-card">
+          <div class="admin-order-card__head">
+            <div>
+              <h3 class="request-card__title">${product.name}</h3>
+              <div class="admin-order-card__client">${formatCurrency(product.price)} د.ك</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button type="button" class="btn btn--outline btn--sm" data-action="edit-product" data-id="${product.id}">تعديل</button>
+              <button type="button" class="btn btn--outline btn--sm" data-action="delete-product" data-id="${product.id}" style="color:#C0392B; border-color:#C0392B;">حذف</button>
+            </div>
+          </div>
+          <p class="request-card__desc">${product.description}</p>
+          <div class="admin-order-card__actions">
+            <div style="width:100%;">
+              ${fileStatus}
+              <label class="file-drop" style="margin-top:10px;">
+                <input type="file" data-action="select-product-file" data-id="${product.id}">
+                <span class="file-drop__text">اضغط لاختيار ملف المنتج (يستبدل القديم لو موجود)</span>
+              </label>
+              ${renderFileChips(pending, 'remove-product-file', product.id)}
+              ${pending.length ? `<button type="button" class="btn btn--gold btn--sm" data-action="upload-product-file" data-id="${product.id}" style="margin-top:10px;">رفع ملف المنتج</button>` : ''}
+            </div>
+          </div>
+        </article>`;
+    }).join('');
+  }
+
+  async function handleProductFileSelect(input) {
+    if (!input.files.length) return;
+    const productId = input.dataset.id;
+    try {
+      const file = await fileToDataUrl(input.files[0]);
+      pendingProductFiles[productId] = [file]; // ملف واحد بس لكل منتج
+      renderProducts();
+    } catch (e) {
+      showToast('تعذّر قراءة الملف.');
+    }
+  }
+
+  function handleUploadProductFile(productId) {
+    const files = pendingProductFiles[productId] || [];
+    if (!files.length) return;
+
+    const result = window.SSPProducts.setProductFile(productId, files[0]);
+    if (!result.success) {
+      showToast(result.error || 'تعذّر رفع الملف.');
+      return;
+    }
+    delete pendingProductFiles[productId];
+    showToast('تم رفع ملف المنتج.');
+    renderProducts();
+  }
+
+  function openProductModal(productId) {
+    editingProductId = productId || null;
+    productForm.reset();
+
+    if (editingProductId) {
+      const product = window.SSPProducts.getById(editingProductId);
+      productModalTitle.textContent = 'تعديل المنتج';
+      productNameInput.value = product.name;
+      productPriceInput.value = product.price;
+      productDescInput.value = product.description;
+      productFeaturesInput.value = (product.features || []).join('\n');
+    } else {
+      productModalTitle.textContent = 'إضافة منتج جديد';
+    }
+
+    productModalOverlay.classList.add('is-open');
+    productNameInput.focus();
+  }
+
+  function closeProductModal() {
+    productModalOverlay.classList.remove('is-open');
+    editingProductId = null;
+  }
+
+  function handleProductFormSubmit(event) {
+    event.preventDefault();
+
+    const features = productFeaturesInput.value
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    const data = {
+      name: productNameInput.value.trim(),
+      price: Number(productPriceInput.value),
+      description: productDescInput.value.trim(),
+      features
+    };
+
+    if (editingProductId) {
+      window.SSPProducts.updateProduct(editingProductId, data);
+      showToast('تم تحديث المنتج.');
+    } else {
+      window.SSPProducts.addProduct(data);
+      showToast('تم إضافة المنتج.');
+    }
+
+    closeProductModal();
+    renderProducts();
+  }
+
+  function handleDeleteProduct(productId) {
+    const confirmed = window.confirm('حذف هذا المنتج نهائياً؟');
+    if (!confirmed) return;
+    window.SSPProducts.deleteProduct(productId);
+    showToast('تم حذف المنتج.');
+    renderProducts();
+  }
+
+  /* ------------------------------------------------------------------------
+     COMPANIES (اشتراكات الشركات)
+     ------------------------------------------------------------------------ */
+  function renderCompanies() {
+    const companies = window.SSPAuth.getCompanies();
+
+    if (!companies.length) {
+      adminCompanyList.innerHTML = `<div class="empty-state">ما فيه شركات مسجّلة لسا.</div>`;
+      return;
+    }
+
+    adminCompanyList.innerHTML = companies.map((company) => `
+      <article class="admin-order-card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h3 class="request-card__title">${company.companyName || company.name}</h3>
+          <div class="admin-order-card__client">${company.email}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span class="subscription-badge ${company.subscriptionActive ? 'subscription-badge--active' : 'subscription-badge--inactive'}">
+            ${company.subscriptionActive ? 'مفعّل' : 'غير مفعّل'}
+          </span>
+          <button type="button" class="btn btn--navy btn--sm" data-action="toggle-subscription" data-email="${company.email}">
+            ${company.subscriptionActive ? 'إلغاء التفعيل' : 'تفعيل الاشتراك'}
+          </button>
+        </div>
+      </article>`).join('');
+  }
+
+  function handleToggleSubscription(email) {
+    const company = window.SSPAuth.getUserByEmail(email);
+    const nextState = !(company && company.subscriptionActive);
+    window.SSPAuth.updateSubscription(email, nextState);
+    showToast(nextState ? 'تم تفعيل اشتراك الشركة.' : 'تم إلغاء تفعيل اشتراك الشركة.');
+    renderCompanies();
+  }
+
+  /* ------------------------------------------------------------------------
+     EVENT DELEGATION
+     ------------------------------------------------------------------------ */
+  function handleDashboardClick(event) {
+    const uploadOrderBtn = event.target.closest('[data-action="upload-order-files"]');
+    if (uploadOrderBtn) { handleUploadOrderFiles(uploadOrderBtn.dataset.id); return; }
+
+    const removeOrderFileBtn = event.target.closest('[data-action="remove-order-file"]');
+    if (removeOrderFileBtn) {
+      const list = pendingOrderFiles[removeOrderFileBtn.dataset.id] || [];
+      list.splice(Number(removeOrderFileBtn.dataset.index), 1);
+      renderOrders();
+      return;
+    }
+
+    const editProductBtn = event.target.closest('[data-action="edit-product"]');
+    if (editProductBtn) { openProductModal(editProductBtn.dataset.id); return; }
+
+    const deleteProductBtn = event.target.closest('[data-action="delete-product"]');
+    if (deleteProductBtn) { handleDeleteProduct(deleteProductBtn.dataset.id); return; }
+
+    const uploadProductBtn = event.target.closest('[data-action="upload-product-file"]');
+    if (uploadProductBtn) { handleUploadProductFile(uploadProductBtn.dataset.id); return; }
+
+    const removeProductFileBtn = event.target.closest('[data-action="remove-product-file"]');
+    if (removeProductFileBtn) {
+      delete pendingProductFiles[removeProductFileBtn.dataset.id];
+      renderProducts();
+      return;
+    }
+
+    const toggleSubBtn = event.target.closest('[data-action="toggle-subscription"]');
+    if (toggleSubBtn) { handleToggleSubscription(toggleSubBtn.dataset.email); }
+  }
+
+  function handleDashboardChange(event) {
+    const orderFileInput = event.target.closest('[data-action="select-order-files"]');
+    if (orderFileInput) { handleOrderFileSelect(orderFileInput); return; }
+
+    const productFileInput = event.target.closest('[data-action="select-product-file"]');
+    if (productFileInput) { handleProductFileSelect(productFileInput); }
+  }
+
+  /* ------------------------------------------------------------------------
+     INIT
+     ------------------------------------------------------------------------ */
+  function init() {
+    adminLoginForm.addEventListener('submit', handleAdminLogin);
+    adminLogoutBtn.addEventListener('click', () => {
+      window.SSPAuth.clearSession();
+      showLoginView();
+    });
+
+    adminDashboardView.addEventListener('click', handleDashboardClick);
+    adminDashboardView.addEventListener('change', handleDashboardChange);
+
+    addProductBtn.addEventListener('click', () => openProductModal(null));
+    closeProductModalBtn.addEventListener('click', closeProductModal);
+    cancelProductModalBtn.addEventListener('click', closeProductModal);
+    productModalOverlay.addEventListener('click', (event) => {
+      if (event.target === productModalOverlay) closeProductModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && productModalOverlay.classList.contains('is-open')) closeProductModal();
+    });
+    productForm.addEventListener('submit', handleProductFormSubmit);
+
+    checkSession();
+  }
+
+  // يُستخدم فقط بنسخة المعاينة بملف واحد (SPA) عشان يحدّث القوائم كل ما ندخل
+  // على شاشة الإدارة من جديد. لا تأثير له بالنسخة متعددة الملفات.
+  window.SSPAdminRefresh = () => {
+    if (!adminDashboardView.hidden) {
+      renderOrders();
+      renderProducts();
+      renderCompanies();
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — PORTAL PAGE SCRIPT
+   ========================================================================== */
+
+(() => {
+  'use strict';
+
+  const roleTabClient = document.getElementById('roleTabClient');
+  const roleTabCompany = document.getElementById('roleTabCompany');
+  const clientAuthPanel = document.getElementById('clientAuthPanel');
+  const companyAuthPanel = document.getElementById('companyAuthPanel');
+
+  const toastContainer = document.getElementById('toastContainer');
+
+  function showToast(message) {
+    if (!toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
+    window.setTimeout(() => {
+      toast.classList.add('is-leaving');
+      toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    }, 3000);
+  }
+
+  /* ------------------------------------------------------------------------
+     ROLE SWITCHING
+     ------------------------------------------------------------------------ */
+  let currentRole = 'client';
+
+  function setRole(role) {
+    currentRole = role;
+    roleTabClient.classList.toggle('is-active', role === 'client');
+    roleTabClient.setAttribute('aria-selected', String(role === 'client'));
+    roleTabCompany.classList.toggle('is-active', role === 'company');
+    roleTabCompany.setAttribute('aria-selected', String(role === 'company'));
+
+    clientAuthPanel.classList.toggle('form-hidden', role !== 'client');
+    companyAuthPanel.classList.toggle('form-hidden', role !== 'company');
+  }
+
+  /* ------------------------------------------------------------------------
+     CLIENT OTP FLOW
+     ------------------------------------------------------------------------ */
+  const clientAuthError = document.getElementById('clientAuthError');
+  const clientDetailsForm = document.getElementById('clientDetailsForm');
+  const clientNameInput = document.getElementById('clientNameInput');
+  const clientEmailInput = document.getElementById('clientEmailInput');
+  const clientPhoneInput = document.getElementById('clientPhoneInput');
+
+  const clientOtpForm = document.getElementById('clientOtpForm');
+  const otpCodeDisplay = document.getElementById('otpCodeDisplay');
+  const clientOtpInput = document.getElementById('clientOtpInput');
+  const backToDetailsBtn = document.getElementById('backToDetailsBtn');
+
+  function clientShowError(message) {
+    clientAuthError.textContent = message;
+    clientAuthError.classList.add('is-visible');
+  }
+  function clientClearError() {
+    clientAuthError.textContent = '';
+    clientAuthError.classList.remove('is-visible');
+  }
+
+  function handleClientDetailsSubmit(event) {
+    event.preventDefault();
+    clientClearError();
+
+    const result = window.SSPAuth.requestClientOtp({
+      name: clientNameInput.value,
+      email: clientEmailInput.value,
+      phone: clientPhoneInput.value
+    });
+
+    if (!result.success) {
+      clientShowError(result.error);
+      return;
+    }
+
+    otpCodeDisplay.textContent = result.code;
+    clientDetailsForm.classList.add('form-hidden');
+    clientOtpForm.classList.remove('form-hidden');
+    clientOtpInput.focus();
+    showToast('تم إرسال كود التحقق (تجريبي).');
+  }
+
+  function handleClientOtpSubmit(event) {
+    event.preventDefault();
+    clientClearError();
+
+    const result = window.SSPAuth.verifyClientOtp({
+      email: clientEmailInput.value,
+      code: clientOtpInput.value
+    });
+
+    if (!result.success) {
+      clientShowError(result.error);
+      return;
+    }
+
+    redirectAfterAuth('client');
+  }
+
+  function backToDetails() {
+    clientOtpForm.classList.add('form-hidden');
+    clientDetailsForm.classList.remove('form-hidden');
+    clientOtpInput.value = '';
+    clientClearError();
+  }
+
+  /* ------------------------------------------------------------------------
+     COMPANY LOGIN / REGISTER (بريد + كلمة مرور، بدون تغيير)
+     ------------------------------------------------------------------------ */
+  const companyModeTabs = [...document.querySelectorAll('#companyAuthPanel .mode-tab')];
+  const companyAuthTitle = document.getElementById('companyAuthTitle');
+  const companyAuthSubtitle = document.getElementById('companyAuthSubtitle');
+  const companyAuthForm = document.getElementById('companyAuthForm');
+  const companyAuthError = document.getElementById('companyAuthError');
+  const companyAuthSubmitBtn = document.getElementById('companyAuthSubmitBtn');
+  const companyNameGroup = document.getElementById('companyNameGroup');
+  const companyPersonNameInput = document.getElementById('companyPersonNameInput');
+  const companyCompanyNameGroup = document.getElementById('companyCompanyNameGroup');
+  const companyNameInput = document.getElementById('companyNameInput');
+  const companyEmailInput = document.getElementById('companyEmailInput');
+  const companyPasswordInput = document.getElementById('companyPasswordInput');
+
+  let companyMode = 'login';
+
+  const COMPANY_COPY = {
+    login: { title: 'دخول شركة البرمجة', subtitle: 'سجّل دخولك عشان تشوف طلبات العملاء وترسل عروض أسعار.', submit: 'دخول' },
+    register: { title: 'تسجيل شركة برمجة جديدة', subtitle: 'أنشئ حساب شركتك عشان تظهر لك طلبات العملاء وتقدر ترسل عروضك.', submit: 'إنشاء الحساب' }
+  };
+
+  function companyShowError(message) {
+    companyAuthError.textContent = message;
+    companyAuthError.classList.add('is-visible');
+  }
+  function companyClearError() {
+    companyAuthError.textContent = '';
+    companyAuthError.classList.remove('is-visible');
+  }
+
+  function updateCompanyView() {
+    const copy = COMPANY_COPY[companyMode];
+    companyAuthTitle.textContent = copy.title;
+    companyAuthSubtitle.textContent = copy.subtitle;
+    companyAuthSubmitBtn.textContent = copy.submit;
+
+    companyModeTabs.forEach((tab) => tab.classList.toggle('is-active', tab.dataset.mode === companyMode));
+
+    const isRegister = companyMode === 'register';
+    companyNameGroup.classList.toggle('form-hidden', !isRegister);
+    companyPersonNameInput.required = isRegister;
+    companyCompanyNameGroup.classList.toggle('form-hidden', !isRegister);
+    companyNameInput.required = isRegister;
+
+    companyClearError();
+  }
+
+  function setCompanyMode(mode) {
+    companyMode = mode;
+    updateCompanyView();
+  }
+
+  function handleCompanyAuthSubmit(event) {
+    event.preventDefault();
+    companyClearError();
+
+    const email = companyEmailInput.value;
+    const password = companyPasswordInput.value;
+
+    if (companyMode === 'register') {
+      const result = window.SSPAuth.registerUser({
+        name: companyPersonNameInput.value,
+        email,
+        password,
+        role: 'company',
+        companyName: companyNameInput.value
+      });
+      if (!result.success) { companyShowError(result.error); return; }
+      redirectAfterAuth('company');
+      return;
+    }
+
+    const result = window.SSPAuth.loginUser({ email, password, role: 'company' });
+    if (!result.success) { companyShowError(result.error); return; }
+    redirectAfterAuth('company');
+  }
+
+  /* ------------------------------------------------------------------------
+     SHARED
+     ------------------------------------------------------------------------ */
+  function redirectAfterAuth(role) {
+    showToast('تم تسجيل الدخول بنجاح.');
+    window.setTimeout(() => {
+      window.location.hash = role === 'company' ? '#/company' : '#/client';
+    }, 400);
+  }
+
+  function initFromQueryString() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('role') === 'company') setRole('company');
+  }
+
+  function init() {
+    roleTabClient.addEventListener('click', () => setRole('client'));
+    roleTabCompany.addEventListener('click', () => setRole('company'));
+
+    clientDetailsForm.addEventListener('submit', handleClientDetailsSubmit);
+    clientOtpForm.addEventListener('submit', handleClientOtpSubmit);
+    backToDetailsBtn.addEventListener('click', backToDetails);
+
+    companyModeTabs.forEach((tab) => tab.addEventListener('click', () => setCompanyMode(tab.dataset.mode)));
+    companyAuthForm.addEventListener('submit', handleCompanyAuthSubmit);
+
+    initFromQueryString();
+    setRole(currentRole);
+    updateCompanyView();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — CLIENT PORTAL SCRIPT
+   ========================================================================== */
+
+(() => {
+  'use strict';
+
+  let session = null; // يُعيَّن داخل activate() — هذي نسخة المعاينة بملف واحد (SPA)
+
+  const userNameEl = document.getElementById('clientUserName');
+  const logoutBtn = document.getElementById('clientLogoutBtn');
+
+  const pendingPurchaseBox = document.getElementById('pendingPurchaseBox');
+  const pendingPurchaseName = document.getElementById('pendingPurchaseName');
+  const pendingPurchasePrice = document.getElementById('pendingPurchasePrice');
+  const pendingPurchasePayBtn = document.getElementById('pendingPurchasePayBtn');
+
+  const orderList = document.getElementById('orderList');
+  const quoteRequestList = document.getElementById('quoteRequestList');
+  const purchaseList = document.getElementById('purchaseList');
+  const newOrderBtn = document.getElementById('newOrderBtn');
+
+  const newOrderModalOverlay = document.getElementById('newOrderModalOverlay');
+  const closeNewOrderModalBtn = document.getElementById('closeNewOrderModalBtn');
+  const cancelNewOrderBtn = document.getElementById('cancelNewOrderBtn');
+  const newOrderForm = document.getElementById('newOrderForm');
+  const projectNameInput = document.getElementById('projectNameInput');
+  const problemInput = document.getElementById('problemInput');
+  const natureOfWorkInput = document.getElementById('natureOfWorkInput');
+  const goalInput = document.getElementById('goalInput');
+  const expectedSolutionInput = document.getElementById('expectedSolutionInput');
+  const tierSelect = document.getElementById('tierSelect');
+  const complexitySelect = document.getElementById('complexitySelect');
+  const modalPricePreview = document.getElementById('modalPricePreview');
+
+  const forwardModalOverlay = document.getElementById('forwardModalOverlay');
+  const closeForwardModalBtn = document.getElementById('closeForwardModalBtn');
+  const cancelForwardBtn = document.getElementById('cancelForwardBtn');
+  const forwardForm = document.getElementById('forwardForm');
+  const targetTypeInputs = () => [...forwardForm.querySelectorAll('input[name="targetType"]')];
+  const companySelectGroup = document.getElementById('companySelectGroup');
+  const companySelect = document.getElementById('companySelect');
+
+  const toastContainer = document.getElementById('toastContainer');
+
+  let forwardingOrderId = null;
+
+  const ORDER_STATUS_CLASS = {
+    'قيد التنفيذ': 'status-badge--progress',
+    'جاهز للتنزيل': 'status-badge--done'
+  };
+  const ORDER_STATUS_STEP = { 'قيد التنفيذ': 1, 'جاهز للتنزيل': 2 };
+
+  const REQUEST_STATUS_CLASS = {
+    'مفتوح': 'status-badge--open',
+    'قيد العمل': 'status-badge--progress',
+    'مكتمل': 'status-badge--done'
+  };
+
+  function showToast(message) {
+    if (!toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
+    window.setTimeout(() => {
+      toast.classList.add('is-leaving');
+      toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    }, 3000);
+  }
+
+  function formatCurrency(amount) {
+    return Number(amount).toFixed(3);
+  }
+
+  /* ------------------------------------------------------------------------
+     PENDING PURCHASE / ORDER (قادمة من زر بالصفحة الرئيسية)
+     ------------------------------------------------------------------------ */
+  function checkPendingPurchase() {
+    let pending;
+    try {
+      pending = JSON.parse(localStorage.getItem('ssp_pending_purchase'));
+    } catch (e) {
+      pending = null;
+    }
+    if (!pending) {
+      pendingPurchaseBox.hidden = true;
+      return;
+    }
+    pendingPurchaseName.textContent = pending.productName;
+    pendingPurchasePrice.textContent = formatCurrency(pending.price);
+    pendingPurchaseBox.hidden = false;
+
+    pendingPurchasePayBtn.onclick = () => {
+      const confirmed = window.confirm('هذا دفع تجريبي بدون بوابة دفع حقيقية — نكمل؟');
+      if (!confirmed) return;
+
+      window.SSPPurchases.createPurchase({
+        buyerEmail: session.email,
+        buyerName: session.name,
+        buyerPhone: session.phone,
+        productId: pending.productId,
+        productName: pending.productName,
+        price: pending.price
+      });
+
+      localStorage.removeItem('ssp_pending_purchase');
+      pendingPurchaseBox.hidden = true;
+      showToast('تم الدفع — منتجك جاهز بالأسفل.');
+      renderPurchases();
+    };
+  }
+
+  let pendingOrderSelection = null;
+  function readPendingOrderSelection() {
+    try {
+      pendingOrderSelection = JSON.parse(localStorage.getItem('ssp_pending_order'));
+    } catch (e) {
+      pendingOrderSelection = null;
+    }
+    localStorage.removeItem('ssp_pending_order');
+  }
+
+  /* ------------------------------------------------------------------------
+     ORDERS (طلبات النموذج الأولي)
+     ------------------------------------------------------------------------ */
+  function renderProgress(order) {
+    const step = ORDER_STATUS_STEP[order.status] || 1;
+    let bars = '';
+    for (let i = 1; i <= 2; i += 1) {
+      bars += `<span class="order-progress__step ${i <= step ? 'is-done' : ''}"></span>`;
+    }
+    return `<div class="order-progress">${bars}</div>`;
+  }
+
+  function renderOrderActions(order) {
+    if (order.status === 'قيد التنفيذ') {
+      return `<span style="font-size:13px; color: var(--color-text-muted);">فريق SSP.Q8 يشتغل على نموذجك الآن.</span>`;
+    }
+
+    if (order.status === 'جاهز للتنزيل') {
+      const downloadsHtml = order.files.map((file) => `
+        <a class="download-chip" download="${file.name}" href="${file.dataUrl}" data-action="download-file" data-order-id="${order.id}">
+          تنزيل: ${file.name}
+        </a>`).join('');
+
+      const forwardHtml = order.downloadedAt
+        ? `<button type="button" class="btn btn--navy btn--sm forward-btn" data-id="${order.id}" style="margin-top:10px;">أرسل هذه الحزمة لعرض سعر</button>`
+        : `<p style="font-size:12.5px; color: var(--color-text-muted); margin-top:10px;">نزّل ملف واحد على الأقل عشان تقدر ترسل الحزمة لعرض سعر.</p>`;
+
+      const forwardedCount = window.SSPMarketplace.getBySourceOrder(order.id).length;
+      const forwardedNote = forwardedCount
+        ? `<p style="font-size:12px; color: var(--color-teal); margin-top:6px;">تم إرسالها لعرض سعر (${forwardedCount}) — شوف قسم "طلبات عروض الأسعار" بالأسفل.</p>`
+        : '';
+
+      return `<div>${downloadsHtml}</div>${forwardHtml}${forwardedNote}`;
+    }
+
+    return '';
+  }
+
+  function renderOrderList() {
+    const orders = window.SSPOrders.getByOwner(session.email);
+
+    if (!orders.length) {
+      orderList.innerHTML = `<div class="empty-state">ما عندك طلبات لسا. اضغط "طلب نموذج أولي جديد" عشان ترسل أول فكرة لك.</div>`;
+      return;
+    }
+
+    orderList.innerHTML = orders.map((order) => `
+      <article class="request-card" style="flex-direction:column; align-items:stretch;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+          <div class="request-card__main">
+            <h3 class="request-card__title">${order.projectName}</h3>
+            <div class="request-card__meta">
+              <span>${order.tierName}</span>
+              <span>${order.complexityName}</span>
+              <span class="request-card__price mono">${formatCurrency(order.totalPrice)} د.ك</span>
+            </div>
+            <p class="request-card__desc"><strong>المشكلة:</strong> ${order.problem}</p>
+            <p class="request-card__desc"><strong>طبيعة العمل:</strong> ${order.natureOfWork}</p>
+            <p class="request-card__desc"><strong>الهدف:</strong> ${order.goal}</p>
+          </div>
+          <span class="status-badge ${ORDER_STATUS_CLASS[order.status] || ''}">${order.status}</span>
+        </div>
+        ${renderProgress(order)}
+        <div>${renderOrderActions(order)}</div>
+      </article>`).join('');
+  }
+
+  /* ------------------------------------------------------------------------
+     QUOTE REQUESTS (المُرسلة لشركات البرمجة) + مقارنة العروض
+     ------------------------------------------------------------------------ */
+  function renderQuoteCard(quote, request) {
+    const isAccepted = request.acceptedQuoteId === quote.id;
+    return `
+      <div class="file-chip" style="align-items:flex-start; flex-direction:column; gap:6px; padding:12px;">
+        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+          <span class="file-chip__name">${quote.companyName}</span>
+          <span class="mono" style="color: var(--color-navy); font-weight:600;">${formatCurrency(quote.amount)} د.ك</span>
+        </div>
+        <span style="font-size:12.5px; color: var(--color-text-muted);">مدة التسليم المتوقعة: ${quote.deliveryTime}</span>
+        ${quote.note ? `<span style="font-size:12.5px; color: var(--color-text-muted);">${quote.note}</span>` : ''}
+        ${request.status === 'مفتوح'
+          ? `<button type="button" class="btn btn--gold btn--sm accept-quote-btn" data-request-id="${request.id}" data-quote-id="${quote.id}" style="margin-top:6px;">قبول هذا العرض</button>`
+          : isAccepted
+            ? `<span class="status-badge status-badge--done" style="margin-top:6px;">تم القبول</span>`
+            : ''}
+      </div>`;
+  }
+
+  function renderQuoteRequestList() {
+    const requests = window.SSPMarketplace.getByOwner(session.email);
+
+    if (!requests.length) {
+      quoteRequestList.innerHTML = `<div class="empty-state">ما أرسلت أي طلب لعرض سعر لسا. نزّل ملفات طلب مكتمل من الأعلى عشان تقدر ترسله.</div>`;
+      return;
+    }
+
+    quoteRequestList.innerHTML = requests.map((request) => {
+      const quotesHtml = request.quotes.length
+        ? `<div class="file-pending-list">${request.quotes.map((q) => renderQuoteCard(q, request)).join('')}</div>`
+        : `<p style="font-size:12.5px; color: var(--color-text-muted); margin-top:8px;">ما وصلت عروض أسعار لسا.</p>`;
+
+      return `
+        <article class="request-card" style="flex-direction:column; align-items:stretch;">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div class="request-card__main">
+              <h3 class="request-card__title">${request.projectName}</h3>
+              <div class="request-card__meta">
+                <span>${request.targetType === 'specific' ? 'شركة: ' + (request.targetCompanyName || '') : 'مبثوث لكل الشركات'}</span>
+              </div>
+            </div>
+            <span class="status-badge ${REQUEST_STATUS_CLASS[request.status] || ''}">${request.status}</span>
+          </div>
+          ${quotesHtml}
+        </article>`;
+    }).join('');
+  }
+
+  function handleAcceptQuote(requestId, quoteId) {
+    const confirmed = window.confirm('راح يُقفل الطلب عن باقي الشركات بعد ما توافق على هذا العرض. تأكيد؟');
+    if (!confirmed) return;
+
+    window.SSPMarketplace.acceptQuote(requestId, quoteId);
+    renderQuoteRequestList();
+    showToast('تم قبول العرض — الطلب صار مع هذي الشركة الآن.');
+  }
+
+  /* ------------------------------------------------------------------------
+     PURCHASED PRODUCTS (منتجاتي المشتراة)
+     ------------------------------------------------------------------------ */
+  function renderPurchases() {
+    const purchases = window.SSPPurchases.getByBuyer(session.email);
+
+    if (!purchases.length) {
+      purchaseList.innerHTML = `<div class="empty-state">ما اشتريت أي منتج جاهز لسا.</div>`;
+      return;
+    }
+
+    purchaseList.innerHTML = purchases.map((purchase) => {
+      const product = window.SSPProducts.getById(purchase.productId);
+      const fileHtml = (product && product.file)
+        ? `<a class="download-chip" download="${product.file.name}" href="${product.file.dataUrl}">تنزيل: ${product.file.name}</a>`
+        : `<span style="font-size:12.5px; color: var(--color-text-muted);">لسا ما رفعت الإدارة ملف هذا المنتج.</span>`;
+
+      return `
+        <article class="request-card">
+          <div class="request-card__main">
+            <h3 class="request-card__title">${purchase.productName}</h3>
+            <div class="request-card__meta">
+              <span class="request-card__price mono">${formatCurrency(purchase.price)} د.ك</span>
+            </div>
+            <div style="margin-top:10px;">${fileHtml}</div>
+          </div>
+        </article>`;
+    }).join('');
+  }
+
+  /* ------------------------------------------------------------------------
+     NEW ORDER MODAL
+     ------------------------------------------------------------------------ */
+  function populateSelectOptions() {
+    tierSelect.innerHTML = SITE_CONTENT.tiers.map((tier, index) =>
+      `<option value="${index}">${tier.name} — من ${tier.price} د.ك</option>`
+    ).join('');
+    complexitySelect.innerHTML = SITE_CONTENT.complexityLevels.map((level, index) =>
+      `<option value="${index}">${level.name} (×${level.multiplier})</option>`
+    ).join('');
+
+    if (pendingOrderSelection) {
+      const tierIndex = SITE_CONTENT.tiers.findIndex((t) => t.name === pendingOrderSelection.tierName);
+      const complexityIndex = SITE_CONTENT.complexityLevels.findIndex((c) => c.name === pendingOrderSelection.complexityName);
+      if (tierIndex >= 0) tierSelect.value = String(tierIndex);
+      if (complexityIndex >= 0) complexitySelect.value = String(complexityIndex);
+    }
+
+    updatePricePreview();
+  }
+
+  function updatePricePreview() {
+    const tier = SITE_CONTENT.tiers[Number(tierSelect.value)];
+    const level = SITE_CONTENT.complexityLevels[Number(complexitySelect.value)];
+    modalPricePreview.textContent = `${formatCurrency(tier.price * level.multiplier)} د.ك`;
+  }
+
+  function openNewOrderModal() {
+    newOrderModalOverlay.classList.add('is-open');
+    projectNameInput.focus();
+  }
+  function closeNewOrderModal() {
+    newOrderModalOverlay.classList.remove('is-open');
+    newOrderForm.reset();
+    populateSelectOptions();
+  }
+
+  function handleNewOrderSubmit(event) {
+    event.preventDefault();
+
+    const confirmed = window.confirm('هذا دفع تجريبي بدون بوابة دفع حقيقية — نكمل؟');
+    if (!confirmed) return;
+
+    const tier = SITE_CONTENT.tiers[Number(tierSelect.value)];
+    const level = SITE_CONTENT.complexityLevels[Number(complexitySelect.value)];
+
+    const result = window.SSPOrders.createOrder({
+      ownerEmail: session.email,
+      ownerName: session.name,
+      ownerPhone: session.phone,
+      projectName: projectNameInput.value.trim(),
+      problem: problemInput.value.trim(),
+      natureOfWork: natureOfWorkInput.value.trim(),
+      goal: goalInput.value.trim(),
+      expectedSolution: expectedSolutionInput.value.trim(),
+      tierName: tier.name,
+      complexityName: level.name,
+      totalPrice: tier.price * level.multiplier
+    });
+
+    if (!result.success) {
+      showToast(result.error || 'تعذّر إرسال الطلب.');
+      return;
+    }
+
+    closeNewOrderModal();
+    renderOrderList();
+    showToast('تم الدفع وإرسال طلبك لفريق SSP.Q8.');
+  }
+
+  /* ------------------------------------------------------------------------
+     DOWNLOAD TRACKING
+     ------------------------------------------------------------------------ */
+  function handleDownloadClick(orderId) {
+    window.SSPOrders.markDownloaded(orderId);
+    window.setTimeout(renderOrderList, 300);
+  }
+
+  /* ------------------------------------------------------------------------
+     FORWARD TO COMPANIES MODAL
+     ------------------------------------------------------------------------ */
+  function populateCompanySelect() {
+    const companies = window.SSPAuth.getCompanies();
+    if (!companies.length) {
+      companySelect.innerHTML = `<option value="">ما فيه شركات مسجّلة لسا</option>`;
+      return;
+    }
+    companySelect.innerHTML = companies.map((c) =>
+      `<option value="${c.email}">${c.companyName || c.name}</option>`
+    ).join('');
+  }
+
+  function updateForwardTargetVisibility() {
+    const selected = targetTypeInputs().find((input) => input.checked);
+    const isSpecific = selected && selected.value === 'specific';
+    companySelectGroup.classList.toggle('form-hidden', !isSpecific);
+    companySelect.required = isSpecific;
+  }
+
+  function openForwardModal(orderId) {
+    forwardingOrderId = orderId;
+    populateCompanySelect();
+    targetTypeInputs().forEach((input) => { input.checked = input.value === 'broadcast'; });
+    updateForwardTargetVisibility();
+    forwardModalOverlay.classList.add('is-open');
+  }
+
+  function closeForwardModal() {
+    forwardModalOverlay.classList.remove('is-open');
+    forwardingOrderId = null;
+  }
+
+  function handleForwardSubmit(event) {
+    event.preventDefault();
+    if (!forwardingOrderId) return;
+
+    const order = window.SSPOrders.getById(forwardingOrderId);
+    if (!order) return;
+
+    const selected = targetTypeInputs().find((input) => input.checked);
+    const targetType = selected ? selected.value : 'broadcast';
+
+    let targetCompanyEmail = null;
+    let targetCompanyName = null;
+    if (targetType === 'specific') {
+      if (!companySelect.value) { showToast('اختر شركة أولاً.'); return; }
+      const company = window.SSPAuth.getUserByEmail(companySelect.value);
+      targetCompanyEmail = companySelect.value;
+      targetCompanyName = company ? (company.companyName || company.name) : companySelect.value;
+    }
+
+    window.SSPMarketplace.createRequest({
+      ownerEmail: order.ownerEmail,
+      ownerName: order.ownerName,
+      sourceOrderId: order.id,
+      projectName: order.projectName,
+      description: `${order.problem} — الهدف: ${order.goal}`,
+      tierName: order.tierName,
+      complexityName: order.complexityName,
+      totalPrice: order.totalPrice,
+      attachedFiles: order.files,
+      targetType,
+      targetCompanyEmail,
+      targetCompanyName
+    });
+
+    closeForwardModal();
+    renderOrderList();
+    renderQuoteRequestList();
+    showToast(targetType === 'specific' ? `تم إرسال الطلب لـ${targetCompanyName}.` : 'تم إرسال الطلب لكل الشركات المشتركة.');
+  }
+
+  /* ------------------------------------------------------------------------
+     EVENT DELEGATION
+     ------------------------------------------------------------------------ */
+  function handleOrderListClick(event) {
+    const forwardBtn = event.target.closest('.forward-btn');
+    if (forwardBtn) { openForwardModal(forwardBtn.dataset.id); return; }
+
+    const downloadLink = event.target.closest('[data-action="download-file"]');
+    if (downloadLink) { handleDownloadClick(downloadLink.dataset.orderId); }
+  }
+
+  function handleQuoteListClick(event) {
+    const acceptBtn = event.target.closest('.accept-quote-btn');
+    if (acceptBtn) { handleAcceptQuote(acceptBtn.dataset.requestId, acceptBtn.dataset.quoteId); }
+  }
+
+  /* ------------------------------------------------------------------------
+     INIT
+     ------------------------------------------------------------------------ */
+  let listenersBound = false;
+
+  function bindListenersOnce() {
+    if (listenersBound) return;
+    listenersBound = true;
+
+    logoutBtn.addEventListener('click', () => {
+      window.SSPAuth.clearSession();
+      window.location.href = '#/portal';
+    });
+
+    newOrderBtn.addEventListener('click', openNewOrderModal);
+    closeNewOrderModalBtn.addEventListener('click', closeNewOrderModal);
+    cancelNewOrderBtn.addEventListener('click', closeNewOrderModal);
+    newOrderModalOverlay.addEventListener('click', (event) => {
+      if (event.target === newOrderModalOverlay) closeNewOrderModal();
+    });
+    tierSelect.addEventListener('change', updatePricePreview);
+    complexitySelect.addEventListener('change', updatePricePreview);
+    newOrderForm.addEventListener('submit', handleNewOrderSubmit);
+
+    closeForwardModalBtn.addEventListener('click', closeForwardModal);
+    cancelForwardBtn.addEventListener('click', closeForwardModal);
+    forwardModalOverlay.addEventListener('click', (event) => {
+      if (event.target === forwardModalOverlay) closeForwardModal();
+    });
+    targetTypeInputs().forEach((input) => input.addEventListener('change', updateForwardTargetVisibility));
+    forwardForm.addEventListener('submit', handleForwardSubmit);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (newOrderModalOverlay.classList.contains('is-open')) closeNewOrderModal();
+      if (forwardModalOverlay.classList.contains('is-open')) closeForwardModal();
+    });
+
+    orderList.addEventListener('click', handleOrderListClick);
+    quoteRequestList.addEventListener('click', handleQuoteListClick);
+  }
+
+  function activate() {
+    session = window.SSPAuth.requireRole('client', '#/portal?role=client');
+    if (!session) return;
+
+    userNameEl.textContent = session.name;
+    bindListenersOnce();
+
+    readPendingOrderSelection();
+    checkPendingPurchase();
+    populateSelectOptions();
+    renderOrderList();
+    renderQuoteRequestList();
+    renderPurchases();
+
+    if (pendingOrderSelection) openNewOrderModal();
+  }
+
+  function routeCheck() {
+    if (window.location.hash.startsWith('#/client')) activate();
+  }
+
+  window.addEventListener('hashchange', routeCheck);
+  routeCheck();
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — COMPANY PORTAL SCRIPT
+   ========================================================================== */
+
+(() => {
+  'use strict';
+
+  let session = null; // يُعيَّن داخل activate() — هذي نسخة المعاينة بملف واحد (SPA)
+
+  const userNameEl = document.getElementById('companyUserName');
+  const logoutBtn = document.getElementById('companyLogoutBtn');
+
+  const subscriptionText = document.getElementById('subscriptionText');
+  const subscriptionBadge = document.getElementById('subscriptionBadge');
+
+  const openRequestList = document.getElementById('openRequestList');
+  const myQuotesList = document.getElementById('myQuotesList');
+  const myRequestList = document.getElementById('myRequestList');
+  const toastContainer = document.getElementById('toastContainer');
+
+  const quoteModalOverlay = document.getElementById('quoteModalOverlay');
+  const closeQuoteModalBtn = document.getElementById('closeQuoteModalBtn');
+  const cancelQuoteModalBtn = document.getElementById('cancelQuoteModalBtn');
+  const quoteForm = document.getElementById('quoteForm');
+  const quoteAmountInput = document.getElementById('quoteAmountInput');
+  const quoteDeliveryInput = document.getElementById('quoteDeliveryInput');
+  const quoteNoteInput = document.getElementById('quoteNoteInput');
+
+  let quotingRequestId = null;
+
+  const STATUS_CLASS = {
+    'مفتوح': 'status-badge--open',
+    'قيد العمل': 'status-badge--progress',
+    'مكتمل': 'status-badge--done'
+  };
+
+  function showToast(message) {
+    if (!toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
+    window.setTimeout(() => {
+      toast.classList.add('is-leaving');
+      toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    }, 3000);
+  }
+
+  function formatCurrency(amount) {
+    return Number(amount).toFixed(3);
+  }
+
+  function getCompanyName() {
+    return session.companyName || session.name;
+  }
+
+  function isSubscribed() {
+    const user = window.SSPAuth.getUserByEmail(session.email);
+    return !!(user && user.subscriptionActive);
+  }
+
+  function renderSubscriptionBox() {
+    const active = isSubscribed();
+    subscriptionText.textContent = active ? 'نشط' : 'غير مفعّل';
+    subscriptionBadge.textContent = active ? 'مفعّل' : 'غير مفعّل';
+    subscriptionBadge.className = 'subscription-badge ' + (active ? 'subscription-badge--active' : 'subscription-badge--inactive');
+  }
+
+  function renderAttachedFiles(files) {
+    if (!files || !files.length) return '';
+    const chips = files.map((file) =>
+      `<a class="download-chip" download="${file.name}" href="${file.dataUrl}">تنزيل: ${file.name}</a>`
+    ).join('');
+    return `<div style="margin-top:10px;">${chips}</div>`;
+  }
+
+  /* ------------------------------------------------------------------------
+     طلبات مفتوحة — رفض أو تقديم عرض سعر
+     ------------------------------------------------------------------------ */
+  function renderOpenRequests() {
+    const requests = window.SSPMarketplace.getOpenForCompany(session.email);
+    const active = isSubscribed();
+
+    if (!requests.length) {
+      openRequestList.innerHTML = `<div class="empty-state">ما فيه طلبات مفتوحة حالياً.</div>`;
+      return;
+    }
+
+    openRequestList.innerHTML = requests.map((request) => `
+      <article class="request-card">
+        <div class="request-card__main">
+          <h3 class="request-card__title">${request.projectName}</h3>
+          <div class="request-card__meta">
+            <span>${request.tierName}</span>
+            <span>${request.complexityName}</span>
+            <span class="request-card__price mono">سعر SSP.Q8 الأساسي: ${formatCurrency(request.totalPrice)} د.ك</span>
+            ${request.targetType === 'specific' ? '<span>موجّه لك تحديداً</span>' : '<span>مبثوث لكل الشركات</span>'}
+          </div>
+          <p class="request-card__desc">${request.description}</p>
+          ${renderAttachedFiles(request.attachedFiles)}
+        </div>
+        <div class="request-card__side">
+          <span class="status-badge ${STATUS_CLASS[request.status] || ''}">${request.status}</span>
+          ${active
+            ? `<div style="display:flex; gap:8px;">
+                 <button type="button" class="btn btn--outline btn--sm reject-btn" data-id="${request.id}">رفض</button>
+                 <button type="button" class="btn btn--gold btn--sm quote-btn" data-id="${request.id}">تقديم عرض سعر</button>
+               </div>`
+            : `<span style="font-size:12.5px; color: var(--color-text-muted);">لازم يفعّل فريق SSP.Q8 اشتراكك عشان تقدر ترسل عروض</span>`}
+        </div>
+      </article>`).join('');
+
+    openRequestList.querySelectorAll('.reject-btn').forEach((btn) => {
+      btn.addEventListener('click', () => handleReject(btn.dataset.id));
+    });
+    openRequestList.querySelectorAll('.quote-btn').forEach((btn) => {
+      btn.addEventListener('click', () => openQuoteModal(btn.dataset.id));
+    });
+  }
+
+  function handleReject(id) {
+    window.SSPMarketplace.dismissForCompany(id, session.email);
+    showToast('تم إخفاء الطلب من قائمتك.');
+    renderOpenRequests();
+  }
+
+  /* ------------------------------------------------------------------------
+     نافذة تقديم عرض سعر
+     ------------------------------------------------------------------------ */
+  function openQuoteModal(requestId) {
+    quotingRequestId = requestId;
+    quoteForm.reset();
+    quoteModalOverlay.classList.add('is-open');
+    quoteAmountInput.focus();
+  }
+  function closeQuoteModal() {
+    quoteModalOverlay.classList.remove('is-open');
+    quotingRequestId = null;
+  }
+
+  function handleQuoteSubmit(event) {
+    event.preventDefault();
+    if (!quotingRequestId) return;
+
+    const result = window.SSPMarketplace.submitQuote(quotingRequestId, {
+      companyEmail: session.email,
+      companyName: getCompanyName(),
+      amount: Number(quoteAmountInput.value),
+      deliveryTime: quoteDeliveryInput.value.trim(),
+      note: quoteNoteInput.value.trim()
+    });
+
+    if (!result.success) {
+      showToast(result.error || 'تعذّر إرسال العرض.');
+      return;
+    }
+
+    closeQuoteModal();
+    showToast('تم إرسال عرض سعرك للعميل.');
+    renderAll();
+  }
+
+  /* ------------------------------------------------------------------------
+     عروضي المرسلة
+     ------------------------------------------------------------------------ */
+  function renderMyQuotes() {
+    const entries = window.SSPMarketplace.getQuotesByCompany(session.email);
+
+    if (!entries.length) {
+      myQuotesList.innerHTML = `<div class="empty-state">ما أرسلت أي عرض سعر لسا.</div>`;
+      return;
+    }
+
+    myQuotesList.innerHTML = entries.map(({ request, quote, won }) => {
+      let statusLabel = 'بانتظار رد العميل';
+      let statusClass = 'status-badge--open';
+      if (request.status === 'قيد العمل' || request.status === 'مكتمل') {
+        statusLabel = won ? 'تم قبول عرضك' : 'اختار العميل شركة ثانية';
+        statusClass = won ? 'status-badge--done' : 'status-badge--progress';
+      }
+
+      return `
+        <article class="request-card">
+          <div class="request-card__main">
+            <h3 class="request-card__title">${request.projectName}</h3>
+            <div class="request-card__meta">
+              <span class="request-card__price mono">عرضك: ${formatCurrency(quote.amount)} د.ك</span>
+              <span>مدة التسليم: ${quote.deliveryTime}</span>
+            </div>
+          </div>
+          <div class="request-card__side">
+            <span class="status-badge ${statusClass}">${statusLabel}</span>
+          </div>
+        </article>`;
+    }).join('');
+  }
+
+  /* ------------------------------------------------------------------------
+     طلبات جاري تنفيذها (تم قبول عرضي فيها)
+     ------------------------------------------------------------------------ */
+  function renderMyRequests() {
+    const requests = window.SSPMarketplace.getClaimedBy(session.email);
+
+    if (!requests.length) {
+      myRequestList.innerHTML = `<div class="empty-state">ما عندك طلبات جاري تنفيذها حالياً.</div>`;
+      return;
+    }
+
+    myRequestList.innerHTML = requests.map((request) => `
+      <article class="request-card">
+        <div class="request-card__main">
+          <h3 class="request-card__title">${request.projectName}</h3>
+          <div class="request-card__meta">
+            <span class="request-card__price mono">${formatCurrency(request.totalPrice)} د.ك</span>
+            <span>تواصل مع العميل: ${request.ownerEmail}</span>
+          </div>
+          <p class="request-card__desc">${request.description}</p>
+          ${renderAttachedFiles(request.attachedFiles)}
+        </div>
+        <div class="request-card__side">
+          <span class="status-badge ${STATUS_CLASS[request.status] || ''}">${request.status}</span>
+          ${request.status === 'قيد العمل'
+            ? `<button type="button" class="btn btn--outline btn--sm complete-btn" data-id="${request.id}">تحديد كمكتمل</button>`
+            : ''}
+        </div>
+      </article>`).join('');
+
+    myRequestList.querySelectorAll('.complete-btn').forEach((btn) => {
+      btn.addEventListener('click', () => handleComplete(btn.dataset.id));
+    });
+  }
+
+  function handleComplete(id) {
+    window.SSPMarketplace.complete(id);
+    showToast('تم تحديد الطلب كمكتمل.');
+    renderAll();
+  }
+
+  function renderAll() {
+    renderSubscriptionBox();
+    renderOpenRequests();
+    renderMyQuotes();
+    renderMyRequests();
+  }
+
+  let listenersBound = false;
+
+  function bindListenersOnce() {
+    if (listenersBound) return;
+    listenersBound = true;
+
+    logoutBtn.addEventListener('click', () => {
+      window.SSPAuth.clearSession();
+      window.location.href = '#/portal?role=company';
+    });
+
+    closeQuoteModalBtn.addEventListener('click', closeQuoteModal);
+    cancelQuoteModalBtn.addEventListener('click', closeQuoteModal);
+    quoteModalOverlay.addEventListener('click', (event) => {
+      if (event.target === quoteModalOverlay) closeQuoteModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && quoteModalOverlay.classList.contains('is-open')) closeQuoteModal();
+    });
+    quoteForm.addEventListener('submit', handleQuoteSubmit);
+  }
+
+  function activate() {
+    session = window.SSPAuth.requireRole('company', '#/portal?role=company');
+    if (!session) return;
+
+    userNameEl.textContent = getCompanyName();
+    bindListenersOnce();
+    renderAll();
+  }
+
+  function routeCheck() {
+    if (window.location.hash.startsWith('#/company')) activate();
+  }
+
+  window.addEventListener('hashchange', routeCheck);
+  routeCheck();
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   SSP.Q8 — SPA ROUTER (نسخة المعاينة بملف واحد)
+   يدمج: الرئيسية (#/) / الدخول (#/portal) / لوحة العميل (#/client)
+   / لوحة الشركة (#/company) / لوحة الإدارة (#/admin) بنفس الملف.
+   ========================================================================== */
+
+(() => {
+  'use strict';
+
+  const views = {
+    home: document.getElementById('view-home'),
+    portal: document.getElementById('view-portal'),
+    client: document.getElementById('view-client'),
+    company: document.getElementById('view-company'),
+    admin: document.getElementById('view-admin')
+  };
+
+  function showView(name) {
+    Object.keys(views).forEach((key) => {
+      if (views[key]) views[key].hidden = key !== name;
+    });
+    window.scrollTo(0, 0);
+  }
+
+  function parseHash() {
+    const raw = window.location.hash || '';
+    if (raw === '' || raw === '#') return { path: '/', params: new URLSearchParams() };
+    if (!raw.startsWith('#/')) return null;
+    const withoutHash = raw.slice(1);
+    const [path, queryString] = withoutHash.split('?');
+    return { path: path || '/', params: new URLSearchParams(queryString || '') };
+  }
+
+  function router() {
+    const parsed = parseHash();
+    if (!parsed) return;
+
+    if (parsed.path === '/' || parsed.path === '') { showView('home'); return; }
+    if (parsed.path === '/portal') { showView('portal'); return; }
+
+    if (parsed.path === '/client') {
+      const session = window.SSPAuth.getSession();
+      if (!session || session.role !== 'client') { window.location.hash = '#/portal?role=client'; return; }
+      showView('client');
+      return;
+    }
+    if (parsed.path === '/company') {
+      const session = window.SSPAuth.getSession();
+      if (!session || session.role !== 'company') { window.location.hash = '#/portal?role=company'; return; }
+      showView('company');
+      return;
+    }
+    if (parsed.path === '/admin') {
+      showView('admin');
+      if (typeof window.SSPAdminRefresh === 'function') window.SSPAdminRefresh();
+      return;
+    }
+    showView('home');
+  }
+
+  function init() {
+    window.addEventListener('hashchange', router);
+    router();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+
+</script>
+
+</body>
+</html>

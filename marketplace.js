@@ -40,9 +40,12 @@
       targetType: data.targetType || 'broadcast', // 'broadcast' | 'specific'
       targetCompanyEmail: data.targetType === 'specific' ? data.targetCompanyEmail : null,
       targetCompanyName: data.targetType === 'specific' ? data.targetCompanyName : null,
-      status: 'مفتوح',
+      status: 'مفتوح', // مفتوح -> قيد العمل (بعد قبول عرض) -> مكتمل
+      quotes: [],
+      dismissedBy: [],
       claimedByEmail: null,
       claimedByName: null,
+      acceptedQuoteId: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -65,27 +68,84 @@
 
   /**
    * الطلبات المفتوحة اللي تخص شركة معيّنة: إما مبثوثة لكل الشركات،
-   * أو موجّهة تحديداً لبريد هذي الشركة.
+   * أو موجّهة تحديداً لبريد هذي الشركة — باستثناء اللي رفضتها هذي الشركة.
    */
   function getOpenForCompany(companyEmail) {
     return getRequests().filter((r) =>
       r.status === 'مفتوح' &&
-      (r.targetType === 'broadcast' || r.targetCompanyEmail === companyEmail)
+      (r.targetType === 'broadcast' || r.targetCompanyEmail === companyEmail) &&
+      !(r.dismissedBy || []).includes(companyEmail)
     );
+  }
+
+  function dismissForCompany(id, companyEmail) {
+    const list = getRequests();
+    const request = list.find((r) => r.id === id);
+    if (!request) return { success: false };
+
+    request.dismissedBy = request.dismissedBy || [];
+    if (!request.dismissedBy.includes(companyEmail)) {
+      request.dismissedBy.push(companyEmail);
+      saveRequests(list);
+    }
+    return { success: true };
+  }
+
+  function submitQuote(id, quote) {
+    const list = getRequests();
+    const request = list.find((r) => r.id === id);
+    if (!request || request.status !== 'مفتوح') return { success: false, error: 'الطلب ما عاد مفتوحاً.' };
+
+    if (request.quotes.some((q) => q.companyEmail === quote.companyEmail)) {
+      return { success: false, error: 'أرسلت عرض سعر لهذا الطلب من قبل.' };
+    }
+
+    request.quotes.push({
+      id: 'quo_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+      companyEmail: quote.companyEmail,
+      companyName: quote.companyName,
+      amount: quote.amount,
+      deliveryTime: quote.deliveryTime,
+      note: quote.note || '',
+      createdAt: new Date().toISOString()
+    });
+    request.updatedAt = new Date().toISOString();
+    saveRequests(list);
+    return { success: true, request };
+  }
+
+  /**
+   * كل عروض الأسعار اللي أرسلتها شركة معيّنة، مع حالة كل طلب (مفتوح/مقبول لشركة ثانية/تم قبول عرضها).
+   */
+  function getQuotesByCompany(companyEmail) {
+    return getRequests()
+      .filter((r) => r.quotes.some((q) => q.companyEmail === companyEmail))
+      .map((r) => ({
+        request: r,
+        quote: r.quotes.find((q) => q.companyEmail === companyEmail),
+        won: r.acceptedQuoteId && r.quotes.find((q) => q.companyEmail === companyEmail).id === r.acceptedQuoteId
+      }));
   }
 
   function getClaimedBy(email) {
     return getRequests().filter((r) => r.claimedByEmail === email);
   }
 
-  function claim(id, companyEmail, companyName) {
+  /**
+   * العميل يقبل عرض شركة معيّنة — الطلب يُقفل تلقائياً عن باقي الشركات.
+   */
+  function acceptQuote(requestId, quoteId) {
     const list = getRequests();
-    const request = list.find((r) => r.id === id);
-    if (!request || request.status !== 'مفتوح') return { success: false };
+    const request = list.find((r) => r.id === requestId);
+    if (!request) return { success: false };
+
+    const quote = request.quotes.find((q) => q.id === quoteId);
+    if (!quote) return { success: false };
 
     request.status = 'قيد العمل';
-    request.claimedByEmail = companyEmail;
-    request.claimedByName = companyName;
+    request.claimedByEmail = quote.companyEmail;
+    request.claimedByName = quote.companyName;
+    request.acceptedQuoteId = quote.id;
     request.updatedAt = new Date().toISOString();
     saveRequests(list);
     return { success: true, request };
@@ -110,7 +170,10 @@
     getOpen,
     getOpenForCompany,
     getClaimedBy,
-    claim,
+    dismissForCompany,
+    submitQuote,
+    getQuotesByCompany,
+    acceptQuote,
     complete
   };
 })();

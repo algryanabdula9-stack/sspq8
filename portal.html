@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>الدخول | SSP.Q8</title>
-  <meta name="description" content="سجّل دخولك كعميل لتقديم طلب عرض سعر، أو كشركة برمجة لاستلام طلبات العملاء.">
+  <meta name="description" content="سجّل دخولك كعميل عبر كود تحقق، أو كشركة برمجة لاستلام طلبات العملاء.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
 <body>
 
   <div class="demo-banner">
-    <strong>نسخة تجريبية:</strong> هذا نموذج أولي لتوضيح الفكرة — الحسابات والطلبات تُخزَّن على متصفحك فقط ولا تُشارك فعلياً بين الأجهزة.
+    <strong>نسخة تجريبية:</strong> دخول العميل عبر كود تحقق (OTP) بدون بوابة رسائل حقيقية — الكود يظهر مباشرة على الشاشة بدل ما يُرسل فعلياً.
   </div>
 
   <header class="portal-header">
@@ -42,40 +42,77 @@
         <button type="button" class="role-tab" id="roleTabCompany" data-role="company" role="tab" aria-selected="false">شركة برمجة</button>
       </div>
 
-      <h1 class="auth-card__title" id="authTitle">دخول العميل</h1>
-      <p class="auth-card__subtitle" id="authSubtitle">سجّل دخولك عشان تقدر ترسل طلب عرض سعر لشركات مشتركة.</p>
+      <!-- ============== دخول العميل (OTP) ============== -->
+      <div id="clientAuthPanel">
+        <h1 class="auth-card__title">دخول العميل</h1>
+        <p class="auth-card__subtitle">عبّي بياناتك وبنرسل لك كود تحقق قصير.</p>
 
-      <div class="mode-tabs">
-        <button type="button" class="mode-tab is-active" data-mode="login">تسجيل الدخول</button>
-        <button type="button" class="mode-tab" data-mode="register">إنشاء حساب جديد</button>
+        <div class="form-error" id="clientAuthError" role="alert"></div>
+
+        <!-- خطوة 1: البيانات -->
+        <form id="clientDetailsForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="clientNameInput">الاسم <span class="required">*</span></label>
+            <input class="form-input" type="text" id="clientNameInput" autocomplete="name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="clientEmailInput">البريد الإلكتروني <span class="required">*</span></label>
+            <input class="form-input" type="email" id="clientEmailInput" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="clientPhoneInput">رقم الهاتف <span class="required">*</span></label>
+            <input class="form-input" type="tel" id="clientPhoneInput" autocomplete="tel" placeholder="+965 5xxxxxxx" required>
+          </div>
+          <button type="submit" class="btn btn--gold btn--lg">إرسال كود التحقق</button>
+        </form>
+
+        <!-- خطوة 2: كود التحقق -->
+        <form id="clientOtpForm" class="form-hidden" novalidate>
+          <div class="modal__price-preview" style="margin-bottom:20px;">
+            <span>كودك التجريبي (بدون رسالة حقيقية)</span>
+            <strong id="otpCodeDisplay" class="mono">------</strong>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="clientOtpInput">أدخل كود التحقق <span class="required">*</span></label>
+            <input class="form-input mono" type="text" id="clientOtpInput" inputmode="numeric" maxlength="6" required>
+          </div>
+          <button type="submit" class="btn btn--gold btn--lg">تأكيد ودخول</button>
+          <button type="button" class="btn btn--outline btn--lg" id="backToDetailsBtn" style="margin-top:10px;">تعديل البيانات</button>
+        </form>
       </div>
 
-      <div class="form-error" id="authError" role="alert"></div>
+      <!-- ============== دخول الشركة (بريد + كلمة مرور) ============== -->
+      <div id="companyAuthPanel" class="form-hidden">
+        <h1 class="auth-card__title" id="companyAuthTitle">دخول شركة البرمجة</h1>
+        <p class="auth-card__subtitle" id="companyAuthSubtitle">سجّل دخولك عشان تشوف طلبات العملاء وترسل عروض أسعار.</p>
 
-      <form id="authForm" novalidate>
-
-        <div class="form-group form-hidden" id="nameGroup">
-          <label class="form-label" for="nameInput">الاسم <span class="required">*</span></label>
-          <input class="form-input" type="text" id="nameInput" autocomplete="name">
+        <div class="mode-tabs">
+          <button type="button" class="mode-tab is-active" data-mode="login">تسجيل الدخول</button>
+          <button type="button" class="mode-tab" data-mode="register">إنشاء حساب جديد</button>
         </div>
 
-        <div class="form-group form-hidden" id="companyNameGroup">
-          <label class="form-label" for="companyNameInput">اسم الشركة <span class="required">*</span></label>
-          <input class="form-input" type="text" id="companyNameInput" autocomplete="organization">
-        </div>
+        <div class="form-error" id="companyAuthError" role="alert"></div>
 
-        <div class="form-group">
-          <label class="form-label" for="emailInput">البريد الإلكتروني <span class="required">*</span></label>
-          <input class="form-input" type="email" id="emailInput" autocomplete="email" required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="passwordInput">كلمة المرور <span class="required">*</span></label>
-          <input class="form-input" type="password" id="passwordInput" autocomplete="current-password" required>
-        </div>
-
-        <button type="submit" class="btn btn--gold btn--lg" id="authSubmitBtn">دخول</button>
-      </form>
+        <form id="companyAuthForm" novalidate>
+          <div class="form-group form-hidden" id="companyNameGroup">
+            <label class="form-label" for="companyPersonNameInput">اسم المسؤول <span class="required">*</span></label>
+            <input class="form-input" type="text" id="companyPersonNameInput" autocomplete="name">
+          </div>
+          <div class="form-group form-hidden" id="companyCompanyNameGroup">
+            <label class="form-label" for="companyNameInput">اسم الشركة <span class="required">*</span></label>
+            <input class="form-input" type="text" id="companyNameInput" autocomplete="organization">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="companyEmailInput">البريد الإلكتروني <span class="required">*</span></label>
+            <input class="form-input" type="email" id="companyEmailInput" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="companyPasswordInput">كلمة المرور <span class="required">*</span></label>
+            <input class="form-input" type="password" id="companyPasswordInput" autocomplete="current-password" required>
+          </div>
+          <button type="submit" class="btn btn--gold btn--lg" id="companyAuthSubmitBtn">دخول</button>
+        </form>
+      </div>
 
     </div>
   </main>

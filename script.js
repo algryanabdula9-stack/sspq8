@@ -11,8 +11,6 @@
      1. APPLICATION CONFIGURATION
      ------------------------------------------------------------------------ */
   const CONFIG = {
-    // ملاحظة: استبدل هذا الرقم برقم واتساب العمل الفعلي قبل النشر.
-    whatsappNumber: '96500000000',
     toastDuration: 3200,
     scrollShadowThreshold: 8
   };
@@ -83,14 +81,6 @@
   }
 
   /**
-   * بناء رابط واتساب برسالة معبأة مسبقاً.
-   */
-  function buildWhatsAppLink(message) {
-    const encoded = encodeURIComponent(message);
-    return `https://wa.me/${CONFIG.whatsappNumber}?text=${encoded}`;
-  }
-
-  /**
    * عرض إشعار toast قصير للمستخدم.
    */
   function showToast(message) {
@@ -113,12 +103,14 @@
      ------------------------------------------------------------------------ */
 
   /**
-   * بناء بطاقات المنتجات الجاهزة من js/content.js.
+   * بناء بطاقات المنتجات الجاهزة من كتالوج الأدمن (js/products.js).
    */
   function renderProducts() {
-    if (!productsGrid || !window.SITE_CONTENT) return;
+    if (!productsGrid || !window.SSPProducts) return;
 
-    productsGrid.innerHTML = SITE_CONTENT.products.map((product) => {
+    const products = window.SSPProducts.getProducts();
+
+    productsGrid.innerHTML = products.map((product) => {
       const featuresHtml = product.features
         .map((feature) => `<li><span class="square-bullet" aria-hidden="true"></span>${feature}</li>`)
         .join('');
@@ -133,7 +125,7 @@
           <ul class="product-card__features">${featuresHtml}</ul>
           <div class="product-card__footer">
             <span class="price"><span class="price__value">${product.price}</span> <span class="price__currency">د.ك</span></span>
-            <a class="btn btn--navy btn--sm buy-btn" data-product="${product.name}" data-price="${product.price}" href="#">اشترِ الآن</a>
+            <a class="btn btn--navy btn--sm buy-btn" data-product-id="${product.id}" data-product="${product.name}" data-price="${product.price}" href="#">اشترِ الآن</a>
           </div>
         </article>`;
     }).join('');
@@ -198,12 +190,13 @@
    * وأزرار الشراء لأنها أصبحت موجودة بالصفحة الآن.
    */
   function renderAllContent() {
+    renderProducts();
+
     if (!window.SITE_CONTENT) {
       console.error('SITE_CONTENT غير موجود — تأكد من تحميل js/content.js قبل js/script.js');
       return;
     }
 
-    renderProducts();
     renderTiers();
     renderComplexityLevels();
     renderPortfolio();
@@ -289,26 +282,33 @@
 
   function handleStartNowClick(event) {
     event.preventDefault();
-    const total = calculatorState.tierBase * calculatorState.complexityMult;
-    const message =
-      `مرحباً SSP.Q8، أبي أبدأ بطلب نموذج أولي.\n` +
-      `المستوى: ${calculatorState.tierName}\n` +
-      `درجة التعقيد: ${calculatorState.complexityName}\n` +
-      `السعر التقريبي: ${formatCurrency(total)} د.ك`;
-
-    window.open(buildWhatsAppLink(message), '_blank', 'noopener');
-    showToast('تم فتح واتساب لإكمال طلبك.');
+    try {
+      localStorage.setItem('ssp_pending_order', JSON.stringify({
+        tierName: calculatorState.tierName,
+        tierBase: calculatorState.tierBase,
+        complexityName: calculatorState.complexityName,
+        complexityMult: calculatorState.complexityMult
+      }));
+    } catch (e) {
+      /* لا شي — بس المتابعة بدون تعبئة مسبقة إذا فشل الحفظ */
+    }
+    window.location.href = 'portal.html?role=client';
   }
 
   function handleBuyClick(event) {
     event.preventDefault();
     const button = event.currentTarget;
-    const productName = button.dataset.product;
-    const price = button.dataset.price;
-    const message = `مرحباً SSP.Q8، أبي أشتري: ${productName} (${price} د.ك).`;
 
-    window.open(buildWhatsAppLink(message), '_blank', 'noopener');
-    showToast(`تم فتح واتساب لطلب "${productName}".`);
+    try {
+      localStorage.setItem('ssp_pending_purchase', JSON.stringify({
+        productId: button.dataset.productId,
+        productName: button.dataset.product,
+        price: Number(button.dataset.price)
+      }));
+    } catch (e) {
+      /* لا شي */
+    }
+    window.location.href = 'portal.html?role=client';
   }
 
   /**

@@ -6,11 +6,19 @@
   'use strict';
 
   const session = window.SSPAuth.requireRole('client', 'portal.html?role=client');
-  if (!session) return; // requireRole يعيد التوجيه تلقائياً إذا ما فيه جلسة صالحة
+  if (!session) return;
 
   const userNameEl = document.getElementById('clientUserName');
   const logoutBtn = document.getElementById('clientLogoutBtn');
+
+  const pendingPurchaseBox = document.getElementById('pendingPurchaseBox');
+  const pendingPurchaseName = document.getElementById('pendingPurchaseName');
+  const pendingPurchasePrice = document.getElementById('pendingPurchasePrice');
+  const pendingPurchasePayBtn = document.getElementById('pendingPurchasePayBtn');
+
   const orderList = document.getElementById('orderList');
+  const quoteRequestList = document.getElementById('quoteRequestList');
+  const purchaseList = document.getElementById('purchaseList');
   const newOrderBtn = document.getElementById('newOrderBtn');
 
   const newOrderModalOverlay = document.getElementById('newOrderModalOverlay');
@@ -18,7 +26,10 @@
   const cancelNewOrderBtn = document.getElementById('cancelNewOrderBtn');
   const newOrderForm = document.getElementById('newOrderForm');
   const projectNameInput = document.getElementById('projectNameInput');
-  const projectDescInput = document.getElementById('projectDescInput');
+  const problemInput = document.getElementById('problemInput');
+  const natureOfWorkInput = document.getElementById('natureOfWorkInput');
+  const goalInput = document.getElementById('goalInput');
+  const expectedSolutionInput = document.getElementById('expectedSolutionInput');
   const tierSelect = document.getElementById('tierSelect');
   const complexitySelect = document.getElementById('complexitySelect');
   const modalPricePreview = document.getElementById('modalPricePreview');
@@ -35,18 +46,16 @@
 
   let forwardingOrderId = null;
 
-  const STATUS_CLASS = {
-    'قيد المراجعة': 'status-badge--open',
+  const ORDER_STATUS_CLASS = {
     'قيد التنفيذ': 'status-badge--progress',
-    'جاهز للدفع': 'status-badge--progress',
-    'مكتمل الدفع': 'status-badge--done'
+    'جاهز للتنزيل': 'status-badge--done'
   };
+  const ORDER_STATUS_STEP = { 'قيد التنفيذ': 1, 'جاهز للتنزيل': 2 };
 
-  const STATUS_STEP = {
-    'قيد المراجعة': 1,
-    'قيد التنفيذ': 2,
-    'جاهز للدفع': 3,
-    'مكتمل الدفع': 4
+  const REQUEST_STATUS_CLASS = {
+    'مفتوح': 'status-badge--open',
+    'قيد العمل': 'status-badge--progress',
+    'مكتمل': 'status-badge--done'
   };
 
   function showToast(message) {
@@ -67,24 +76,72 @@
   }
 
   /* ------------------------------------------------------------------------
-     RENDER ORDER LIST
+     PENDING PURCHASE / ORDER (قادمة من زر بالصفحة الرئيسية)
+     ------------------------------------------------------------------------ */
+  function checkPendingPurchase() {
+    let pending;
+    try {
+      pending = JSON.parse(localStorage.getItem('ssp_pending_purchase'));
+    } catch (e) {
+      pending = null;
+    }
+    if (!pending) {
+      pendingPurchaseBox.hidden = true;
+      return;
+    }
+    pendingPurchaseName.textContent = pending.productName;
+    pendingPurchasePrice.textContent = formatCurrency(pending.price);
+    pendingPurchaseBox.hidden = false;
+
+    pendingPurchasePayBtn.onclick = () => {
+      const confirmed = window.confirm('هذا دفع تجريبي بدون بوابة دفع حقيقية — نكمل؟');
+      if (!confirmed) return;
+
+      window.SSPPurchases.createPurchase({
+        buyerEmail: session.email,
+        buyerName: session.name,
+        buyerPhone: session.phone,
+        productId: pending.productId,
+        productName: pending.productName,
+        price: pending.price
+      });
+
+      localStorage.removeItem('ssp_pending_purchase');
+      pendingPurchaseBox.hidden = true;
+      showToast('تم الدفع — منتجك جاهز بالأسفل.');
+      renderPurchases();
+    };
+  }
+
+  let pendingOrderSelection = null;
+  function readPendingOrderSelection() {
+    try {
+      pendingOrderSelection = JSON.parse(localStorage.getItem('ssp_pending_order'));
+    } catch (e) {
+      pendingOrderSelection = null;
+    }
+    localStorage.removeItem('ssp_pending_order');
+  }
+
+  /* ------------------------------------------------------------------------
+     ORDERS (طلبات النموذج الأولي)
      ------------------------------------------------------------------------ */
   function renderProgress(order) {
-    const step = STATUS_STEP[order.status] || 1;
+    const step = ORDER_STATUS_STEP[order.status] || 1;
     let bars = '';
-    for (let i = 1; i <= 4; i += 1) {
+    for (let i = 1; i <= 2; i += 1) {
       bars += `<span class="order-progress__step ${i <= step ? 'is-done' : ''}"></span>`;
     }
     return `<div class="order-progress">${bars}</div>`;
   }
 
   function renderOrderActions(order) {
-    if (order.status === 'جاهز للدفع') {
-      return `<button type="button" class="btn btn--gold btn--sm pay-btn" data-id="${order.id}">ادفع الآن (${formatCurrency(order.totalPrice)} د.ك — تجريبي)</button>`;
+    if (order.status === 'قيد التنفيذ') {
+      return `<span style="font-size:13px; color: var(--color-text-muted);">فريق SSP.Q8 يشتغل على نموذجك الآن.</span>`;
     }
 
-    if (order.status === 'مكتمل الدفع') {
-      const downloadsHtml = order.files.map((file, index) => `
+    if (order.status === 'جاهز للتنزيل') {
+      const downloadsHtml = order.files.map((file) => `
         <a class="download-chip" download="${file.name}" href="${file.dataUrl}" data-action="download-file" data-order-id="${order.id}">
           تنزيل: ${file.name}
         </a>`).join('');
@@ -95,18 +152,10 @@
 
       const forwardedCount = window.SSPMarketplace.getBySourceOrder(order.id).length;
       const forwardedNote = forwardedCount
-        ? `<p style="font-size:12px; color: var(--color-teal); margin-top:6px;">تم إرسالها لعرض سعر (${forwardedCount}).</p>`
+        ? `<p style="font-size:12px; color: var(--color-teal); margin-top:6px;">تم إرسالها لعرض سعر (${forwardedCount}) — شوف قسم "طلبات عروض الأسعار" بالأسفل.</p>`
         : '';
 
       return `<div>${downloadsHtml}</div>${forwardHtml}${forwardedNote}`;
-    }
-
-    if (order.status === 'قيد المراجعة') {
-      return `<span style="font-size:13px; color: var(--color-text-muted);">بانتظار فريق SSP.Q8 يبدأ العمل على طلبك.</span>`;
-    }
-
-    if (order.status === 'قيد التنفيذ') {
-      return `<span style="font-size:13px; color: var(--color-text-muted);">فريق SSP.Q8 يشتغل على نموذجك الآن.</span>`;
     }
 
     return '';
@@ -116,10 +165,7 @@
     const orders = window.SSPOrders.getByOwner(session.email);
 
     if (!orders.length) {
-      orderList.innerHTML = `
-        <div class="empty-state">
-          ما عندك طلبات لسا. اضغط "طلب نموذج أولي جديد" عشان ترسل أول فكرة لك.
-        </div>`;
+      orderList.innerHTML = `<div class="empty-state">ما عندك طلبات لسا. اضغط "طلب نموذج أولي جديد" عشان ترسل أول فكرة لك.</div>`;
       return;
     }
 
@@ -133,13 +179,104 @@
               <span>${order.complexityName}</span>
               <span class="request-card__price mono">${formatCurrency(order.totalPrice)} د.ك</span>
             </div>
-            <p class="request-card__desc">${order.description}</p>
+            <p class="request-card__desc"><strong>المشكلة:</strong> ${order.problem}</p>
+            <p class="request-card__desc"><strong>طبيعة العمل:</strong> ${order.natureOfWork}</p>
+            <p class="request-card__desc"><strong>الهدف:</strong> ${order.goal}</p>
           </div>
-          <span class="status-badge ${STATUS_CLASS[order.status] || ''}">${order.status}</span>
+          <span class="status-badge ${ORDER_STATUS_CLASS[order.status] || ''}">${order.status}</span>
         </div>
         ${renderProgress(order)}
         <div>${renderOrderActions(order)}</div>
       </article>`).join('');
+  }
+
+  /* ------------------------------------------------------------------------
+     QUOTE REQUESTS (المُرسلة لشركات البرمجة) + مقارنة العروض
+     ------------------------------------------------------------------------ */
+  function renderQuoteCard(quote, request) {
+    const isAccepted = request.acceptedQuoteId === quote.id;
+    return `
+      <div class="file-chip" style="align-items:flex-start; flex-direction:column; gap:6px; padding:12px;">
+        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+          <span class="file-chip__name">${quote.companyName}</span>
+          <span class="mono" style="color: var(--color-navy); font-weight:600;">${formatCurrency(quote.amount)} د.ك</span>
+        </div>
+        <span style="font-size:12.5px; color: var(--color-text-muted);">مدة التسليم المتوقعة: ${quote.deliveryTime}</span>
+        ${quote.note ? `<span style="font-size:12.5px; color: var(--color-text-muted);">${quote.note}</span>` : ''}
+        ${request.status === 'مفتوح'
+          ? `<button type="button" class="btn btn--gold btn--sm accept-quote-btn" data-request-id="${request.id}" data-quote-id="${quote.id}" style="margin-top:6px;">قبول هذا العرض</button>`
+          : isAccepted
+            ? `<span class="status-badge status-badge--done" style="margin-top:6px;">تم القبول</span>`
+            : ''}
+      </div>`;
+  }
+
+  function renderQuoteRequestList() {
+    const requests = window.SSPMarketplace.getByOwner(session.email);
+
+    if (!requests.length) {
+      quoteRequestList.innerHTML = `<div class="empty-state">ما أرسلت أي طلب لعرض سعر لسا. نزّل ملفات طلب مكتمل من الأعلى عشان تقدر ترسله.</div>`;
+      return;
+    }
+
+    quoteRequestList.innerHTML = requests.map((request) => {
+      const quotesHtml = request.quotes.length
+        ? `<div class="file-pending-list">${request.quotes.map((q) => renderQuoteCard(q, request)).join('')}</div>`
+        : `<p style="font-size:12.5px; color: var(--color-text-muted); margin-top:8px;">ما وصلت عروض أسعار لسا.</p>`;
+
+      return `
+        <article class="request-card" style="flex-direction:column; align-items:stretch;">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div class="request-card__main">
+              <h3 class="request-card__title">${request.projectName}</h3>
+              <div class="request-card__meta">
+                <span>${request.targetType === 'specific' ? 'شركة: ' + (request.targetCompanyName || '') : 'مبثوث لكل الشركات'}</span>
+              </div>
+            </div>
+            <span class="status-badge ${REQUEST_STATUS_CLASS[request.status] || ''}">${request.status}</span>
+          </div>
+          ${quotesHtml}
+        </article>`;
+    }).join('');
+  }
+
+  function handleAcceptQuote(requestId, quoteId) {
+    const confirmed = window.confirm('راح يُقفل الطلب عن باقي الشركات بعد ما توافق على هذا العرض. تأكيد؟');
+    if (!confirmed) return;
+
+    window.SSPMarketplace.acceptQuote(requestId, quoteId);
+    renderQuoteRequestList();
+    showToast('تم قبول العرض — الطلب صار مع هذي الشركة الآن.');
+  }
+
+  /* ------------------------------------------------------------------------
+     PURCHASED PRODUCTS (منتجاتي المشتراة)
+     ------------------------------------------------------------------------ */
+  function renderPurchases() {
+    const purchases = window.SSPPurchases.getByBuyer(session.email);
+
+    if (!purchases.length) {
+      purchaseList.innerHTML = `<div class="empty-state">ما اشتريت أي منتج جاهز لسا.</div>`;
+      return;
+    }
+
+    purchaseList.innerHTML = purchases.map((purchase) => {
+      const product = window.SSPProducts.getById(purchase.productId);
+      const fileHtml = (product && product.file)
+        ? `<a class="download-chip" download="${product.file.name}" href="${product.file.dataUrl}">تنزيل: ${product.file.name}</a>`
+        : `<span style="font-size:12.5px; color: var(--color-text-muted);">لسا ما رفعت الإدارة ملف هذا المنتج.</span>`;
+
+      return `
+        <article class="request-card">
+          <div class="request-card__main">
+            <h3 class="request-card__title">${purchase.productName}</h3>
+            <div class="request-card__meta">
+              <span class="request-card__price mono">${formatCurrency(purchase.price)} د.ك</span>
+            </div>
+            <div style="margin-top:10px;">${fileHtml}</div>
+          </div>
+        </article>`;
+    }).join('');
   }
 
   /* ------------------------------------------------------------------------
@@ -152,6 +289,14 @@
     complexitySelect.innerHTML = SITE_CONTENT.complexityLevels.map((level, index) =>
       `<option value="${index}">${level.name} (×${level.multiplier})</option>`
     ).join('');
+
+    if (pendingOrderSelection) {
+      const tierIndex = SITE_CONTENT.tiers.findIndex((t) => t.name === pendingOrderSelection.tierName);
+      const complexityIndex = SITE_CONTENT.complexityLevels.findIndex((c) => c.name === pendingOrderSelection.complexityName);
+      if (tierIndex >= 0) tierSelect.value = String(tierIndex);
+      if (complexityIndex >= 0) complexitySelect.value = String(complexityIndex);
+    }
+
     updatePricePreview();
   }
 
@@ -174,14 +319,21 @@
   function handleNewOrderSubmit(event) {
     event.preventDefault();
 
+    const confirmed = window.confirm('هذا دفع تجريبي بدون بوابة دفع حقيقية — نكمل؟');
+    if (!confirmed) return;
+
     const tier = SITE_CONTENT.tiers[Number(tierSelect.value)];
     const level = SITE_CONTENT.complexityLevels[Number(complexitySelect.value)];
 
     const result = window.SSPOrders.createOrder({
       ownerEmail: session.email,
       ownerName: session.name,
+      ownerPhone: session.phone,
       projectName: projectNameInput.value.trim(),
-      description: projectDescInput.value.trim(),
+      problem: problemInput.value.trim(),
+      natureOfWork: natureOfWorkInput.value.trim(),
+      goal: goalInput.value.trim(),
+      expectedSolution: expectedSolutionInput.value.trim(),
       tierName: tier.name,
       complexityName: level.name,
       totalPrice: tier.price * level.multiplier
@@ -194,24 +346,14 @@
 
     closeNewOrderModal();
     renderOrderList();
-    showToast('تم إرسال طلبك لفريق SSP.Q8.');
+    showToast('تم الدفع وإرسال طلبك لفريق SSP.Q8.');
   }
 
   /* ------------------------------------------------------------------------
-     PAYMENT (تجريبي) + DOWNLOAD TRACKING
+     DOWNLOAD TRACKING
      ------------------------------------------------------------------------ */
-  function handlePayClick(orderId) {
-    const confirmed = window.confirm('هذا دفع تجريبي بدون بوابة دفع حقيقية — نكمل؟');
-    if (!confirmed) return;
-
-    window.SSPOrders.markPaid(orderId);
-    renderOrderList();
-    showToast('تم الدفع (تجريبي) — تقدر تنزّل ملفاتك الآن.');
-  }
-
   function handleDownloadClick(orderId) {
     window.SSPOrders.markDownloaded(orderId);
-    // نأخر إعادة الرسم شوي عشان ما نقاطع بدء التنزيل نفسه
     window.setTimeout(renderOrderList, 300);
   }
 
@@ -273,7 +415,7 @@
       ownerName: order.ownerName,
       sourceOrderId: order.id,
       projectName: order.projectName,
-      description: order.description,
+      description: `${order.problem} — الهدف: ${order.goal}`,
       tierName: order.tierName,
       complexityName: order.complexityName,
       totalPrice: order.totalPrice,
@@ -285,21 +427,24 @@
 
     closeForwardModal();
     renderOrderList();
+    renderQuoteRequestList();
     showToast(targetType === 'specific' ? `تم إرسال الطلب لـ${targetCompanyName}.` : 'تم إرسال الطلب لكل الشركات المشتركة.');
   }
 
   /* ------------------------------------------------------------------------
-     EVENT DELEGATION (للأزرار المتغيّرة داخل قائمة الطلبات)
+     EVENT DELEGATION
      ------------------------------------------------------------------------ */
   function handleOrderListClick(event) {
-    const payBtn = event.target.closest('.pay-btn');
-    if (payBtn) { handlePayClick(payBtn.dataset.id); return; }
-
     const forwardBtn = event.target.closest('.forward-btn');
     if (forwardBtn) { openForwardModal(forwardBtn.dataset.id); return; }
 
     const downloadLink = event.target.closest('[data-action="download-file"]');
     if (downloadLink) { handleDownloadClick(downloadLink.dataset.orderId); }
+  }
+
+  function handleQuoteListClick(event) {
+    const acceptBtn = event.target.closest('.accept-quote-btn');
+    if (acceptBtn) { handleAcceptQuote(acceptBtn.dataset.requestId, acceptBtn.dataset.quoteId); }
   }
 
   /* ------------------------------------------------------------------------
@@ -312,6 +457,9 @@
       window.SSPAuth.clearSession();
       window.location.href = 'portal.html';
     });
+
+    readPendingOrderSelection();
+    checkPendingPurchase();
 
     newOrderBtn.addEventListener('click', openNewOrderModal);
     closeNewOrderModalBtn.addEventListener('click', closeNewOrderModal);
@@ -338,9 +486,14 @@
     });
 
     orderList.addEventListener('click', handleOrderListClick);
+    quoteRequestList.addEventListener('click', handleQuoteListClick);
 
     populateSelectOptions();
     renderOrderList();
+    renderQuoteRequestList();
+    renderPurchases();
+
+    if (pendingOrderSelection) openNewOrderModal();
   }
 
   init();

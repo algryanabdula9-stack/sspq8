@@ -51,6 +51,7 @@
     localStorage.setItem(SESSION_KEY, JSON.stringify({
       email: user.email,
       name: user.name,
+      phone: user.phone || null,
       role: user.role,
       companyName: user.companyName || null,
       subscriptionActive: !!user.subscriptionActive
@@ -121,6 +122,82 @@
     return { success: true, user };
   }
 
+  /* ------------------------------------------------------------------------
+     دخول العميل عبر كود تحقق (OTP) بدل كلمة مرور
+     ⚠️ نسخة تجريبية: ما فيه بوابة SMS حقيقية، فالكود يُرجَّع مباشرة من
+     الدالة نفسها عشان تعرضه الواجهة على الشاشة. النسخة الحقيقية ترسل
+     الكود عبر مزوّد SMS فعلي ولا تكشفه للمتصفح إطلاقاً.
+     ------------------------------------------------------------------------ */
+  const OTP_KEY = 'ssp_otp_pending';
+
+  function getOtpPending() {
+    try {
+      return JSON.parse(localStorage.getItem(OTP_KEY)) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveOtpPending(pending) {
+    localStorage.setItem(OTP_KEY, JSON.stringify(pending));
+  }
+
+  function requestClientOtp({ name, email, phone }) {
+    const emailNorm = String(email).trim().toLowerCase();
+    if (!emailNorm || !phone) {
+      return { success: false, error: 'عبّي الإيميل ورقم الهاتف.' };
+    }
+
+    const code = String(Math.floor(100000 + Math.random() * 900000));
+    const pending = getOtpPending();
+    pending[emailNorm] = {
+      code,
+      name: name ? name.trim() : '',
+      phone: phone.trim(),
+      createdAt: Date.now()
+    };
+    saveOtpPending(pending);
+
+    return { success: true, code };
+  }
+
+  function verifyClientOtp({ email, code }) {
+    const emailNorm = String(email).trim().toLowerCase();
+    const pending = getOtpPending();
+    const entry = pending[emailNorm];
+
+    if (!entry) {
+      return { success: false, error: 'أرسل كود التحقق أول.' };
+    }
+    if (String(code).trim() !== entry.code) {
+      return { success: false, error: 'الكود غير صحيح.' };
+    }
+
+    const users = getUsers();
+    let user = users.find((u) => u.email === emailNorm && u.role === 'client');
+
+    if (!user) {
+      user = {
+        name: entry.name || emailNorm,
+        email: emailNorm,
+        phone: entry.phone,
+        role: 'client',
+        createdAt: new Date().toISOString()
+      };
+      users.push(user);
+    } else {
+      user.phone = entry.phone || user.phone;
+      if (entry.name) user.name = entry.name;
+    }
+    saveUsers(users);
+
+    delete pending[emailNorm];
+    saveOtpPending(pending);
+
+    setSession(user);
+    return { success: true, user };
+  }
+
   function loginAdmin({ email, password }) {
     const emailNorm = String(email).trim().toLowerCase();
     if (emailNorm !== ADMIN_CREDENTIALS.email || password !== ADMIN_CREDENTIALS.password) {
@@ -152,6 +229,8 @@
     getUserByEmail,
     registerUser,
     loginUser,
+    requestClientOtp,
+    verifyClientOtp,
     loginAdmin,
     updateSubscription,
     requireRole
